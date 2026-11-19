@@ -303,7 +303,7 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#0C0A09] text-[#FAFAF9]">
+    <div className="min-h-screen flex flex-col bg-[#0C0A09] text-[#FAFAF9] overflow-x-clip">
       <Header
         currentPath={currentPath}
         lang={lang}

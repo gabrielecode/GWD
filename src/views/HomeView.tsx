@@ -214,7 +214,7 @@ export function HomeView({
                   />
                 </div>
 
-                <div className="flex items-center gap-1 rounded-xl sm:rounded-full bg-[#1C1917] p-1">
+                <div className="flex w-full sm:w-auto items-center gap-1 rounded-xl sm:rounded-full bg-[#1C1917] p-1 overflow-x-auto">
                   {(
                     [
                       { key: 'all', label: t.filterSection.all },
@@ -232,7 +232,7 @@ export function HomeView({
                           const target = document.getElementById('progetti-ecosistema');
                           if (target) target.scrollIntoView({ behavior: 'smooth' });
                         }}
-                        className={`rounded-lg sm:rounded-full px-3.5 py-2 text-xs font-semibold transition-colors whitespace-nowrap cursor-pointer ${
+                        className={`flex-1 sm:flex-initial text-center rounded-lg sm:rounded-full px-2.5 sm:px-3.5 py-2 text-xs font-semibold transition-colors whitespace-nowrap cursor-pointer min-h-[38px] ${
                           active
                             ? item.key === 'agency'
                               ? 'bg-[#FBBF24] text-[#0C0A09]'
@@ -424,7 +424,7 @@ export function HomeView({
 
             <div className="flex flex-wrap items-center gap-3">
               <div
-                className="inline-flex items-center rounded-full border border-[#292524] bg-[#1C1917] p-1"
+                className="inline-flex max-w-full overflow-x-auto items-center rounded-full border border-[#292524] bg-[#1C1917] p-1"
                 role="tablist"
                 aria-label={t.filterSection.sectionTitle}
               >
@@ -443,7 +443,7 @@ export function HomeView({
                       role="tab"
                       aria-selected={isActive}
                       onClick={() => onFilterChange(tab.key)}
-                      className={`rounded-full px-4 py-2 text-xs sm:text-sm font-medium transition-colors whitespace-nowrap shrink-0 cursor-pointer min-h-[38px] ${
+                      className={`rounded-full px-3 sm:px-4 py-2 text-xs sm:text-sm font-medium transition-colors whitespace-nowrap shrink-0 cursor-pointer min-h-[38px] ${
                         isActive
                           ? tab.key === 'agency'
                             ? 'bg-[#FBBF24] text-[#0C0A09] font-semibold'

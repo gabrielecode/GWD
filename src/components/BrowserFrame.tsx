@@ -166,26 +166,26 @@ export function BrowserFrame({
               onClick={() => setViewportMode('desktop')}
               aria-pressed={viewportMode === 'desktop'}
               title="Vista Desktop"
-              className={`flex h-5 w-5 items-center justify-center rounded transition-colors cursor-pointer ${
+              className={`flex h-7 w-7 sm:h-5 sm:w-5 items-center justify-center rounded transition-colors cursor-pointer touch-manipulation ${
                 viewportMode === 'desktop'
                   ? 'bg-[#FAFAF9] text-[#0C0A09]'
                   : 'text-[#A8A29E] hover:text-[#FAFAF9]'
               }`}
             >
-              <Monitor className="h-2.5 w-2.5" aria-hidden="true" />
+              <Monitor className="h-3 w-3 sm:h-2.5 sm:w-2.5" aria-hidden="true" />
             </button>
             <button
               type="button"
               onClick={() => setViewportMode('mobile')}
               aria-pressed={viewportMode === 'mobile'}
               title="Vista Mobile"
-              className={`flex h-5 w-5 items-center justify-center rounded transition-colors cursor-pointer ${
+              className={`flex h-7 w-7 sm:h-5 sm:w-5 items-center justify-center rounded transition-colors cursor-pointer touch-manipulation ${
                 viewportMode === 'mobile'
                   ? 'bg-[#FAFAF9] text-[#0C0A09]'
                   : 'text-[#A8A29E] hover:text-[#FAFAF9]'
               }`}
             >
-              <Smartphone className="h-2.5 w-2.5" aria-hidden="true" />
+              <Smartphone className="h-3 w-3 sm:h-2.5 sm:w-2.5" aria-hidden="true" />
             </button>
           </div>
         </div>
