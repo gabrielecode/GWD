@@ -2,6 +2,8 @@ import { useEffect, useRef, useState } from 'react';
 import {
   ArrowRight,
   ArrowUpRight,
+  Award,
+  Briefcase,
   Calendar,
   Check,
   Globe,
@@ -13,6 +15,7 @@ import {
   Sparkles,
   Star,
   TrendingUp,
+  Users,
 } from 'lucide-react';
 import {
   Language,
@@ -34,6 +37,7 @@ import {
 } from '../components/VisualThumbnails';
 import { SitiTicinoAppsSection } from '../components/SitiTicinoAppsSection';
 import { ProjectCardSkeleton } from '../components/ProjectCardSkeleton';
+import { getHeroStudioStats } from '../utils/studioStats';
 
 interface HomeViewProps {
   lang: Language;
@@ -49,6 +53,7 @@ export function HomeView({
   onNavigate,
 }: HomeViewProps) {
   const t = TRANSLATIONS[lang];
+  const heroStats = getHeroStudioStats(lang);
   const [selectedCaseSlug, setSelectedCaseSlug] = useState<string>('reverse-editing');
   const [searchQuery, setSearchQuery] = useState('');
   const [callDay, setCallDay] = useState('Mar');
@@ -190,6 +195,72 @@ export function HomeView({
 
               <div className="lg:col-span-7">
                 <HeroAtmosphericArt />
+              </div>
+            </div>
+
+            {/* Data-Driven Hero Credibility Stats Bar */}
+            <div
+              aria-label="GWD Group Metrics"
+              className="mt-7 pt-6 border-t border-[#292524]/80 grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4"
+            >
+              <div className="rounded-2xl border border-[#292524] bg-[#0C0A09]/75 px-4 py-3.5 flex items-center gap-3.5 transition-colors hover:border-[#2DD4BF]/40">
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-[#2DD4BF]/25 bg-[#2DD4BF]/10 text-[#2DD4BF] shrink-0">
+                  <Users className="h-5 w-5" aria-hidden="true" />
+                </div>
+                <div className="min-w-0">
+                  <div className="flex items-baseline gap-2">
+                    <span className="font-mono text-2xl sm:text-[26px] font-bold tabular-nums text-[#FAFAF9] leading-none">
+                      {heroStats.activeSaasUsersFormatted}
+                    </span>
+                    <span className="text-xs font-semibold text-[#2DD4BF] truncate">
+                      {t.hero.statsBar.activeUsersLabel}
+                    </span>
+                  </div>
+                  <p className="mt-1 text-xs text-[#A8A29E] truncate">
+                    {t.hero.statsBar.activeUsersSub.replace(
+                      '{count}',
+                      String(heroStats.activeSaasPlatformsCount)
+                    )}
+                  </p>
+                </div>
+              </div>
+
+              <div className="rounded-2xl border border-[#292524] bg-[#0C0A09]/75 px-4 py-3.5 flex items-center gap-3.5 transition-colors hover:border-[#FBBF24]/40">
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-[#FBBF24]/25 bg-[#FBBF24]/10 text-[#FBBF24] shrink-0">
+                  <Briefcase className="h-5 w-5" aria-hidden="true" />
+                </div>
+                <div className="min-w-0">
+                  <div className="flex items-baseline gap-2">
+                    <span className="font-mono text-2xl sm:text-[26px] font-bold tabular-nums text-[#FAFAF9] leading-none">
+                      {heroStats.projectsDeliveredFormatted}
+                    </span>
+                    <span className="text-xs font-semibold text-[#FBBF24] truncate">
+                      {t.hero.statsBar.projectsDeliveredLabel}
+                    </span>
+                  </div>
+                  <p className="mt-1 text-xs text-[#A8A29E] truncate">
+                    {t.hero.statsBar.projectsDeliveredSub}
+                  </p>
+                </div>
+              </div>
+
+              <div className="rounded-2xl border border-[#292524] bg-[#0C0A09]/75 px-4 py-3.5 flex items-center gap-3.5 transition-colors hover:border-[#60A5FA]/40">
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-[#60A5FA]/25 bg-[#60A5FA]/10 text-[#60A5FA] shrink-0">
+                  <Award className="h-5 w-5" aria-hidden="true" />
+                </div>
+                <div className="min-w-0">
+                  <div className="flex items-baseline gap-2">
+                    <span className="font-mono text-2xl sm:text-[26px] font-bold tabular-nums text-[#FAFAF9] leading-none">
+                      {heroStats.yearsOfExperienceFormatted}
+                    </span>
+                    <span className="text-xs font-semibold text-[#60A5FA] truncate">
+                      {t.hero.statsBar.yearsExperienceLabel}
+                    </span>
+                  </div>
+                  <p className="mt-1 text-xs text-[#A8A29E] truncate">
+                    {t.hero.statsBar.yearsExperienceSub}
+                  </p>
+                </div>
               </div>
             </div>
 

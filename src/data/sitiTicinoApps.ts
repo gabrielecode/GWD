@@ -26,6 +26,14 @@ export const SITITICINO_APPS: SitiTicinoAppItem[] = [
     },
     accentHex: '#2DD4BF',
     badgeText: 'SIX QR-Bill',
+    activeUsersCount: 1180,
+    techStack: ['React', 'TypeScript', 'SIX QR-Bill API', 'PWA'],
+    technicalTags: {
+      it: ['Fatture QR svizzere', 'Sync Cloud mobile', 'PDF Engine'],
+      de: ['Schweizer QR-Rechnung', 'Mobile Cloud-Sync', 'PDF-Engine'],
+      fr: ['Factures QR suisses', 'Sync Cloud mobile', 'Moteur PDF'],
+      en: ['Swiss QR invoicing', 'Mobile cloud sync', 'PDF Engine'],
+    },
   },
   {
     id: 'rankuplist',
@@ -52,6 +60,14 @@ export const SITITICINO_APPS: SitiTicinoAppItem[] = [
     },
     accentHex: '#60A5FA',
     badgeText: 'AI SEO',
+    activeUsersCount: 2150,
+    techStack: ['Next.js', 'Gemini AI', 'Node.js', 'PostgreSQL'],
+    technicalTags: {
+      it: ['SEO Marketplace AI', 'Analisi Keyword', 'Ottimizzazione Conversioni'],
+      de: ['KI-Marktplatz-SEO', 'Keyword-Analyse', 'Conversion-Boost'],
+      fr: ['SEO Marketplace IA', 'Analyse Mots-clés', 'Optimisation Conversion'],
+      en: ['AI Marketplace SEO', 'Keyword Scoring', 'Conversion Copy'],
+    },
   },
   {
     id: 'swissleadfinder',
@@ -78,6 +94,14 @@ export const SITITICINO_APPS: SitiTicinoAppItem[] = [
     },
     accentHex: '#2DD4BF',
     badgeText: 'nLPD OK',
+    activeUsersCount: 1420,
+    techStack: ['Next.js', 'TypeScript', 'PostgreSQL', 'Puppeteer'],
+    technicalTags: {
+      it: ['Data Intelligence B2B', 'Arricchimento nLPD', 'Export CRM'],
+      de: ['B2B Data Intelligence', 'nDSG-Anreicherung', 'CRM-Export'],
+      fr: ['Data Intelligence B2B', 'Enrichissement nLPD', 'Export CRM'],
+      en: ['B2B Data Intelligence', 'FADP Enrichment', 'CRM Export'],
+    },
   },
   {
     id: 'karepet',
@@ -104,6 +128,14 @@ export const SITITICINO_APPS: SitiTicinoAppItem[] = [
     },
     accentHex: '#22C55E',
     badgeText: 'PWA Ready',
+    activeUsersCount: 1340,
+    techStack: ['React PWA', 'IndexedDB', 'Supabase', 'Push API'],
+    technicalTags: {
+      it: ['Cartella Veterinaria', 'Calcolatore BARF', 'Offline PWA'],
+      de: ['Digitale Tierakte', 'BARF-Rechner', 'Offline PWA'],
+      fr: ['Dossier Vétérinaire', 'Calculateur BARF', 'PWA Hors-ligne'],
+      en: ['Vet Health Vault', 'BARF Calculator', 'Offline PWA'],
+    },
   },
   {
     id: 'demapp',
@@ -130,5 +162,13 @@ export const SITITICINO_APPS: SitiTicinoAppItem[] = [
     },
     accentHex: '#FBBF24',
     badgeText: 'No Store PWA',
+    activeUsersCount: 460,
+    techStack: ['React', 'Vite PWA', 'Service Worker', 'Tailwind CSS'],
+    technicalTags: {
+      it: ['Installazione 1-Tap', 'Booking Saloni & Food', 'Notifiche Push'],
+      de: ['1-Tap-Installation', 'Salon- & Food-Booking', 'Push-Mitteilungen'],
+      fr: ['Installation 1-Tap', 'Booking Salons & Food', 'Notifications Push'],
+      en: ['1-Tap Install', 'Salon & Food Booking', 'Push Notifications'],
+    },
   },
 ];

@@ -28,6 +28,14 @@ export interface UiStrings {
     studioPreviewSubtitle: string;
     engineSaasLabel: string;
     engineAgencyLabel: string;
+    statsBar: {
+      activeUsersLabel: string;
+      activeUsersSub: string;
+      projectsDeliveredLabel: string;
+      projectsDeliveredSub: string;
+      yearsExperienceLabel: string;
+      yearsExperienceSub: string;
+    };
   };
   dualEngine: {
     sectionTitle: string;
@@ -53,6 +61,10 @@ export interface UiStrings {
     viewCard: string;
     openPlatform: string;
     visitSite: string;
+    showTechStack: string;
+    hideTechStack: string;
+    techStackHeading: string;
+    technicalTagsHeading: string;
   };
   featuredSaas: {
     sectionTitle: string;
@@ -248,6 +260,14 @@ export const TRANSLATIONS: Record<Language, UiStrings> = {
       studioPreviewSubtitle: 'Venture interne e soluzioni su misura',
       engineSaasLabel: 'Motore SaaS · 6 Piattaforme',
       engineAgencyLabel: 'Motore Agenzia · Ticino & AI',
+      statsBar: {
+        activeUsersLabel: 'Utenti SaaS attivi',
+        activeUsersSub: 'Su {count} piattaforme SaaS live',
+        projectsDeliveredLabel: 'Progetti consegnati',
+        projectsDeliveredSub: 'Siti, WebApp & soluzioni AI in CH',
+        yearsExperienceLabel: 'Anni di esperienza',
+        yearsExperienceSub: 'Dal 2018 · Studio a Lugano',
+      },
     },
     dualEngine: {
       sectionTitle: 'Due motori, una sola ingegneria',
@@ -285,6 +305,10 @@ export const TRANSLATIONS: Record<Language, UiStrings> = {
       viewCard: 'Apri scheda',
       openPlatform: 'Apri piattaforma ↗',
       visitSite: 'Visita il sito',
+      showTechStack: 'Stack & Tag tecnici',
+      hideTechStack: 'Nascondi stack',
+      techStackHeading: 'Stack Tecnologico',
+      technicalTagsHeading: 'Tag Tecnici',
     },
     featuredSaas: {
       sectionTitle: 'Prodotti SaaS in evidenza',
@@ -502,6 +526,14 @@ export const TRANSLATIONS: Record<Language, UiStrings> = {
       studioPreviewSubtitle: 'Eigene Ventures & Kundenlösungen',
       engineSaasLabel: 'SaaS-Motor · 6 Plattformen',
       engineAgencyLabel: 'Agentur-Motor · Tessin & KI',
+      statsBar: {
+        activeUsersLabel: 'Aktive SaaS-Nutzer',
+        activeUsersSub: 'Auf {count} aktiven Cloud-Plattformen',
+        projectsDeliveredLabel: 'Gelieferte Projekte',
+        projectsDeliveredSub: 'Websites, WebApps & KI in der CH',
+        yearsExperienceLabel: 'Jahre Erfahrung',
+        yearsExperienceSub: 'Seit 2018 · Studio in Lugano',
+      },
     },
     dualEngine: {
       sectionTitle: 'Zwei Motoren, ein Engineering-Standard',
@@ -539,6 +571,10 @@ export const TRANSLATIONS: Record<Language, UiStrings> = {
       viewCard: 'Details öffnen',
       openPlatform: 'Plattform öffnen ↗',
       visitSite: 'Website besuchen',
+      showTechStack: 'Tech-Stack & Tags',
+      hideTechStack: 'Stack ausblenden',
+      techStackHeading: 'Technologie-Stack',
+      technicalTagsHeading: 'Technische Tags',
     },
     featuredSaas: {
       sectionTitle: 'Ausgewählte SaaS-Plattformen',
@@ -756,6 +792,14 @@ export const TRANSLATIONS: Record<Language, UiStrings> = {
       studioPreviewSubtitle: 'Ventures internes & solutions clients',
       engineSaasLabel: 'Moteur SaaS · 6 Plateformes',
       engineAgencyLabel: 'Moteur Agence · Tessin & IA',
+      statsBar: {
+        activeUsersLabel: 'Utilisateurs SaaS actifs',
+        activeUsersSub: 'Sur {count} plateformes cloud live',
+        projectsDeliveredLabel: 'Projets livrés',
+        projectsDeliveredSub: 'Sites, WebApps & IA en Suisse',
+        yearsExperienceLabel: 'Années d’expérience',
+        yearsExperienceSub: 'Depuis 2018 · Studio à Lugano',
+      },
     },
     dualEngine: {
       sectionTitle: 'Deux moteurs, une même exigence technique',
@@ -793,6 +837,10 @@ export const TRANSLATIONS: Record<Language, UiStrings> = {
       viewCard: 'Voir la fiche',
       openPlatform: 'Ouvrir la plateforme ↗',
       visitSite: 'Visiter le site',
+      showTechStack: 'Stack & Tags techniques',
+      hideTechStack: 'Masquer la stack',
+      techStackHeading: 'Stack Technologique',
+      technicalTagsHeading: 'Tags Techniques',
     },
     featuredSaas: {
       sectionTitle: 'Produits SaaS en vedette',
@@ -1010,6 +1058,14 @@ export const TRANSLATIONS: Record<Language, UiStrings> = {
       studioPreviewSubtitle: 'Internal ventures & client builds',
       engineSaasLabel: 'SaaS Engine · 6 Platforms',
       engineAgencyLabel: 'Agency Engine · Ticino & AI',
+      statsBar: {
+        activeUsersLabel: 'Active SaaS users',
+        activeUsersSub: 'Across {count} live cloud platforms',
+        projectsDeliveredLabel: 'Projects delivered',
+        projectsDeliveredSub: 'Web, SaaS & AI builds across CH',
+        yearsExperienceLabel: 'Years of experience',
+        yearsExperienceSub: 'Since 2018 · Lugano Studio',
+      },
     },
     dualEngine: {
       sectionTitle: 'Two engines, one engineering standard',
@@ -1047,6 +1103,10 @@ export const TRANSLATIONS: Record<Language, UiStrings> = {
       viewCard: 'Open sheet',
       openPlatform: 'Open platform ↗',
       visitSite: 'Visit website',
+      showTechStack: 'Tech Stack & Tags',
+      hideTechStack: 'Hide stack',
+      techStackHeading: 'Technology Stack',
+      technicalTagsHeading: 'Technical Tags',
     },
     featuredSaas: {
       sectionTitle: 'Featured SaaS platforms',

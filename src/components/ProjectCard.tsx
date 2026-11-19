@@ -1,4 +1,5 @@
-import { ArrowRight } from 'lucide-react';
+import { useId, useState } from 'react';
+import { ArrowRight, ChevronDown, Code2 } from 'lucide-react';
 import { Language, ProjectItem } from '../types/showcase';
 import { TRANSLATIONS } from '../data/translations';
 import { StatusBadge } from './StatusBadge';
@@ -12,10 +13,20 @@ interface ProjectCardProps {
 
 export function ProjectCard({ project, lang, onNavigate }: ProjectCardProps) {
   const t = TRANSLATIONS[lang];
+  const [isMobileStackOpen, setIsMobileStackOpen] = useState(false);
+  const stackPanelId = useId();
+
   const detailPath =
     project.engine === 'saas'
       ? `/prodotti/${project.slug}`
       : `/lavori/${project.slug}`;
+
+  const accentHex =
+    project.status === 'ai-division'
+      ? '#60A5FA'
+      : project.engine === 'saas'
+      ? '#2DD4BF'
+      : '#FBBF24';
 
   const accentTextColor =
     project.status === 'ai-division'
@@ -28,6 +39,9 @@ export function ProjectCard({ project, lang, onNavigate }: ProjectCardProps) {
     project.engine === 'saas'
       ? 'hover:border-[#2DD4BF]/50'
       : 'hover:border-[#FBBF24]/50';
+
+  const technicalTags = project.servicesUsed[lang];
+  const totalDetailsCount = project.techStack.length + technicalTags.length;
 
   return (
     <article
@@ -54,9 +68,112 @@ export function ProjectCard({ project, lang, onNavigate }: ProjectCardProps) {
           </button>
         </h3>
 
-        <p className="text-sm text-[#A8A29E] leading-relaxed line-clamp-4 mb-5">
+        <p className="text-sm text-[#A8A29E] leading-relaxed line-clamp-4 mb-4">
           {project.shortDescription[lang]}
         </p>
+
+        {/* Desktop Compact Stack Preview */}
+        <div className="hidden md:flex flex-wrap items-center gap-1.5 mb-5">
+          {project.techStack.slice(0, 3).map((tech) => (
+            <span
+              key={tech}
+              className="inline-flex items-center gap-1.5 rounded-md border border-[#292524] bg-[#0C0A09] px-2 py-0.5 font-mono text-[11px] text-[#A8A29E]"
+            >
+              <span
+                className="h-1.5 w-1.5 rounded-full shrink-0"
+                style={{ backgroundColor: accentHex }}
+                aria-hidden="true"
+              />
+              <span>{tech}</span>
+            </span>
+          ))}
+        </div>
+
+        {/* Mobile Tap-to-Expand Technical Tags & Tech Stack */}
+        <div className="md:hidden mb-4">
+          <button
+            type="button"
+            aria-expanded={isMobileStackOpen}
+            aria-controls={stackPanelId}
+            onClick={() => setIsMobileStackOpen((prev) => !prev)}
+            className="w-full flex items-center justify-between gap-2 rounded-xl border border-[#292524] bg-[#0C0A09]/80 px-3 py-2.5 text-left text-xs font-medium text-[#FAFAF9] active:scale-[0.99] transition-all cursor-pointer touch-manipulation min-h-[42px]"
+          >
+            <span className="flex items-center gap-2 min-w-0">
+              <Code2
+                className="h-3.5 w-3.5 shrink-0"
+                style={{ color: accentHex }}
+                aria-hidden="true"
+              />
+              <span className="truncate">
+                {isMobileStackOpen
+                  ? t.filterSection.hideTechStack
+                  : t.filterSection.showTechStack}
+              </span>
+              <span
+                className="inline-flex items-center justify-center rounded-full px-1.5 py-0.5 font-mono text-[10px] font-semibold text-[#0C0A09] shrink-0"
+                style={{ backgroundColor: accentHex }}
+              >
+                {totalDetailsCount}
+              </span>
+            </span>
+            <ChevronDown
+              className={`h-4 w-4 text-[#A8A29E] shrink-0 transition-transform duration-200 ${
+                isMobileStackOpen ? 'rotate-180 text-[#FAFAF9]' : ''
+              }`}
+              aria-hidden="true"
+            />
+          </button>
+
+          <div
+            id={stackPanelId}
+            className={`grid transition-[grid-template-rows,opacity] duration-300 ease-out ${
+              isMobileStackOpen
+                ? 'grid-rows-[1fr] opacity-100 mt-2'
+                : 'grid-rows-[0fr] opacity-0'
+            }`}
+          >
+            <div className="overflow-hidden">
+              <div className="rounded-xl border border-[#292524] bg-[#0C0A09] p-3 space-y-3">
+                <div>
+                  <div className="font-mono text-[10px] uppercase tracking-wider text-[#A8A29E] mb-1.5">
+                    {t.filterSection.techStackHeading}
+                  </div>
+                  <div className="flex flex-wrap gap-1.5">
+                    {project.techStack.map((tech) => (
+                      <span
+                        key={tech}
+                        className="inline-flex items-center gap-1.5 rounded-md border border-[#292524] bg-[#1C1917] px-2 py-1 font-mono text-[11px] text-[#FAFAF9]"
+                      >
+                        <span
+                          className="h-1.5 w-1.5 rounded-full shrink-0"
+                          style={{ backgroundColor: accentHex }}
+                          aria-hidden="true"
+                        />
+                        <span>{tech}</span>
+                      </span>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="pt-2 border-t border-[#292524]/80">
+                  <div className="font-mono text-[10px] uppercase tracking-wider text-[#A8A29E] mb-1.5">
+                    {t.filterSection.technicalTagsHeading}
+                  </div>
+                  <div className="flex flex-wrap gap-1.5">
+                    {technicalTags.map((tag) => (
+                      <span
+                        key={tag}
+                        className="inline-flex items-center rounded-md border border-[#292524] bg-[#141210] px-2 py-1 text-[11px] text-[#A8A29E]"
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
       <div className="flex items-center justify-between gap-3 pt-4 border-t border-[#292524]">

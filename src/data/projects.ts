@@ -10,6 +10,7 @@ export const PROJECTS: ProjectItem[] = [
     engine: 'saas',
     status: 'live-saas',
     featured: true,
+    activeUsersCount: 1420,
     category: {
       it: 'Prodotto SaaS',
       de: 'SaaS-Produkt',
@@ -137,6 +138,7 @@ export const PROJECTS: ProjectItem[] = [
       fr: ['Pipeline données suisses', 'Scoring Core Web Vitals', 'SaaS multi-tenant'],
       en: ['Swiss data pipeline', 'Core Web Vitals scoring', 'Multi-tenant SaaS'],
     },
+    techStack: ['Next.js', 'TypeScript', 'PostgreSQL', 'Puppeteer', 'Tailwind CSS'],
     externalUrl: 'https://swissleadfinder.ch',
     relatedSlugs: ['rankuplist', 'sititicino-geoboost', 'ata-school-scraper'],
     previewTheme: {
@@ -173,6 +175,7 @@ export const PROJECTS: ProjectItem[] = [
     engine: 'saas',
     status: 'live-saas',
     featured: true,
+    activeUsersCount: 2150,
     category: {
       it: 'Prodotto SaaS',
       de: 'SaaS-Produkt',
@@ -300,6 +303,7 @@ export const PROJECTS: ProjectItem[] = [
       fr: ['Analyse SERP locale', 'Sync annuaires CH', 'Alertes de position'],
       en: ['Local SERP engine', 'Swiss directory sync', 'Ranking alerts'],
     },
+    techStack: ['React', 'TypeScript', 'Node.js', 'SERP API', 'Gemini AI'],
     externalUrl: 'https://rankuplist.com',
     relatedSlugs: ['sititicino-geoboost', 'swiss-lead-finder', 'il-vicolo-lugano'],
     previewTheme: {
@@ -336,6 +340,7 @@ export const PROJECTS: ProjectItem[] = [
     engine: 'saas',
     status: 'live-saas',
     featured: true,
+    activeUsersCount: 380,
     category: {
       it: 'Prodotto SaaS',
       de: 'SaaS-Produkt',
@@ -463,6 +468,7 @@ export const PROJECTS: ProjectItem[] = [
       fr: ['Moteur SEO territorial', 'Validation Schema.org', 'Réseau SitiTicino.ch'],
       en: ['Territorial SEO engine', 'Schema.org validation', 'SitiTicino.ch network'],
     },
+    techStack: ['Next.js', 'Schema.org JSON-LD', 'Cloudflare', 'Tailwind CSS'],
     externalUrl: 'https://sititicino.ch',
     relatedSlugs: ['rankuplist', 'swiss-lead-finder', 'casa-bidia'],
     previewTheme: {
@@ -499,6 +505,7 @@ export const PROJECTS: ProjectItem[] = [
     engine: 'saas',
     status: 'ai-division',
     featured: false,
+    activeUsersCount: 640,
     category: {
       it: 'Prodotto SaaS · AI',
       de: 'SaaS-Produkt · KI',
@@ -626,6 +633,7 @@ export const PROJECTS: ProjectItem[] = [
       fr: ['Workflow éditorial IA', 'Planificateur multi-canal', 'Glossaire de marque'],
       en: ['AI editorial workflow', 'Multi-channel scheduler', 'Brand glossary engine'],
     },
+    techStack: ['TypeScript', 'Gemini AI', 'Redis Queues', 'Meta & LinkedIn API'],
     externalUrl: 'https://gwdgroup.ch/auto-social-publisher',
     relatedSlugs: ['aurora-ai', 'aurora-adv', 'swiss-lead-finder'],
     previewTheme: {
@@ -662,6 +670,7 @@ export const PROJECTS: ProjectItem[] = [
     engine: 'saas',
     status: 'live-saas',
     featured: false,
+    activeUsersCount: 1890,
     category: {
       it: 'Prodotto SaaS',
       de: 'SaaS-Produkt',
@@ -789,6 +798,7 @@ export const PROJECTS: ProjectItem[] = [
       fr: ['Web App Mobile-First', 'QR Codes dynamiques', 'Archivage chiffré'],
       en: ['Mobile-first Web App', 'Dynamic QR tags', 'Encrypted document vault'],
     },
+    techStack: ['React PWA', 'Supabase', 'Edge Storage', 'QR Vector Engine'],
     externalUrl: 'https://salviapet.com',
     relatedSlugs: ['auto-social-publisher', 'swiss-lead-finder', 'casa-bidia'],
     previewTheme: {
@@ -825,6 +835,7 @@ export const PROJECTS: ProjectItem[] = [
     engine: 'saas',
     status: 'ai-division',
     featured: false,
+    activeUsersCount: 920,
     category: {
       it: 'Prodotto SaaS · AI',
       de: 'SaaS-Produkt · KI',
@@ -952,6 +963,7 @@ export const PROJECTS: ProjectItem[] = [
       fr: ['Crawler distribué', 'Extraction IA de PDF', 'Alertes temps réel'],
       en: ['Distributed crawler', 'AI PDF extraction', 'Real-time alert engine'],
     },
+    techStack: ['Python', 'Gemini Vision PDF', 'PostgreSQL', 'Telegram Webhook'],
     externalUrl: 'https://gwdgroup.ch/ata-school-scraper',
     relatedSlugs: ['swiss-lead-finder', 'aurora-ai', 'auto-social-publisher'],
     previewTheme: {
@@ -1119,6 +1131,7 @@ export const PROJECTS: ProjectItem[] = [
       fr: ['Site Web Haute Performance', 'Design UI/UX', 'Optimisation Médias & CWV'],
       en: ['High-Performance Web', 'UI/UX Design', 'Media & CWV Optimization'],
     },
+    techStack: ['React', 'Vite', 'Tailwind CSS', 'HLS Adaptive Video'],
     externalUrl: 'https://reverseediting.com',
     relatedSlugs: ['aurora-adv', 'dj-magix', 'aurora-ai'],
     previewTheme: {
@@ -1282,6 +1295,7 @@ export const PROJECTS: ProjectItem[] = [
       fr: ['Architecture Conversion', 'Développement Web', 'Tracking Privacy-First'],
       en: ['Conversion Architecture', 'Web Engineering', 'Privacy-First Analytics'],
     },
+    techStack: ['Next.js', 'TypeScript', 'Tailwind CSS', 'Server-Side Tracking'],
     externalUrl: 'https://www.aurora-adv.com',
     relatedSlugs: ['aurora-ai', 'reverse-editing', 'rankuplist'],
     previewTheme: {
@@ -1445,6 +1459,7 @@ export const PROJECTS: ProjectItem[] = [
       fr: ['Site Web Multilingue', 'Réservation Directe', 'SEO Local Tessin'],
       en: ['Multilingual Web', 'Direct Booking UX', 'Ticino Local SEO'],
     },
+    techStack: ['Next.js', 'i18n Routing', 'Booking Sync', 'WebP CDN'],
     externalUrl: 'https://casabidia.ch',
     relatedSlugs: ['il-vicolo-lugano', 'sititicino-geoboost', 'rankuplist'],
     previewTheme: {
@@ -1608,6 +1623,7 @@ export const PROJECTS: ProjectItem[] = [
       fr: ['Site Web Mobile-First', 'SEO Local Lugano', 'Agents IA Restaurants'],
       en: ['Mobile-First Web', 'Lugano Local SEO', 'AI Restaurant Agents'],
     },
+    techStack: ['React', 'Schema.org Restaurant', 'Google Maps API', 'WhatsApp Flow'],
     externalUrl: 'https://ilvicololugano.ch',
     relatedSlugs: ['casa-bidia', 'rankuplist', 'aurora-ai'],
     previewTheme: {
@@ -1771,6 +1787,7 @@ export const PROJECTS: ProjectItem[] = [
       fr: ['Design Vitrine Marque', 'Performance Web', 'Tunnel de Booking'],
       en: ['Brand Showcase Design', 'Web Performance', 'Booking Funnel'],
     },
+    techStack: ['React', 'Tailwind CSS', 'Web Audio API', 'Cloudflare Pages'],
     externalUrl: 'https://djmagix.net',
     relatedSlugs: ['reverse-editing', 'il-vicolo-lugano', 'aurora-adv'],
     previewTheme: {
@@ -1934,6 +1951,7 @@ export const PROJECTS: ProjectItem[] = [
       fr: ['Agents Vocaux IA', 'Intégration Agenda & CRM', 'Notifications WhatsApp'],
       en: ['AI Voice Agents', 'Calendar & CRM Sync', 'WhatsApp Confirmations'],
     },
+    techStack: ['TypeScript', 'Voice AI Realtime', 'Twilio SIP', 'Cal.com Webhook'],
     externalUrl: 'https://aurora-ai.studio',
     relatedSlugs: ['auto-social-publisher', 'il-vicolo-lugano', 'aurora-adv'],
     previewTheme: {

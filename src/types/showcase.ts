@@ -40,6 +40,7 @@ export interface ProjectItem {
   engine: ProjectEngine;
   status: StatusBadgeType;
   featured: boolean;
+  activeUsersCount?: number;
   category: LocalizedText;
   sector: LocalizedText;
   tagline: LocalizedText;
@@ -51,7 +52,8 @@ export interface ProjectItem {
   results: LocalizedText;
   keyFeatures: ProjectFeature[];
   targetAudience: LocalizedText;
-  servicesUsed: LocalizedStringList;
+    servicesUsed: LocalizedStringList;
+  techStack: string[];
   externalUrl: string;
   relatedSlugs: string[];
   previewTheme: {
@@ -133,5 +135,8 @@ export interface SitiTicinoAppItem {
   buttonText: LocalizedText;
   accentHex: string;
   badgeText: string;
+  activeUsersCount?: number;
+  techStack: string[];
+  technicalTags: LocalizedStringList;
 }
 
