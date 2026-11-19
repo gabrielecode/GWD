@@ -1,0 +1,123 @@
+@import "tailwindcss";
+
+@theme {
+  --font-display: "Outfit", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+
+  --color-obsidian: #0C0A09;
+  --color-surface: #1C1917;
+  --color-border-subtle: #292524;
+  --color-text-primary: #FAFAF9;
+  --color-text-secondary: #A8A29E;
+  --color-saas: #2DD4BF;
+  --color-agency: #FBBF24;
+  --color-badge-live: #22C55E;
+  --color-badge-client: #FB923C;
+  --color-badge-ai: #60A5FA;
+}
+
+@layer base {
+  html {
+    font-family: var(--font-sans);
+    font-size: 16px;
+    background-color: #0C0A09;
+    color: #FAFAF9;
+    scroll-behavior: smooth;
+  }
+
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    text-wrap: balance;
+  }
+
+  body {
+    overflow-x: hidden;
+    line-height: 1.6;
+    background-color: #0C0A09;
+    color: #FAFAF9;
+    background-image:
+      radial-gradient(ellipse 75% 45% at 75% -5%, rgba(45, 212, 191, 0.12), transparent 60%),
+      radial-gradient(ellipse 65% 45% at 15% 25%, rgba(251, 191, 36, 0.08), transparent 55%),
+      radial-gradient(ellipse 70% 50% at 85% 80%, rgba(96, 165, 250, 0.08), transparent 60%);
+    background-attachment: fixed;
+  }
+
+  :focus-visible {
+    outline: 2px solid #2DD4BF;
+    outline-offset: 2px;
+  }
+}
+
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+.glass-panel {
+  background-color: rgba(28, 25, 23, 0.92);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid #292524;
+}
+
+.glass-panel-warm {
+  background: linear-gradient(135deg, rgba(45, 212, 191, 0.08) 0%, rgba(28, 25, 23, 0.96) 50%, rgba(251, 191, 36, 0.08) 100%);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid #292524;
+}
+
+@keyframes obsidian-shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+.skeleton-obsidian {
+  background-color: #0C0A09;
+  background-image: linear-gradient(
+    110deg,
+    #0C0A09 20%,
+    #1C1917 42%,
+    #292524 50%,
+    #1C1917 58%,
+    #0C0A09 80%
+  );
+  background-size: 220% 100%;
+  animation: obsidian-shimmer 1.65s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+.skeleton-surface {
+  background-color: #1C1917;
+  background-image: linear-gradient(
+    110deg,
+    #1C1917 20%,
+    #292524 44%,
+    #36312E 50%,
+    #292524 56%,
+    #1C1917 80%
+  );
+  background-size: 220% 100%;
+  animation: obsidian-shimmer 1.65s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .skeleton-obsidian,
+  .skeleton-surface {
+    animation: none;
+    background-image: none;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

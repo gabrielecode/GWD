@@ -1,0 +1,8 @@
+{
+  "name": "GWD Group — Digital Venture Studio & Agency",
+  "description": "Vetrina digitale ufficiale di GWD Group (GWD + SitiTicino): prodotti SaaS proprietari, sviluppo web ad alte prestazioni, SEO locale in Ticino e agenti AI vocali.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
