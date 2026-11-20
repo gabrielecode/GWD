@@ -1300,10 +1300,10 @@ export const TESTIMONIALS: TestimonialItem[] = [
     city: 'Lugano',
     rating: 5,
     quote: {
-      it: 'Avevamo bisogno di mostrare video pesanti mantenendo un sito fulmineo. GWD Group ha ricostruito l’intera esperienza e il numero di preventivi qualificati è salito subito.',
-      de: 'Wir mussten schwere Videos blitzschnell präsentieren. GWD Group hat das Portal komplett neu gedacht und die Anfragen stiegen sofort.',
-      fr: 'Il fallait exposer des vidéos lourdes sur un site ultra-rapide. GWD Group a tout repensé et nos demandes qualifiées ont décollé.',
-      en: 'We needed to showcase heavy video reels while keeping load speeds instant. GWD Group rebuilt the entire flow and qualified quote volume surged.',
+      it: 'Avevamo bisogno di mostrare video pesanti mantenendo un sito fulmineo. kreativalab Group ha ricostruito l’intera esperienza e il numero di preventivi qualificati è salito subito.',
+      de: 'Wir mussten schwere Videos blitzschnell präsentieren. kreativalab Group hat das Portal komplett neu gedacht und die Anfragen stiegen sofort.',
+      fr: 'Il fallait exposer des vidéos lourdes sur un site ultra-rapide. kreativalab Group a tout repensé et nos demandes qualifiées ont décollé.',
+      en: 'We needed to showcase heavy video reels while keeping load speeds instant. kreativalab Group rebuilt the entire flow and qualified quote volume surged.',
     },
     outcome: {
       it: '+145% richieste preventivo qualificate · 97/100 Lighthouse',

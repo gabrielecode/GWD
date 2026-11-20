@@ -326,10 +326,10 @@ export function resolveSeoMetadata(params: {
     const product = getProjectBySlug(slug);
     if (product && product.engine === 'saas') {
       const titleByLang: Record<Language, string> = {
-        it: `${product.name} · SaaS B2B Svizzera | GWD`,
-        de: `${product.name} · Schweizer SaaS | GWD Group`,
-        fr: `${product.name} · SaaS Suisse | GWD Group`,
-        en: `${product.name} · Swiss SaaS | GWD Group`,
+        it: `${product.name} · SaaS B2B Svizzera | kreativalab`,
+        de: `${product.name} · Schweizer SaaS | kreativalab Group`,
+        fr: `${product.name} · SaaS Suisse | kreativalab Group`,
+        en: `${product.name} · Swiss SaaS | kreativalab Group`,
       };
       const descByLang: Record<Language, string> = {
         it: `${product.name}: ${product.tagline.it}`,
@@ -367,10 +367,10 @@ export function resolveSeoMetadata(params: {
   // 2. Products Hub (/prodotti)
   if (path === '/prodotti' || path.startsWith('/prodotti/')) {
     const titleByLang: Record<Language, string> = {
-      it: 'Prodotti SaaS B2B Svizzera · GWD Group',
-      de: 'Schweizer B2B SaaS-Produkte · GWD Group',
-      fr: 'Produits SaaS B2B Suisse · GWD Group',
-      en: 'Swiss B2B SaaS Products · GWD Group',
+      it: 'Prodotti SaaS B2B Svizzera · kreativalab Group',
+      de: 'Schweizer B2B SaaS-Produkte · kreativalab Group',
+      fr: 'Produits SaaS B2B Suisse · kreativalab Group',
+      en: 'Swiss B2B SaaS Products · kreativalab Group',
     };
     const descByLang: Record<Language, string> = {
       it: '6 piattaforme SaaS proprietarie per aziende svizzere: lead intelligence B2B, SEO locale, social AI, gestione veterinaria e bandi scolastici.',
@@ -421,10 +421,10 @@ export function resolveSeoMetadata(params: {
     const work = getProjectBySlug(slug);
     if (work && work.engine === 'agency') {
       const titleByLang: Record<Language, string> = {
-        it: `${work.name} · Caso Studio Ticino | GWD`,
-        de: `${work.name} · Fallstudie Tessin | GWD`,
-        fr: `${work.name} · Étude de Cas Tessin | GWD`,
-        en: `${work.name} · Ticino Case Study | GWD`,
+        it: `${work.name} · Caso Studio Ticino | kreativalab`,
+        de: `${work.name} · Fallstudie Tessin | kreativalab`,
+        fr: `${work.name} · Étude de Cas Tessin | kreativalab`,
+        en: `${work.name} · Ticino Case Study | kreativalab`,
       };
       const descByLang: Record<Language, string> = {
         it: `${work.name}: ${work.results.it}`,
@@ -462,10 +462,10 @@ export function resolveSeoMetadata(params: {
   // 4. Works Hub (/lavori)
   if (path === '/lavori' || path.startsWith('/lavori/')) {
     const titleByLang: Record<Language, string> = {
-      it: 'Casi Studio & Lavori Web Ticino · GWD Group',
-      de: 'Fallstudien & Webprojekte Tessin · GWD Group',
-      fr: 'Études de Cas & Projets Tessin · GWD Group',
-      en: 'Case Studies & Client Works Ticino · GWD Group',
+      it: 'Casi Studio & Lavori Web Ticino · kreativalab Group',
+      de: 'Fallstudien & Webprojekte Tessin · kreativalab Group',
+      fr: 'Études de Cas & Projets Tessin · kreativalab Group',
+      en: 'Case Studies & Client Works Ticino · kreativalab Group',
     };
     const descByLang: Record<Language, string> = {
       it: 'Siti web veloci, booking turistico, SEO locale a Lugano e agenti AI per ristoranti e PMI in Ticino. Scopri sfida, soluzione e risultati.',
@@ -525,10 +525,10 @@ export function resolveSeoMetadata(params: {
 
     if (path === '/servizi' && !hasExplicitCity) {
       const titles: Record<Language, string> = {
-        it: 'Siti Web, SEO Locale & Agenti AI Ticino · GWD',
-        de: 'Websites, Lokale SEO & KI-Agenten Tessin · GWD',
-        fr: 'Sites Web, SEO Local & Agents IA Tessin · GWD',
-        en: 'Web Design, Local SEO & AI Agents Ticino · GWD',
+        it: 'Siti Web, SEO Locale & Agenti AI Ticino · kreativalab',
+        de: 'Websites, Lokale SEO & KI-Agenten Tessin · kreativalab',
+        fr: 'Sites Web, SEO Local & Agents IA Tessin · kreativalab',
+        en: 'Web Design, Local SEO & AI Agents Ticino · kreativalab',
       };
       const descs: Record<Language, string> = {
         it: 'Web agency a Lugano: siti web ad alte prestazioni, e-commerce TWINT, SEO locale in Ticino e segreterie telefoniche AI per ristoranti e saloni.',
@@ -540,19 +540,19 @@ export function resolveSeoMetadata(params: {
       pageDescription = descs[lang];
     } else if (cityFromPath || hasExplicitCity) {
       const titles: Record<Language, string> = {
-        it: `${selectedService.shortTitle.it} ${cityProfile.name} · GWD Group`,
-        de: `${selectedService.shortTitle.de} ${cityProfile.name} · GWD Group`,
-        fr: `${selectedService.shortTitle.fr} ${cityProfile.name} · GWD Group`,
-        en: `${selectedService.shortTitle.en} ${cityProfile.name} · GWD Group`,
+        it: `${selectedService.shortTitle.it} ${cityProfile.name} · kreativalab Group`,
+        de: `${selectedService.shortTitle.de} ${cityProfile.name} · kreativalab Group`,
+        fr: `${selectedService.shortTitle.fr} ${cityProfile.name} · kreativalab Group`,
+        en: `${selectedService.shortTitle.en} ${cityProfile.name} · kreativalab Group`,
       };
       pageTitle = titles[lang];
       pageDescription = `${cityProfile.name} (${cityProfile.regionLabel[lang]}): ${cityProfile.description[lang]}`;
     } else {
       const titles: Record<Language, string> = {
-        it: `${selectedService.shortTitle.it} Ticino & Lugano · GWD Group`,
-        de: `${selectedService.shortTitle.de} Tessin & Lugano · GWD Group`,
-        fr: `${selectedService.shortTitle.fr} Tessin & Lugano · GWD Group`,
-        en: `${selectedService.shortTitle.en} Ticino & Lugano · GWD Group`,
+        it: `${selectedService.shortTitle.it} Ticino & Lugano · kreativalab Group`,
+        de: `${selectedService.shortTitle.de} Tessin & Lugano · kreativalab Group`,
+        fr: `${selectedService.shortTitle.fr} Tessin & Lugano · kreativalab Group`,
+        en: `${selectedService.shortTitle.en} Ticino & Lugano · kreativalab Group`,
       };
       pageTitle = titles[lang];
       pageDescription = `${selectedService.title[lang]}: ${selectedService.subtitle[lang]}`;
@@ -601,16 +601,16 @@ export function resolveSeoMetadata(params: {
   // 6. About (/chi-siamo)
   if (path === '/chi-siamo') {
     const titleByLang: Record<Language, string> = {
-      it: 'Chi Siamo · GWD Group & SitiTicino Lugano',
-      de: 'Über Uns · GWD Group & SitiTicino Lugano',
-      fr: 'À Propos · GWD Group & SitiTicino Lugano',
-      en: 'About Us · GWD Group & SitiTicino Lugano',
+      it: 'Chi Siamo · kreativalab Group & SitiTicino Lugano',
+      de: 'Über Uns · kreativalab Group & SitiTicino Lugano',
+      fr: 'À Propos · kreativalab Group & SitiTicino Lugano',
+      en: 'About Us · kreativalab Group & SitiTicino Lugano',
     };
     const descByLang: Record<Language, string> = {
-      it: 'GWD Group a Lugano: uniamo Venture Studio SaaS e agenzia digitale SitiTicino per le imprese della Svizzera italiana.',
-      de: 'GWD Group in Lugano: SaaS Venture Studio und Digitalagentur SitiTicino für KMU in der italienischen Schweiz.',
-      fr: 'GWD Group à Lugano : Venture Studio SaaS et agence digitale SitiTicino pour les entreprises de Suisse italienne.',
-      en: 'GWD Group in Lugano: combining a B2B SaaS Venture Studio and the SitiTicino agency across Italian-speaking Switzerland.',
+      it: 'kreativalab Group a Lugano: uniamo Venture Studio SaaS e agenzia digitale SitiTicino per le imprese della Svizzera italiana.',
+      de: 'kreativalab Group in Lugano: SaaS Venture Studio und Digitalagentur SitiTicino für KMU in der italienischen Schweiz.',
+      fr: 'kreativalab Group à Lugano : Venture Studio SaaS et agence digitale SitiTicino pour les entreprises de Suisse italienne.',
+      en: 'kreativalab Group in Lugano: combining a B2B SaaS Venture Studio and the SitiTicino agency across Italian-speaking Switzerland.',
     };
     return {
       title: clampText(titleByLang[lang], 60),
@@ -640,10 +640,10 @@ export function resolveSeoMetadata(params: {
   // 7. Contact (/contatti)
   if (path === '/contatti') {
     const titleByLang: Record<Language, string> = {
-      it: 'Contatti & Preventivo · GWD Group Lugano',
-      de: 'Kontakt & Offerte · GWD Group Lugano',
-      fr: 'Contact & Devis · GWD Group Lugano',
-      en: 'Contact & Quote · GWD Group Lugano',
+      it: 'Contatti & Preventivo · kreativalab Group Lugano',
+      de: 'Kontakt & Offerte · kreativalab Group Lugano',
+      fr: 'Contact & Devis · kreativalab Group Lugano',
+      en: 'Contact & Quote · kreativalab Group Lugano',
     };
     const descByLang: Record<Language, string> = {
       it: 'Richiedi un preventivo web, SEO locale Ticino o demo SaaS/AI. Lugano · Risposta entro 4 ore lavorative.',
@@ -688,36 +688,36 @@ export function resolveSeoMetadata(params: {
     const isImpressum = path === '/impressum';
     const titleByLang: Record<Language, string> = isPrivacy
       ? {
-          it: 'Informativa Privacy nLPD / GDPR · GWD Group',
-          de: 'Datenschutz nDSG / DSGVO · GWD Group',
-          fr: 'Confidentialité nLPD / RGPD · GWD Group',
-          en: 'Privacy Policy Swiss FADP / GDPR · GWD',
+          it: 'Informativa Privacy nLPD / GDPR · kreativalab Group',
+          de: 'Datenschutz nDSG / DSGVO · kreativalab Group',
+          fr: 'Confidentialité nLPD / RGPD · kreativalab Group',
+          en: 'Privacy Policy Swiss FADP / GDPR · kreativalab',
         }
       : isImpressum
       ? {
-          it: 'Impressum Dati Aziendali LCSI · GWD Group',
-          de: 'Impressum & Angaben UWG · GWD Group',
-          fr: 'Impressum & Mentions LCD · GWD Group',
-          en: 'Impressum Corporate Notice · GWD Group',
+          it: 'Impressum Dati Aziendali LCSI · kreativalab Group',
+          de: 'Impressum & Angaben UWG · kreativalab Group',
+          fr: 'Impressum & Mentions LCD · kreativalab Group',
+          en: 'Impressum Corporate Notice · kreativalab Group',
         }
       : {
-          it: 'Preferenze Cookie nLPD / GDPR · GWD Group',
-          de: 'Cookie-Einstellungen nDSG · GWD Group',
-          fr: 'Préférences Cookies nLPD · GWD Group',
-          en: 'Cookie Preferences FADP / GDPR · GWD',
+          it: 'Preferenze Cookie nLPD / GDPR · kreativalab Group',
+          de: 'Cookie-Einstellungen nDSG · kreativalab Group',
+          fr: 'Préférences Cookies nLPD · kreativalab Group',
+          en: 'Cookie Preferences FADP / GDPR · kreativalab',
         };
     const descByLang: Record<Language, string> = isImpressum
       ? {
-          it: 'Impressum e dati societari di GWD Group (Lugano) ai sensi della Legge federale contro la concorrenza sleale (LCSI art. 3).',
-          de: 'Impressum und Unternehmensangaben der GWD Group (Lugano) gemäss Schweizer UWG Art. 3.',
-          fr: 'Impressum et mentions légales de GWD Group (Lugano) conformément à la loi suisse contre la concurrence déloyale (LCD art. 3).',
-          en: 'Corporate disclosure and Impressum for GWD Group (Lugano) pursuant to Art. 3 of the Swiss Act Against Unfair Competition (UWG).',
+          it: 'Impressum e dati societari di kreativalab Group (Lugano) ai sensi della Legge federale contro la concorrenza sleale (LCSI art. 3).',
+          de: 'Impressum und Unternehmensangaben der kreativalab Group (Lugano) gemäss Schweizer UWG Art. 3.',
+          fr: 'Impressum et mentions légales de kreativalab Group (Lugano) conformément à la loi suisse contre la concurrence déloyale (LCD art. 3).',
+          en: 'Corporate disclosure and Impressum for kreativalab Group (Lugano) pursuant to Art. 3 of the Swiss Act Against Unfair Competition (UWG).',
         }
       : {
-          it: 'Trattamento dati personali e gestione cookie di GWD Group (Lugano) conforme alla legge svizzera nLPD e al GDPR europeo.',
-          de: 'Datenschutz und Cookie-Verwaltung von GWD Group (Lugano) gemäß Schweizer nDSG und europäischer DSGVO.',
-          fr: 'Traitement des données et gestion des cookies de GWD Group (Lugano) conforme à la nLPD suisse et au RGPD.',
-          en: 'Data protection and cookie preferences for GWD Group (Lugano), compliant with Swiss FADP (nLPD) and EU GDPR.',
+          it: 'Trattamento dati personali e gestione cookie di kreativalab Group (Lugano) conforme alla legge svizzera nLPD e al GDPR europeo.',
+          de: 'Datenschutz und Cookie-Verwaltung von kreativalab Group (Lugano) gemäß Schweizer nDSG und europäischer DSGVO.',
+          fr: 'Traitement des données et gestion des cookies de kreativalab Group (Lugano) conforme à la nLPD suisse et au RGPD.',
+          en: 'Data protection and cookie preferences for kreativalab Group (Lugano), compliant with Swiss FADP (nLPD) and EU GDPR.',
         };
     const pageBreadcrumbName = isPrivacy
       ? t.footer.privacyLink
@@ -753,16 +753,16 @@ export function resolveSeoMetadata(params: {
 
   // 9. Home (/)
   const homeTitles: Record<Language, string> = {
-    it: 'GWD Group — Digital Venture Studio & Agency | Lugano',
-    de: 'GWD Group — Digital Venture Studio & Agentur | Lugano',
-    fr: 'GWD Group — Venture Studio & Agence Digitale | Lugano',
-    en: 'GWD Group — Digital Venture Studio & Agency | Lugano',
+    it: 'kreativalab Group — Digital Venture Studio & Agency | Lugano',
+    de: 'kreativalab Group — Digital Venture Studio & Agentur | Lugano',
+    fr: 'kreativalab Group — Venture Studio & Agence Digitale | Lugano',
+    en: 'kreativalab Group — Digital Venture Studio & Agency | Lugano',
   };
   const homeDescs: Record<Language, string> = {
-    it: 'Venture Studio SaaS e Web Agency a Lugano (GWD + SitiTicino): piattaforme B2B, siti veloci, SEO locale in Ticino e agenti AI vocali 24/7.',
-    de: 'SaaS Venture Studio & Webagentur in Lugano (GWD + SitiTicino): B2B-Software, schnelle Websites, lokale SEO Tessin und KI-Sprachagenten.',
-    fr: 'Venture Studio SaaS & Agence Web à Lugano (GWD + SitiTicino) : logiciels B2B, sites rapides, SEO local Tessin et agents vocaux IA 24/7.',
-    en: 'SaaS Venture Studio & Web Agency in Lugano (GWD + SitiTicino): B2B platforms, fast websites, Ticino local SEO, and 24/7 AI voice agents.',
+    it: 'Venture Studio SaaS e Web Agency a Lugano (kreativalab + SitiTicino): piattaforme B2B, siti veloci, SEO locale in Ticino e agenti AI vocali 24/7.',
+    de: 'SaaS Venture Studio & Webagentur in Lugano (kreativalab + SitiTicino): B2B-Software, schnelle Websites, lokale SEO Tessin und KI-Sprachagenten.',
+    fr: 'Venture Studio SaaS & Agence Web à Lugano (kreativalab + SitiTicino) : logiciels B2B, sites rapides, SEO local Tessin et agents vocaux IA 24/7.',
+    en: 'SaaS Venture Studio & Web Agency in Lugano (kreativalab + SitiTicino): B2B platforms, fast websites, Ticino local SEO, and 24/7 AI voice agents.',
   };
 
   return {

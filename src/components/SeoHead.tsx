@@ -65,11 +65,11 @@ function syncOgLocaleAlternates(locales: string[]) {
 
 function syncJsonLd(jsonLd: Record<string, unknown>) {
   let script = document.head.querySelector<HTMLScriptElement>(
-    'script#gwd-jsonld[type="application/ld+json"]'
+    'script#kreativalab-jsonld[type="application/ld+json"]'
   );
   if (!script) {
     script = document.createElement('script');
-    script.id = 'gwd-jsonld';
+    script.id = 'kreativalab-jsonld';
     script.type = 'application/ld+json';
     document.head.appendChild(script);
   }

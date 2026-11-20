@@ -61,11 +61,11 @@ export function AboutView({ lang, onNavigate }: AboutViewProps) {
                 <Layers className="h-5 w-5" aria-hidden="true" />
               </div>
               <h3 className="font-display text-xl font-semibold text-[#FAFAF9]">
-                {t.about.gwdTitle}
+                {t.about.kreativalabTitle}
               </h3>
             </div>
             <p className="text-sm sm:text-base text-[#A8A29E] leading-relaxed">
-              {t.about.gwdDesc}
+              {t.about.kreativalabDesc}
             </p>
             <button
               type="button"

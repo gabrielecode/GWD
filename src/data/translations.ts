@@ -188,8 +188,8 @@ export interface UiStrings {
     groupStoryTitle: string;
     groupStoryBody: string;
     brandsTitle: string;
-    gwdTitle: string;
-    gwdDesc: string;
+    kreativalabTitle: string;
+    kreativalabDesc: string;
     sitiTicinoTitle: string;
     sitiTicinoDesc: string;
     standardsTitle: string;
@@ -302,7 +302,7 @@ export const TRANSLATIONS: Record<Language, UiStrings> = {
         'Software verticali per acquisizione lead B2B in Svizzera, SEO locale automatizzata, pubblicazione social AI e gestione dati scolastici e veterinari.',
       saasPoints: [
         'Accesso diretto in cloud con metriche operative reali',
-        'Architetture sviluppate internamente da GWD',
+        'Architetture sviluppate internamente da kreativalab',
         'Integrazione nativa con dati e directory svizzere',
       ],
       saasCta: 'Esplora gli asset SaaS',
@@ -464,15 +464,15 @@ export const TRANSLATIONS: Record<Language, UiStrings> = {
         'Piattaforme SaaS, strumenti AI e WebApp PWA progettati per artigiani, PMI svizzere, e-commerce e attività locali.',
     },
     about: {
-      title: 'Il gruppo dietro GWD e SitiTicino',
+      title: 'Il gruppo dietro kreativalab e SitiTicino',
       subtitle:
         'Uniamo la disciplina ingegneristica di un Venture Studio SaaS alla concretezza operativa di un’agenzia digitale radicata a Lugano.',
       groupStoryTitle: 'Un modello integrato, zero intermediari',
       groupStoryBody:
         'Kreativalabnasce per superare il divario tra agenzie creative lente e software house distanti dal business locale. Da una parte sviluppiamo e gestiamo asset SaaS proprietari in produzione; dall’altra trasferiamo quella stessa solidità tecnica ai siti web, alle campagne e agli agenti AI delle PMI ticinesi.',
       brandsTitle: 'Architettura dei brand del gruppo',
-      gwdTitle: 'GWD · Digital Venture Studio',
-      gwdDesc:
+      kreativalabTitle: 'kreativalab · Digital Venture Studio',
+      kreativalabDesc:
         'La divisione di prodotto e AI engineering: progetta, lancia e scala piattaforme SaaS B2B, motori di estrazione dati svizzeri e sistemi di automazione vocale.',
       sitiTicinoTitle: 'SitiTicino · Agency & Local Growth',
       sitiTicinoDesc:
@@ -512,7 +512,7 @@ export const TRANSLATIONS: Record<Language, UiStrings> = {
       cookieLink: 'Preferenze Cookie & Dati',
       impressumLink: 'Impressum (Dati aziendali)',
       languageTitle: 'Lingua',
-      copyright: '© 2026 Kreativalab(GWD + SitiTicino). Tutti i diritti riservati.',
+      copyright: '© 2026 Kreativalab(kreativalab + SitiTicino). Tutti i diritti riservati.',
     },
     whatsapp: {
       label: 'WhatsApp',
@@ -592,7 +592,7 @@ export const TRANSLATIONS: Record<Language, UiStrings> = {
         'Spezialisierte Cloud-Software für Schweizer B2B-Lead-Generierung, automatisierte lokale SEO, KI-Social-Publishing und Branchen-Datenplattformen.',
       saasPoints: [
         'Direkter Cloud-Zugang mit produktiven Live-Metriken',
-        'Vollständig intern durch GWD entwickelt',
+        'Vollständig intern durch kreativalab entwickelt',
         'Native Integration von Schweizer Branchen- und Geodaten',
       ],
       saasCta: 'SaaS-Portfolio ansehen',
@@ -754,15 +754,15 @@ export const TRANSLATIONS: Record<Language, UiStrings> = {
         'SaaS-Plattformen, KI-Tools und PWA-Web-Apps für Handwerker, Schweizer KMU, E-Commerce und lokale Betriebe.',
     },
     about: {
-      title: 'Die Gruppe hinter GWD und SitiTicino',
+      title: 'Die Gruppe hinter kreativalab und SitiTicino',
       subtitle:
         'Wir verbinden die Produkt-DNA eines SaaS Venture Studios mit der lokalen Schlagkraft einer Tessiner Digitalagentur in Lugano.',
       groupStoryTitle: 'Ein integriertes Modell ohne Reibungsverluste',
       groupStoryBody:
         'Kreativalabschließt die Lücke zwischen langsamen Kreativagenturen und rein abstrakten Softwarehäusern. Unsere eigenen produktiven SaaS-Systeme setzen den technischen Maßstab für jedes Kundenprojekt in der Schweiz.',
       brandsTitle: 'Markenarchitektur der Gruppe',
-      gwdTitle: 'GWD · Digital Venture Studio',
-      gwdDesc:
+      kreativalabTitle: 'kreativalab · Digital Venture Studio',
+      kreativalabDesc:
         'Produkt- und KI-Engineering: entwickelt und skaliert B2B-SaaS-Plattformen, Schweizer Daten-Pipelines und automatisierte Sprachagenten.',
       sitiTicinoTitle: 'SitiTicino · Agency & Local Growth',
       sitiTicinoDesc:
@@ -802,7 +802,7 @@ export const TRANSLATIONS: Record<Language, UiStrings> = {
       cookieLink: 'Cookie-Einstellungen & Speicher',
       impressumLink: 'Impressum & Unternehmensangaben',
       languageTitle: 'Sprache',
-      copyright: '© 2026 Kreativalab(GWD + SitiTicino). Alle Rechte vorbehalten.',
+      copyright: '© 2026 Kreativalab(kreativalab + SitiTicino). Alle Rechte vorbehalten.',
     },
     whatsapp: {
       label: 'WhatsApp',
@@ -882,7 +882,7 @@ export const TRANSLATIONS: Record<Language, UiStrings> = {
         'Logiciels cloud dédiés à la prospection B2B en Suisse, au SEO local automatisé, à la publication sociale IA et à la gestion de données sectorielles.',
       saasPoints: [
         'Accès cloud direct avec métriques opérationnelles réelles',
-        'Architectures développées en interne par GWD',
+        'Architectures développées en interne par kreativalab',
         'Intégration native des données et annuaires suisses',
       ],
       saasCta: 'Explorer les actifs SaaS',
@@ -1044,15 +1044,15 @@ export const TRANSLATIONS: Record<Language, UiStrings> = {
         'Plateformes SaaS, outils IA et WebApps PWA conçus pour les artisans, PME suisses, e-commerçants et commerces locaux.',
     },
     about: {
-      title: 'Le groupe derrière GWD et SitiTicino',
+      title: 'Le groupe derrière kreativalab et SitiTicino',
       subtitle:
         'Nous unissons la rigueur d’un Venture Studio SaaS et l’efficacité terrain d’une agence digitale ancrée à Lugano.',
       groupStoryTitle: 'Un modèle intégré, sans intermédiaires',
       groupStoryBody:
         'Kreativalabcomble le fossé entre les agences traditionnelles lentes et les éditeurs logiciels éloignés des PME locales. Nos propres SaaS imposent un niveau d’exigence technique appliqué à chaque projet client au Tessin.',
       brandsTitle: 'Architecture des marques du groupe',
-      gwdTitle: 'GWD · Digital Venture Studio',
-      gwdDesc:
+      kreativalabTitle: 'kreativalab · Digital Venture Studio',
+      kreativalabDesc:
         'Le pôle produit et ingénierie IA : conçoit, lance et fait évoluer des plateformes SaaS B2B et des moteurs d’automatisation vocale.',
       sitiTicinoTitle: 'SitiTicino · Agency & Local Growth',
       sitiTicinoDesc:
@@ -1092,7 +1092,7 @@ export const TRANSLATIONS: Record<Language, UiStrings> = {
       cookieLink: 'Préférences Cookies & Données',
       impressumLink: 'Impressum (Mentions légales)',
       languageTitle: 'Langue',
-      copyright: '© 2026 Kreativalab(GWD + SitiTicino). Tous droits réservés.',
+      copyright: '© 2026 Kreativalab(kreativalab + SitiTicino). Tous droits réservés.',
     },
     whatsapp: {
       label: 'WhatsApp',
@@ -1172,7 +1172,7 @@ export const TRANSLATIONS: Record<Language, UiStrings> = {
         'Focused cloud software for Swiss B2B lead generation, automated local SEO, AI social publishing, and vertical data intelligence.',
       saasPoints: [
         'Direct cloud access backed by live operational metrics',
-        'Architected and maintained in-house by GWD',
+        'Architected and maintained in-house by kreativalab',
         'Native Swiss business directory and geo-data pipelines',
       ],
       saasCta: 'Explore SaaS assets',
@@ -1334,15 +1334,15 @@ export const TRANSLATIONS: Record<Language, UiStrings> = {
         'Proprietary SaaS platforms, AI tools, and PWA web apps built for Swiss trades, SMEs, e-commerce sellers, and local venues.',
     },
     about: {
-      title: 'The group behind GWD and SitiTicino',
+      title: 'The group behind kreativalab and SitiTicino',
       subtitle:
         'Combining the product discipline of a SaaS Venture Studio with the execution speed of a Lugano-rooted digital agency.',
       groupStoryTitle: 'An integrated model with zero handoff friction',
       groupStoryBody:
         'Kreativalabbridges the gap between slow traditional agencies and remote software vendors. Our live SaaS platforms set the engineering bar applied directly to every client build across Ticino and Switzerland.',
       brandsTitle: 'Group brand architecture',
-      gwdTitle: 'GWD · Digital Venture Studio',
-      gwdDesc:
+      kreativalabTitle: 'kreativalab · Digital Venture Studio',
+      kreativalabDesc:
         'Our product & AI engineering unit: designs, ships, and scales proprietary B2B SaaS products, Swiss data pipelines, and conversational voice agents.',
       sitiTicinoTitle: 'SitiTicino · Agency & Local Growth',
       sitiTicinoDesc:
@@ -1382,7 +1382,7 @@ export const TRANSLATIONS: Record<Language, UiStrings> = {
       cookieLink: 'Cookie Preferences & Storage',
       impressumLink: 'Impressum (Corporate Notice)',
       languageTitle: 'Language',
-      copyright: '© 2026 Kreativalab(GWD + SitiTicino). All rights reserved.',
+      copyright: '© 2026 Kreativalab(kreativalab + SitiTicino). All rights reserved.',
     },
     whatsapp: {
       label: 'WhatsApp',

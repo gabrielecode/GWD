@@ -634,7 +634,7 @@ export const PROJECTS: ProjectItem[] = [
       en: ['AI editorial workflow', 'Multi-channel scheduler', 'Brand glossary engine'],
     },
     techStack: ['TypeScript', 'Gemini AI', 'Redis Queues', 'Meta & LinkedIn API'],
-    externalUrl: 'https://gwdgroup.ch/auto-social-publisher',
+    externalUrl: 'https://kreativalab.ch/auto-social-publisher',
     relatedSlugs: ['aurora-ai', 'aurora-adv', 'swiss-lead-finder'],
     previewTheme: {
       primaryHex: '#60A5FA',
@@ -964,7 +964,7 @@ export const PROJECTS: ProjectItem[] = [
       en: ['Distributed crawler', 'AI PDF extraction', 'Real-time alert engine'],
     },
     techStack: ['Python', 'Gemini Vision PDF', 'PostgreSQL', 'Telegram Webhook'],
-    externalUrl: 'https://gwdgroup.ch/ata-school-scraper',
+    externalUrl: 'https://kreativalab.ch/ata-school-scraper',
     relatedSlugs: ['swiss-lead-finder', 'aurora-ai', 'auto-social-publisher'],
     previewTheme: {
       primaryHex: '#60A5FA',

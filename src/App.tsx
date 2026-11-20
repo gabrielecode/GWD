@@ -21,7 +21,7 @@ import { AboutView } from './views/AboutView';
 import { ContactView } from './views/ContactView';
 import { LegalView } from './views/LegalView';
 
-const COOKIE_STORAGE_KEY = 'gwd_group_cookie_prefs_v1';
+const COOKIE_STORAGE_KEY = 'kreativalab_group_cookie_prefs_v1';
 
 function parseUrlState(): {
   path: string;

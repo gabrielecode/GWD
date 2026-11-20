@@ -64,7 +64,7 @@ export function HeroAtmosphericArt({ lang = 'it' }: { lang?: Language }) {
       <div className="absolute bottom-3.5 left-3.5 right-3.5 z-20 flex flex-wrap items-center justify-between gap-2 rounded-2xl border border-[#292524] bg-[#0C0A09]/85 px-4 py-2.5 backdrop-blur-md">
         <div className="flex items-center gap-2.5 text-xs">
           <span className="h-2 w-2 rounded-full bg-[#22C55E]" aria-hidden="true" />
-          <span className="font-medium text-[#FAFAF9]">GWD + SitiTicino</span>
+          <span className="font-medium text-[#FAFAF9]">kreativalab + SitiTicino</span>
         </div>
         <span className="font-mono text-[11px] text-[#A8A29E]">
           6 SaaS · 10 Client Works · 4 Lingue
@@ -520,7 +520,7 @@ export function ServicePreviewThumbnail({
 
   const domain =
     kind === 'saas'
-      ? 'studio.gwdgroup.ch'
+      ? 'studio.kreativalabgroup.ch'
       : kind === 'siti-web'
       ? 'sititicino.ch'
       : kind === 'seo-locale'
