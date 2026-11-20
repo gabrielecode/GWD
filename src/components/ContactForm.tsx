@@ -3,13 +3,6 @@ import { CheckCircle2, AlertCircle } from 'lucide-react';
 import { Language } from '../types/showcase';
 import { TRANSLATIONS } from '../data/translations';
 
-const SUBMIT_ERROR_MESSAGES: Record<Language, string> = {
-  it: 'Si è verificato un errore durante l’invio. Riprova più tardi.',
-  de: 'Beim Senden ist ein Fehler aufgetreten. Bitte versuchen Sie es später erneut.',
-  fr: 'Une erreur s’est produite lors de l’envoi. Veuillez réessayer plus tard.',
-  en: 'An error occurred while sending the message. Please try again later.',
-};
-
 interface ContactFormProps {
   lang: Language;
   defaultNeed?: string;
@@ -34,8 +27,6 @@ export function ContactForm({
     consent?: string;
   }>({});
   const [submittedRef, setSubmittedRef] = useState<string | null>(null);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitError, setSubmitError] = useState<string | null>(null);
 
   useEffect(() => {
     if (defaultNeed) {
@@ -45,7 +36,7 @@ export function ContactForm({
     }
   }, [lang, defaultNeed, t.form.needOptions]);
 
-  const handleSubmit = async (e: FormEvent) => {
+  const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     const nextErrors: { name?: string; email?: string; consent?: string } = {};
 
@@ -64,35 +55,17 @@ export function ContactForm({
       return;
     }
 
-    setIsSubmitting(true);
-    setSubmitError(null);
+    // CAMBIA QUI IL TUO INDIRIZZO EMAIL DI DESTINAZIONE
+    const destinatario = 'info@kreativalab.ch';
+    
+    const code = `KL-${Math.floor(1000 + Math.random() * 9000)}`;
+    const oggetto = encodeURIComponent(`Richiesta dal sito kreativalab (${code}) - ${need}`);
+    const corpo = encodeURIComponent(
+      `Nome: ${name.trim()}\nEmail: ${email.trim()}\nServizio richiesto: ${need}\nLingua: ${lang.toUpperCase()}\nCodice riferimento: ${code}`
+    );
 
-    try {
-      const response = await fetch('https://formspree.io/f/ID_FORM', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-        },
-        body: JSON.stringify({
-          name: name.trim(),
-          email: email.trim(),
-          message: need,
-          lang,
-        }),
-      });
-
-      if (response.ok) {
-        const code = `GWD-${Math.floor(1000 + Math.random() * 9000)}`;
-        setSubmittedRef(code);
-      } else {
-        setSubmitError(SUBMIT_ERROR_MESSAGES[lang]);
-      }
-    } catch {
-      setSubmitError(SUBMIT_ERROR_MESSAGES[lang]);
-    } finally {
-      setIsSubmitting(false);
-    }
+    window.location.href = `mailto:${destinatario}?subject=${oggetto}&body=${corpo}`;
+    setSubmittedRef(code);
   };
 
   if (submittedRef) {
@@ -120,7 +93,6 @@ export function ContactForm({
                   setName('');
                   setEmail('');
                   setConsent(false);
-                  setSubmitError(null);
                 }}
                 className="rounded-full border border-[#292524] bg-[#0C0A09] px-5 py-2.5 text-sm font-medium text-[#FAFAF9] hover:border-[#2DD4BF] transition-colors cursor-pointer min-h-[44px]"
               >
@@ -245,22 +217,11 @@ export function ContactForm({
         )}
       </div>
 
-      {submitError && (
-        <div
-          role="alert"
-          className="rounded-xl border border-red-500/40 bg-red-500/10 p-3.5 flex items-start gap-2.5 text-sm text-red-300"
-        >
-          <AlertCircle className="h-5 w-5 shrink-0 mt-0.5 text-red-400" aria-hidden="true" />
-          <span>{submitError}</span>
-        </div>
-      )}
-
       <button
         type="submit"
-        disabled={isSubmitting}
-        className="w-full rounded-full bg-[#2DD4BF] px-6 py-3 text-sm font-semibold text-[#0C0A09] hover:opacity-90 transition-opacity cursor-pointer min-h-[44px] disabled:opacity-50 disabled:cursor-not-allowed"
+        className="w-full rounded-full bg-[#2DD4BF] px-6 py-3 text-sm font-semibold text-[#0C0A09] hover:opacity-90 transition-opacity cursor-pointer min-h-[44px]"
       >
-        {isSubmitting ? t.form.submitting : t.form.submit}
+        {t.form.submit}
       </button>
     </form>
   );
