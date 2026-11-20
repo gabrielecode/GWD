@@ -1,10 +1,12 @@
 import { useEffect, useRef, useState } from 'react';
 import { Language, ProjectItem } from '../types/showcase';
+import { TRANSLATIONS } from '../data/translations';
 import { BrowserFrame } from './BrowserFrame';
 
-export function HeroAtmosphericArt() {
+export function HeroAtmosphericArt({ lang = 'it' }: { lang?: Language }) {
   const [heroLoaded, setHeroLoaded] = useState(false);
   const imgRef = useRef<HTMLImageElement | null>(null);
+  const t = TRANSLATIONS[lang];
 
   useEffect(() => {
     if (imgRef.current?.complete) {
@@ -31,16 +33,23 @@ export function HeroAtmosphericArt() {
         </div>
       )}
 
-      <img
-        ref={imgRef}
-        src="/assets/aistudio/AI_marketing_network_UI_illustra__8cfdf428_b55f773d.jpg"
-        alt="Ecosistema digitale GWD Group: AI, SEO, Lead Generation, Automazione Dati e Social"
-        onLoad={() => setHeroLoaded(true)}
-        className={`h-full w-full object-cover object-[48%_56%] scale-[1.15] select-none transition-opacity duration-500 ${
-          heroLoaded ? 'opacity-100' : 'opacity-0'
-        }`}
-        loading="eager"
-      />
+      <picture>
+        <source srcSet="/assets/aistudio/hero-ecosystem.webp" type="image/webp" />
+        <img
+          ref={imgRef}
+          src="/assets/aistudio/AI_marketing_network_UI_illustra__8cfdf428_b55f773d.jpg"
+          alt={t.seoUi.heroImageAlt}
+          width={1376}
+          height={768}
+          fetchPriority="high"
+          decoding="async"
+          onLoad={() => setHeroLoaded(true)}
+          className={`h-full w-full object-cover object-[48%_56%] scale-[1.15] select-none transition-opacity duration-500 ${
+            heroLoaded ? 'opacity-100' : 'opacity-0'
+          }`}
+          loading="eager"
+        />
+      </picture>
 
       {/* Edge-blending vignette to integrate cleanly with dark charcoal surface and trim baked screenshot borders */}
       <div
@@ -58,7 +67,7 @@ export function HeroAtmosphericArt() {
           <span className="font-medium text-[#FAFAF9]">GWD + SitiTicino</span>
         </div>
         <span className="font-mono text-[11px] text-[#A8A29E]">
-          6 SaaS · 6 Client Works · 4 Lingue
+          6 SaaS · 10 Client Works · 4 Lingue
         </span>
       </div>
     </div>
@@ -99,33 +108,109 @@ function renderSiteBodyPreview(project: ProjectItem, lang: Language) {
         </div>
       );
 
-    case 'casa-bidia':
+    case 'speedyjob':
+      return (
+        <div className="space-y-2">
+          <div className="rounded-md bg-[#1C1917] border border-[#FBBF24]/30 p-2.5 flex items-center justify-between gap-2">
+            <div className="min-w-0">
+              <div className="text-[11px] font-bold text-[#FAFAF9] truncate">SpeedyJob.ch</div>
+              <div className="text-[9px] text-[#FBBF24]">Recruiting CH · 60s Apply</div>
+            </div>
+            <span className="rounded-full bg-[#FBBF24] px-2.5 py-1 text-[8px] font-bold text-[#0C0A09] shrink-0">
+              Candidati ora
+            </span>
+          </div>
+          <div className="grid grid-cols-2 gap-1.5 text-[8px]">
+            <div className="rounded border border-[#292524] bg-[#0C0A09] px-2 py-1 text-[#FAFAF9] truncate">
+              Lugano · Hospitality
+            </div>
+            <div className="rounded border border-[#292524] bg-[#0C0A09] px-2 py-1 font-mono text-[#22C55E] text-right">
+              +110% Mobile
+            </div>
+          </div>
+        </div>
+      );
+
+    case 'reverse-editing-shop':
+      return (
+        <div className="space-y-2">
+          <div className="rounded-md bg-[#1C1917] border border-[#FBBF24]/30 p-2.5 flex items-center justify-between gap-2">
+            <div className="min-w-0">
+              <div className="text-[10px] font-bold text-[#FAFAF9] truncate">Reverse Editing Shop</div>
+              <div className="text-[8px] text-[#FBBF24]">LUT Packs · Presets · SFX</div>
+            </div>
+            <span className="rounded bg-[#FBBF24] px-2 py-0.5 text-[8px] font-bold text-[#0C0A09] shrink-0">
+              Instant DL
+            </span>
+          </div>
+          <div className="grid grid-cols-3 gap-1 text-[8px] font-mono">
+            <div className="rounded border border-[#292524] bg-[#0C0A09] p-1 text-center text-[#FAFAF9]">LUT Pro</div>
+            <div className="rounded border border-[#292524] bg-[#0C0A09] p-1 text-center text-[#FAFAF9]">Motion</div>
+            <div className="rounded bg-[#FBBF24]/20 p-1 text-center text-[#FBBF24]">+78% AOV</div>
+          </div>
+        </div>
+      );
+
+    case 'aurora-phone':
+      return (
+        <div className="space-y-2">
+          <div className="rounded-md bg-[#1C1917] border border-[#60A5FA]/35 p-2.5 flex items-center justify-between">
+            <div>
+              <div className="text-[10px] font-bold text-[#FAFAF9]">Aurora Phone AI</div>
+              <div className="text-[9px] text-[#60A5FA]">Cloud SIP · 24/7</div>
+            </div>
+            <span className="rounded-full bg-[#60A5FA]/15 border border-[#60A5FA]/35 px-2 py-0.5 font-mono text-[8px] text-[#60A5FA]">
+              &lt; 0.8s
+            </span>
+          </div>
+          <div className="rounded-md bg-[#0C0A09] border border-[#292524] p-2 flex items-center justify-between gap-2 text-[9px]">
+            <span className="text-[#A8A29E] truncate">IT · DE · FR · EN Routing</span>
+            <span className="font-mono text-[#22C55E] shrink-0">Active</span>
+          </div>
+        </div>
+      );
+
+    case 'pixasolar':
       return (
         <div className="space-y-2">
           <div
-            className="rounded-md border border-[#292524] p-2.5 relative overflow-hidden"
+            className="rounded-md border border-[#FBBF24]/30 p-2.5 flex items-center justify-between gap-2"
             style={{
-              background:
-                'linear-gradient(135deg, rgba(251, 191, 36, 0.22), rgba(28, 25, 23, 0.96))',
+              background: 'linear-gradient(135deg, rgba(251, 191, 36, 0.16), rgba(28, 25, 23, 0.96))',
             }}
           >
-            <div className="text-[8px] uppercase tracking-wider text-[#FBBF24]">
-              Ticino · Direct Stay
+            <div>
+              <div className="text-[11px] font-bold text-[#FAFAF9]">PixaSolar</div>
+              <div className="text-[8px] text-[#FBBF24]">BIPV &amp; Architectural Solar</div>
             </div>
-            <div className="text-[11px] font-bold text-[#FAFAF9] leading-tight mt-0.5">
-              Casa Bidia
+            <span className="font-mono text-xs font-bold text-[#22C55E]">+94% Leads</span>
+          </div>
+          <div className="grid grid-cols-2 gap-1.5 text-[8px] font-mono">
+            <div className="rounded border border-[#292524] bg-[#0C0A09] px-2 py-1 text-[#FAFAF9]">
+              Stima kWp
             </div>
-            <div className="mt-2 grid grid-cols-3 gap-1 rounded bg-[#FAFAF9] p-1 text-[8px] text-[#0C0A09]">
-              <span className="truncate px-1 py-0.5 font-medium">Check-in</span>
-              <span className="truncate px-1 py-0.5 font-medium border-l border-stone-300">2 Ospiti</span>
-              <span className="rounded bg-[#FBBF24] px-1.5 py-0.5 text-center font-bold text-[#0C0A09]">
-                Prenota
-              </span>
+            <div className="rounded border border-[#292524] bg-[#0C0A09] px-2 py-1 text-[#FBBF24] text-right">
+              97 Lighthouse
             </div>
           </div>
-          <div className="flex items-center justify-between text-[9px] text-[#A8A29E] px-0.5">
-            <span>IT · DE · FR · EN</span>
-            <span className="font-mono text-[#22C55E]">+52% Direct</span>
+        </div>
+      );
+
+    case 'visual-studio-facile':
+      return (
+        <div className="space-y-2">
+          <div className="rounded-md bg-[#1C1917] border border-[#292524] p-2.5 flex items-center justify-between gap-2">
+            <div className="min-w-0">
+              <div className="text-[10px] font-bold text-[#FAFAF9] truncate">Visual Studio Facile</div>
+              <div className="text-[8px] text-[#A8A29E]">Guide IDE · Snippet · Debug</div>
+            </div>
+            <span className="rounded bg-[#FBBF24] px-1.5 py-0.5 font-mono text-[8px] font-bold text-[#0C0A09] shrink-0">
+              3.8x SEO
+            </span>
+          </div>
+          <div className="rounded-md bg-[#0C0A09] border border-[#292524] px-2 py-1.5 font-mono text-[8px] text-[#2DD4BF] flex items-center justify-between">
+            <span>&gt; dotnet build --release</span>
+            <span className="text-[#22C55E]">99/100</span>
           </div>
         </div>
       );
@@ -360,7 +445,10 @@ const IFRAME_ALLOWED_PROJECT_SLUGS = new Set([
   'sititicino-geoboost',
   'salviapet',
   'aurora-adv',
-  'casa-bidia',
+  'reverse-editing-shop',
+  'aurora-phone',
+  'pixasolar',
+  'visual-studio-facile',
   'il-vicolo-lugano',
   'dj-magix',
   'aurora-ai',
@@ -368,6 +456,7 @@ const IFRAME_ALLOWED_PROJECT_SLUGS = new Set([
 
 const SCREENSHOT_API_PROJECT_SLUGS = new Set([
   'swiss-lead-finder',
+  'speedyjob',
 ]);
 
 export function ProjectThumbnail({

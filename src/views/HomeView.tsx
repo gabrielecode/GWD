@@ -92,16 +92,13 @@ export function HomeView({
   );
 
   const showcaseCases = PROJECTS.filter((p) =>
-    ['reverse-editing', 'casa-bidia', 'il-vicolo-lugano', 'aurora-ai'].includes(
+    ['reverse-editing', 'speedyjob', 'il-vicolo-lugano', 'aurora-ai'].includes(
       p.slug
     )
   );
   const activeCase =
     showcaseCases.find((c) => c.slug === selectedCaseSlug) || showcaseCases[0];
 
-  const whatsappUrl =
-    'https://wa.me/41910004210?text=' +
-    encodeURIComponent('Buongiorno GWD Group, vorrei parlare del mio progetto.');
 
   const heroTitleParts = t.hero.title.split('&');
   const heroTitleStart = heroTitleParts[0]?.trim() || 'Digital Venture Studio';
@@ -194,7 +191,7 @@ export function HomeView({
               </div>
 
               <div className="lg:col-span-7">
-                <HeroAtmosphericArt />
+                <HeroAtmosphericArt lang={lang} />
               </div>
             </div>
 
@@ -279,7 +276,7 @@ export function HomeView({
                         if (target) target.scrollIntoView({ behavior: 'smooth' });
                       }
                     }}
-                    placeholder="Swiss Lead Finder, Casa Bidia, SEO, AI..."
+                    placeholder="Swiss Lead Finder, SpeedyJob, PixaSolar, AI..."
                     aria-label={t.filterSection.sectionTitle}
                     className="w-full bg-transparent py-2 text-sm text-[#0C0A09] placeholder:text-stone-500 focus:outline-none"
                   />
@@ -862,7 +859,7 @@ export function HomeView({
               <button
                 key={city.slug}
                 type="button"
-                onClick={() => onNavigate('/servizi/seo-locale', city.slug)}
+                onClick={() => onNavigate(`/servizi/${city.slug}`)}
                 className="group rounded-2xl border border-[#292524] bg-[#1C1917] p-5 text-left hover:border-[#2DD4BF]/50 transition-colors cursor-pointer"
               >
                 <div className="flex items-center justify-between gap-2 mb-2">
@@ -902,27 +899,6 @@ export function HomeView({
                   </p>
                 </div>
 
-                <a
-                  href={whatsappUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center justify-between gap-4 rounded-2xl border border-[#292524] bg-[#0C0A09] p-4 hover:border-[#2DD4BF] transition-colors"
-                >
-                  <div className="flex items-center gap-3 min-w-0">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#2DD4BF]/15 text-[#2DD4BF] shrink-0">
-                      <MessageCircle className="h-5 w-5" aria-hidden="true" />
-                    </div>
-                    <div className="min-w-0">
-                      <div className="font-display text-sm font-semibold text-[#FAFAF9]">
-                        {t.quickContact.whatsappDirect}
-                      </div>
-                      <div className="text-xs text-[#A8A29E] truncate">
-                        {t.quickContact.whatsappSub}
-                      </div>
-                    </div>
-                  </div>
-                  <ArrowUpRight className="h-4 w-4 text-[#2DD4BF] shrink-0" aria-hidden="true" />
-                </a>
 
                 <div className="rounded-2xl border border-[#292524] bg-[#0C0A09] p-5 space-y-4">
                   <div className="flex items-start gap-3">
@@ -1003,7 +979,7 @@ export function HomeView({
                         onClick={() => setCallBooked(false)}
                         className="text-xs text-[#A8A29E] hover:text-[#FAFAF9] underline cursor-pointer"
                       >
-                        Modifica
+                        {lang === 'de' ? 'Ändern' : lang === 'fr' ? 'Modifier' : lang === 'en' ? 'Change' : 'Modifica'}
                       </button>
                     </div>
                   )}

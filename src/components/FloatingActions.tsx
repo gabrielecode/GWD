@@ -9,6 +9,7 @@ interface FloatingActionsProps {
   showCookieModal: boolean;
   onUpdateCookies: (prefs: CookiePreferences) => void;
   onCloseCookieModal: () => void;
+  onNavigate?: (path: string) => void;
 }
 
 export function FloatingActions({
@@ -17,29 +18,27 @@ export function FloatingActions({
   showCookieModal,
   onUpdateCookies,
   onCloseCookieModal,
+  onNavigate,
 }: FloatingActionsProps) {
   const t = TRANSLATIONS[lang];
   const [customizeOpen, setCustomizeOpen] = useState(false);
   const [analyticsEnabled, setAnalyticsEnabled] = useState(cookiePrefs.analytics);
 
-  const whatsappUrl =
-    'https://wa.me/41910004210?text=' +
-    encodeURIComponent('Buongiorno GWD Group, vorrei informazioni su un progetto.');
-
   const shouldShowBanner = !cookiePrefs.decided || showCookieModal;
 
   return (
     <>
-      <a
-        href={whatsappUrl}
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label={t.whatsapp.ariaLabel}
-        className="fixed bottom-4 right-4 z-40 inline-flex items-center gap-2 rounded-full border border-[#292524] bg-[#1C1917]/95 px-4 py-2.5 text-xs sm:text-sm font-semibold text-[#FAFAF9] shadow-2xl backdrop-blur-xl hover:border-[#2DD4BF] transition-colors min-h-[44px]"
-      >
-        <MessageCircle className="h-4 w-4 text-[#2DD4BF] shrink-0" aria-hidden="true" />
-        <span className="whitespace-nowrap">{t.whatsapp.label}</span>
-      </a>
+      {onNavigate && (
+        <button
+          type="button"
+          onClick={() => onNavigate('/contatti')}
+          aria-label={t.nav.ctaHeader}
+          className="fixed bottom-4 right-4 z-40 inline-flex items-center gap-2 rounded-full border border-[#292524] bg-[#1C1917]/95 px-4 py-2.5 text-xs sm:text-sm font-semibold text-[#FAFAF9] shadow-2xl backdrop-blur-xl hover:border-[#2DD4BF] transition-colors cursor-pointer min-h-[44px]"
+        >
+          <MessageCircle className="h-4 w-4 text-[#2DD4BF] shrink-0" aria-hidden="true" />
+          <span className="whitespace-nowrap">{t.nav.contact}</span>
+        </button>
+      )}
 
       {shouldShowBanner && (
         <aside

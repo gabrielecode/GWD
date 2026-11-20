@@ -109,9 +109,9 @@ export function DevicePreview({
                   <p className="text-xs font-medium text-[#A8A29E] mb-1.5">
                     {project.sector[lang]}
                   </p>
-                  <h4 className="font-display text-lg sm:text-xl font-semibold text-[#FAFAF9] leading-snug">
+                  <h3 className="font-display text-lg sm:text-xl font-semibold text-[#FAFAF9] leading-snug">
                     {project.previewTheme.desktopHeadline[lang]}
-                  </h4>
+                  </h3>
                   <p className="mt-2 text-sm text-[#A8A29E]">
                     {project.previewTheme.desktopSubline[lang]}
                   </p>
@@ -190,9 +190,9 @@ export function DevicePreview({
 
             <div className="py-4 space-y-3">
               <p className="text-[11px] text-[#A8A29E]">{project.sector[lang]}</p>
-              <h4 className="font-display text-base font-semibold text-[#FAFAF9] leading-snug">
+              <h3 className="font-display text-base font-semibold text-[#FAFAF9] leading-snug">
                 {project.previewTheme.desktopHeadline[lang]}
-              </h4>
+              </h3>
               <p className="text-xs text-[#A8A29E] leading-relaxed">
                 {project.previewTheme.desktopSubline[lang]}
               </p>

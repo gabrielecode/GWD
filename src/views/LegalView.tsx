@@ -2,12 +2,15 @@ import { useState } from 'react';
 import { ShieldCheck } from 'lucide-react';
 import { CookiePreferences, Language } from '../types/showcase';
 import { TRANSLATIONS } from '../data/translations';
+import { BUSINESS_INFO } from '../data/business';
+import { Breadcrumbs } from '../components/Breadcrumbs';
 
 interface LegalViewProps {
   mode: 'privacy' | 'cookie';
   lang: Language;
   cookiePrefs: CookiePreferences;
   onUpdateCookies: (prefs: CookiePreferences) => void;
+  onNavigate?: (path: string) => void;
 }
 
 export function LegalView({
@@ -15,23 +18,36 @@ export function LegalView({
   lang,
   cookiePrefs,
   onUpdateCookies,
+  onNavigate,
 }: LegalViewProps) {
   const t = TRANSLATIONS[lang];
   const [analytics, setAnalytics] = useState(cookiePrefs.analytics);
   const [savedNotice, setSavedNotice] = useState(false);
 
+  const pageLabel = mode === 'privacy' ? t.footer.privacyLink : t.footer.cookieLink;
+
   return (
     <div className="mx-auto max-w-[900px] px-4 sm:px-6 lg:px-8 py-12 lg:py-16 space-y-10">
+      {onNavigate && (
+        <Breadcrumbs
+          items={[
+            { label: t.seoUi.homeLabel, path: '/' },
+            { label: pageLabel },
+          ]}
+          onNavigate={onNavigate}
+        />
+      )}
+
       <header className="space-y-3 border-b border-[#292524] pb-6">
         <div className="inline-flex items-center gap-2 text-xs font-mono text-[#2DD4BF]">
           <ShieldCheck className="h-4 w-4" aria-hidden="true" />
           <span>nLPD Svizzera · GDPR UE</span>
         </div>
         <h1 className="font-display text-3xl sm:text-4xl font-bold text-[#FAFAF9]">
-          {mode === 'privacy' ? t.footer.privacyLink : t.footer.cookieLink}
+          {pageLabel}
         </h1>
         <p className="text-sm text-[#A8A29E]">
-          {t.footer.vat} · {t.footer.address}
+          {BUSINESS_INFO.brandName} · {BUSINESS_INFO.address.locality}
         </p>
       </header>
 
@@ -42,7 +58,7 @@ export function LegalView({
               1. Titolare del trattamento / Controller
             </h2>
             <p>
-              GWD Group Sagl (brand GWD &amp; SitiTicino), Via Nassa 21, 6900 Lugano, Svizzera · hello@gwdgroup.ch · +41 91 000 42 10.
+              {BUSINESS_INFO.brandName} ({BUSINESS_INFO.combinedBrand}), {BUSINESS_INFO.address.locality}.
             </p>
           </section>
           <section className="space-y-2">
@@ -58,7 +74,7 @@ export function LegalView({
               3. Diritti dell’interessato
             </h2>
             <p>
-              Ai sensi della Legge federale sulla protezione dei dati (nLPD) e del GDPR puoi richiedere in qualsiasi momento accesso, rettifica, portabilità o cancellazione scrivendo a hello@gwdgroup.ch.
+              Ai sensi della Legge federale sulla protezione dei dati (nLPD) e del GDPR puoi richiedere in qualsiasi momento accesso, rettifica, portabilità o cancellazione tramite il modulo nella sezione Contatti.
             </p>
           </section>
         </div>

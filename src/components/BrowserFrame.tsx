@@ -240,8 +240,11 @@ export function BrowserFrame({
                 {shouldUseScreenshot && (
                   <img
                     src={screenshotApiUrl}
-                    alt={`Screenshot desktop ${title}`}
+                    alt={`Anteprima desktop della piattaforma ${title} (${domainLabel})`}
+                    width={1280}
+                    height={800}
                     loading="lazy"
+                    decoding="async"
                     onLoad={() => setScreenshotLoaded(true)}
                     onError={() => setScreenshotError(true)}
                     className={`pointer-events-none absolute inset-0 z-20 h-full w-full object-cover object-top transition-opacity duration-500 ${
@@ -298,8 +301,11 @@ export function BrowserFrame({
                     {shouldUseScreenshot && (
                       <img
                         src={screenshotApiUrl}
-                        alt={`Screenshot mobile ${title}`}
+                        alt={`Anteprima mobile della piattaforma ${title} (${domainLabel})`}
+                        width={390}
+                        height={720}
                         loading="lazy"
+                        decoding="async"
                         onLoad={() => setScreenshotLoaded(true)}
                         onError={() => setScreenshotError(true)}
                         className={`pointer-events-none absolute inset-0 z-20 h-full w-full object-cover object-top transition-opacity duration-500 ${

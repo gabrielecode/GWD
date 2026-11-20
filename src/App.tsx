@@ -6,10 +6,11 @@ import {
   TicinoCitySlug,
 } from './types/showcase';
 import { getProjectBySlug } from './data/projects';
-import { TRANSLATIONS } from './data/translations';
+import { TICINO_CITIES } from './data/services';
 import { Header } from './components/Header';
 import { Footer } from './components/Footer';
 import { FloatingActions } from './components/FloatingActions';
+import { SeoHead } from './components/SeoHead';
 import { HomeView } from './views/HomeView';
 import { ProductsHubView } from './views/ProductsHubView';
 import { ProductDetailView } from './views/ProductDetailView';
@@ -28,17 +29,24 @@ function parseUrlState(): {
   filter: ProjectFilter;
   city: TicinoCitySlug;
 } {
-  const rawPath = window.location.pathname || '/';
-  const normalizedPath = rawPath.length > 1 && rawPath.endsWith('/')
-    ? rawPath.slice(0, -1)
-    : rawPath;
+  let rawPath = window.location.pathname || '/';
+  let pathLang: Language | null = null;
+
+  const prefixMatch = rawPath.match(/^\/(it|de|fr|en)(\/|$)/);
+  if (prefixMatch) {
+    pathLang = prefixMatch[1] as Language;
+    rawPath = rawPath.slice(prefixMatch[1].length + 1) || '/';
+  }
+
+  const normalizedPath =
+    rawPath.length > 1 && rawPath.endsWith('/') ? rawPath.slice(0, -1) : rawPath;
 
   const params = new URLSearchParams(window.location.search);
   const qLang = params.get('lang');
   const lang: Language =
     qLang === 'de' || qLang === 'fr' || qLang === 'en' || qLang === 'it'
       ? qLang
-      : 'it';
+      : pathLang || 'it';
 
   const qFilter = params.get('filter');
   const filter: ProjectFilter =
@@ -46,14 +54,18 @@ function parseUrlState(): {
       ? qFilter
       : 'all';
 
+  const cityFromPath = TICINO_CITIES.find(
+    (c) => normalizedPath === `/servizi/${c.slug}`
+  );
   const qCity = params.get('city');
-  const city: TicinoCitySlug =
-    qCity === 'lugano' ||
-    qCity === 'bellinzona' ||
-    qCity === 'locarno' ||
-    qCity === 'mendrisio'
-      ? qCity
-      : 'lugano';
+  const city: TicinoCitySlug = cityFromPath
+    ? cityFromPath.slug
+    : qCity === 'lugano' ||
+      qCity === 'bellinzona' ||
+      qCity === 'locarno' ||
+      qCity === 'mendrisio'
+    ? qCity
+    : 'lugano';
 
   return { path: normalizedPath, lang, filter, city };
 }
@@ -67,7 +79,8 @@ function buildUrl(
   const params = new URLSearchParams();
   if (lang !== 'it') params.set('lang', lang);
   if (path === '/' && filter !== 'all') params.set('filter', filter);
-  if (path.startsWith('/servizi') && city && city !== 'lugano') {
+  const isCitySlugPath = TICINO_CITIES.some((c) => path === `/servizi/${c.slug}`);
+  if (path.startsWith('/servizi') && !isCitySlugPath && city && city !== 'lugano') {
     params.set('city', city);
   }
   const qs = params.toString();
@@ -114,44 +127,15 @@ export default function App() {
     return () => window.removeEventListener('popstate', onPopState);
   }, []);
 
-  // Update <html lang> & dynamic SEO <title>
-  useEffect(() => {
-    document.documentElement.lang = lang;
-    const t = TRANSLATIONS[lang];
-    let pageTitle = `GWD Group — ${t.hero.title}`;
-
-    if (currentPath.startsWith('/prodotti/')) {
-      const slug = currentPath.replace('/prodotti/', '');
-      const prod = getProjectBySlug(slug);
-      if (prod) pageTitle = `${prod.name} · GWD Group SaaS`;
-    } else if (currentPath.startsWith('/lavori/')) {
-      const slug = currentPath.replace('/lavori/', '');
-      const work = getProjectBySlug(slug);
-      if (work) pageTitle = `${work.name} · Case Study · GWD Group`;
-    } else if (currentPath === '/prodotti') {
-      pageTitle = `${t.nav.products} · GWD Group`;
-    } else if (currentPath === '/lavori') {
-      pageTitle = `${t.nav.works} · GWD Group`;
-    } else if (currentPath.startsWith('/servizi')) {
-      pageTitle = `${t.nav.services} · GWD Group Lugano`;
-    } else if (currentPath === '/chi-siamo') {
-      pageTitle = `${t.nav.about} · GWD Group`;
-    } else if (currentPath === '/contatti') {
-      pageTitle = `${t.nav.contact} · GWD Group Lugano`;
-    } else if (currentPath === '/privacy') {
-      pageTitle = `${t.footer.privacyLink} · GWD Group`;
-    } else if (currentPath === '/cookie') {
-      pageTitle = `${t.footer.cookieLink} · GWD Group`;
-    }
-
-    document.title = pageTitle;
-  }, [currentPath, lang]);
-
   const navigate = useCallback(
     (nextPath: string, nextCity?: TicinoCitySlug) => {
-      const resolvedCity = nextCity || city;
+      const cityFromPath = TICINO_CITIES.find(
+        (c) => nextPath === `/servizi/${c.slug}`
+      );
+      const resolvedCity = cityFromPath ? cityFromPath.slug : nextCity || city;
       setCurrentPath(nextPath);
-      if (nextCity) setCity(nextCity);
+      if (cityFromPath) setCity(cityFromPath.slug);
+      else if (nextCity) setCity(nextCity);
 
       const url = buildUrl(nextPath, lang, filter, resolvedCity);
       window.history.pushState({}, '', url);
@@ -181,7 +165,12 @@ export default function App() {
   const handleSelectCity = useCallback(
     (nextCity: TicinoCitySlug) => {
       setCity(nextCity);
-      const url = buildUrl(currentPath, lang, filter, nextCity);
+      const isCitySlugPath = TICINO_CITIES.some(
+        (c) => currentPath === `/servizi/${c.slug}`
+      );
+      const targetPath = isCitySlugPath ? `/servizi/${nextCity}` : currentPath;
+      if (isCitySlugPath) setCurrentPath(targetPath);
+      const url = buildUrl(targetPath, lang, filter, nextCity);
       window.history.replaceState({}, '', url);
     },
     [currentPath, lang, filter]
@@ -249,12 +238,14 @@ export default function App() {
     }
 
     if (currentPath.startsWith('/servizi/')) {
-      const serviceSlug = currentPath.replace('/servizi/', '');
+      const rawSlug = currentPath.replace('/servizi/', '');
+      const isCitySlug = TICINO_CITIES.some((c) => c.slug === rawSlug);
+      const serviceSlug = isCitySlug ? 'seo-locale' : rawSlug;
       return (
         <ServicesView
           lang={lang}
           activeServiceSlug={serviceSlug}
-          activeCity={city}
+          activeCity={isCitySlug ? (rawSlug as TicinoCitySlug) : city}
           onSelectCity={handleSelectCity}
           onNavigate={navigate}
         />
@@ -276,6 +267,7 @@ export default function App() {
           lang={lang}
           cookiePrefs={cookiePrefs}
           onUpdateCookies={handleUpdateCookies}
+          onNavigate={navigate}
         />
       );
     }
@@ -287,6 +279,7 @@ export default function App() {
           lang={lang}
           cookiePrefs={cookiePrefs}
           onUpdateCookies={handleUpdateCookies}
+          onNavigate={navigate}
         />
       );
     }
@@ -304,6 +297,7 @@ export default function App() {
 
   return (
     <div className="min-h-screen flex flex-col bg-[#0C0A09] text-[#FAFAF9] overflow-x-clip">
+      <SeoHead currentPath={currentPath} lang={lang} city={city} />
       <Header
         currentPath={currentPath}
         lang={lang}
@@ -328,6 +322,7 @@ export default function App() {
         showCookieModal={showCookieModal}
         onUpdateCookies={handleUpdateCookies}
         onCloseCookieModal={() => setShowCookieModal(false)}
+        onNavigate={navigate}
       />
     </div>
   );

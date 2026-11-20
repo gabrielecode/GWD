@@ -239,7 +239,7 @@ export const SERVICES: ServiceItem[] = [
         'Sub-second mobile cart and checkout interactions',
       ],
     },
-    relatedCaseSlugs: ['casa-bidia', 'il-vicolo-lugano', 'salviapet'],
+    relatedCaseSlugs: ['reverse-editing-shop', 'il-vicolo-lugano', 'salviapet'],
     faqs: [
       {
         question: {
@@ -253,6 +253,20 @@ export const SERVICES: ServiceItem[] = [
           de: 'Ja, wir integrieren TWINT nativ neben Kreditkarten, Apple Pay und Schweizer Banküberweisung.',
           fr: 'Oui, nous intégrons nativement TWINT avec les cartes, Apple Pay et le virement suisse.',
           en: 'Yes, TWINT is natively integrated alongside cards, Apple Pay, and Swiss bank transfers.',
+        },
+      },
+      {
+        question: {
+          it: 'È possibile gestire prezzi in CHF/EUR e spedizioni o ritiri in Ticino?',
+          de: 'Können Preise in CHF/EUR sowie lokaler Versand im Tessin verwaltet werden?',
+          fr: 'Peut-on gérer des tarifs CHF/EUR et le retrait local au Tessin ?',
+          en: 'Can we handle CHF/EUR pricing and local Ticino pickup or Swiss Post shipping?',
+        },
+        answer: {
+          it: 'Certamente: configuriamo listini CHF/EUR, aliquote IVA svizzere (8.1% / 2.6%), tariffe Posta Svizzera e ritiro in sede.',
+          de: 'Ja: Wir richten CHF/EUR-Preise, Schweizer MwSt-Sätze (8,1 % / 2,6 %), Post-Tarife und Abholung vor Ort ein.',
+          fr: 'Oui : gestion CHF/EUR, TVA suisse (8,1 % / 2,6 %), tarifs Poste Suisse et retrait sur place.',
+          en: 'Yes: we configure CHF/EUR pricing, Swiss VAT rates (8.1% / 2.6%), Swiss Post shipping rules, and local pickup.',
         },
       },
     ],
@@ -379,6 +393,20 @@ export const SERVICES: ServiceItem[] = [
           en: 'Google Business Profile updates typically show traction in 4–6 weeks, while organic Top 10 rankings consolidate within 3–6 months.',
         },
       },
+      {
+        question: {
+          it: 'Come evitate la penalizzazione per pagine locali duplicate tra le città del Ticino?',
+          de: 'Wie vermeiden Sie Duplicate-Content-Strafen bei Tessiner Standortseiten?',
+          fr: 'Comment évitez-vous la duplication de contenu entre les villes du Tessin ?',
+          en: 'How do you avoid duplicate content penalties across Ticino city pages?',
+        },
+        answer: {
+          it: 'Ogni polo (Lugano, Bellinzona, Locarno, Mendrisio) riceve dati settoriali distinti, riferimenti reali ai quartieri, casi studio locali e Schema.org dedicato.',
+          de: 'Jeder Standort (Lugano, Bellinzona, Locarno, Mendrisio) erhält eigene Branchendaten, reale Quartierbezüge, lokale Fallstudien und spezifisches Schema.org.',
+          fr: 'Chaque pôle (Lugano, Bellinzona, Locarno, Mendrisio) dispose de données sectorielles propres, quartiers réels, cas locaux et balisage Schema.org dédié.',
+          en: 'Each district hub (Lugano, Bellinzona, Locarno, Mendrisio) features distinct industry context, neighborhood signals, local case studies, and tailored Schema.org markup.',
+        },
+      },
     ],
     targetKeywords: {
       it: ['SEO locale Ticino', 'posizionamento Google Lugano', 'Google Business Profile Bellinzona'],
@@ -503,6 +531,20 @@ export const SERVICES: ServiceItem[] = [
           en: 'We deploy low-latency neural voice models (< 800 ms) with natural inflection and pacing across IT, DE, FR, and EN.',
         },
       },
+      {
+        question: {
+          it: 'Il trattamento delle chiamate è conforme alla legge svizzera nLPD?',
+          de: 'Entspricht die Anrufbearbeitung dem Schweizer Datenschutzgesetz (nDSG)?',
+          fr: 'Le traitement des appels est-il conforme à la nLPD suisse ?',
+          en: 'Is call handling compliant with the Swiss Federal Data Protection Act (FADP/nLPD)?',
+        },
+        answer: {
+          it: 'Sì: informiamo il chiamante in apertura, raccogliamo solo i dati minimi per la prenotazione e proteggiamo i log secondo i requisiti nLPD e GDPR.',
+          de: 'Ja: Anrufer werden zu Beginn informiert, es werden nur notwendige Buchungsdaten erfasst und gemäß nDSG/DSGVO geschützt.',
+          fr: 'Oui : l’appelant est informé dès l’accueil, seules les données minimales de réservation sont collectées selon la nLPD et le RGPD.',
+          en: 'Yes: callers receive an upfront notice, only minimal booking fields are stored, and logs follow strict Swiss FADP and GDPR safeguards.',
+        },
+      },
     ],
     targetKeywords: {
       it: ['agente AI ristorante', 'segreteria AI parrucchiere', 'centralino AI Ticino'],
@@ -612,7 +654,7 @@ export const SERVICES: ServiceItem[] = [
         'Zero per-cover booking commissions',
       ],
     },
-    relatedCaseSlugs: ['il-vicolo-lugano', 'aurora-ai', 'casa-bidia'],
+    relatedCaseSlugs: ['il-vicolo-lugano', 'aurora-ai', 'aurora-phone'],
     faqs: [
       {
         question: {
@@ -626,6 +668,20 @@ export const SERVICES: ServiceItem[] = [
           de: 'Ja, wir binden Google Kalender, Resmio oder direkte WhatsApp/E-Mail-Bestätigungen an.',
           fr: 'Oui, connexion avec Google Agenda, TheFork Manager, Resmio ou notifications directes.',
           en: 'Yes, we integrate with Google Calendar, Resmio, TheFork Manager, or direct WhatsApp/email workflows.',
+        },
+      },
+      {
+        question: {
+          it: 'Riesce a gestire ospiti svizzero-tedeschi o turisti in inglese durante la stagione alta?',
+          de: 'Kann der Agent Deutschschweizer und internationale Gäste in der Hochsaison bedienen?',
+          fr: 'Gère-t-il les clients alémaniques et touristes anglophones en haute saison ?',
+          en: 'Can it serve Swiss-German visitors and international tourists during peak season?',
+        },
+        answer: {
+          it: 'Sì, l’agente rileva la lingua nei primi 2 secondi e risponde in italiano, tedesco, francese o inglese applicando le stesse regole di sala e terrazza.',
+          de: 'Ja, der Agent erkennt die Sprache in den ersten 2 Sekunden und antwortet fließend auf IT, DE, FR oder EN.',
+          fr: 'Oui, l’agent détecte la langue en 2 secondes et répond naturellement en italien, allemand, français ou anglais.',
+          en: 'Yes, the agent detects the caller’s language within 2 seconds and switches seamlessly between Italian, German, French, and English.',
         },
       },
     ],
@@ -753,6 +809,20 @@ export const SERVICES: ServiceItem[] = [
           en: 'It automatically schedules a 15-minute color consultation slot or forwards a WhatsApp photo request to the lead stylist.',
         },
       },
+      {
+        question: {
+          it: 'Quanto tempo serve per attivare la segreteria AI in un salone di parrucchieri?',
+          de: 'Wie schnell ist der KI-Empfang für einen Friseursalon einsatzbereit?',
+          fr: 'Combien de temps faut-il pour activer le secrétariat IA dans un salon ?',
+          en: 'How fast can an AI voice receptionist go live for a hair salon?',
+        },
+        answer: {
+          it: 'In 5–7 giorni lavorativi importiamo listino trattamenti, durata per stylist, orari del salone e trasferimento dal numero fisso.',
+          de: 'In 5–7 Arbeitstagen übernehmen wir Behandlungsliste, Stylisten-Zeiten, Öffnungszeiten und Rufumleitung.',
+          fr: 'En 5 à 7 jours ouvrés, nous intégrons vos prestations, durées par coiffeur et renvoi d’appel.',
+          en: 'Within 5–7 business days we configure your treatment durations, stylist schedules, and Swiss phone forwarding.',
+        },
+      },
     ],
     targetKeywords: {
       it: ['segreteria AI parrucchiere', 'prenotazioni AI salone bellezza Ticino'],
@@ -780,16 +850,60 @@ export const TICINO_CITIES: TicinoCityProfile[] = [
       en: 'Web Agency, SaaS & AI Agents in Lugano',
     },
     description: {
-      it: 'Dal nostro ufficio di Via Nassa seguiamo studi fiduciari, ristoranti del centro, boutique hotel e aziende tech con siti ad alte prestazioni, SEO locale e segreterie vocali AI.',
-      de: 'Von unserem Büro an der Via Nassa aus betreuen wir Treuhandbüros, Restaurants, Boutique-Hotels und Tech-Firmen in Lugano.',
-      fr: 'Depuis notre bureau de la Via Nassa, nous accompagnons fiduciaires, restaurants, hôtels et sociétés tech de Lugano.',
-      en: 'From our Via Nassa office we partner with financial firms, downtown restaurants, boutique hotels, and tech companies across Lugano.',
+      it: 'Da Lugano seguiamo studi fiduciari, ristoranti del centro, boutique hotel e aziende tech con siti ad alte prestazioni, SEO locale e segreterie vocali AI.',
+      de: 'Von Lugano aus betreuen wir Treuhandbüros, Restaurants, Boutique-Hotels und Tech-Firmen in der Region.',
+      fr: 'Depuis Lugano, nous accompagnons fiduciaires, restaurants, hôtels et sociétés tech de la région.',
+      en: 'From Lugano we partner with financial firms, downtown restaurants, boutique hotels, and tech companies across the region.',
     },
     localFocus: {
       it: 'Focus su ricerche ad alta concorrenza ("web agency Lugano", "ristorante centro Lugano") e clientela internazionale in 4 lingue.',
       de: 'Fokus auf wettbewerbsstarke Suchbegriffe und internationale Kundschaft in 4 Sprachen.',
       fr: 'Focus sur les requêtes concurrentielles et une clientèle internationale en 4 langues.',
       en: 'Focused on high-competition commercial queries and 4-language international clientele.',
+    },
+    districtsAndHubs: {
+      it: 'Lugano Centro, Paradiso, Cassarate, Pregassona, Viganello, Lamone',
+      de: 'Lugano Zentrum, Paradiso, Cassarate, Pregassona, Viganello, Lamone',
+      fr: 'Lugano Centre, Paradiso, Cassarate, Pregassona, Viganello, Lamone',
+      en: 'Lugano City Center, Paradiso, Cassarate, Pregassona, Viganello, Lamone',
+    },
+    keyIndustries: {
+      it: ['Studi fiduciari & legali', 'Ristorazione fine dining', 'Wealth & Tech B2B', 'Saloni & Estetica'],
+      de: ['Treuhand & Kanzleien', 'Gastronomie & Hospitality', 'Wealth & Tech B2B', 'Salons & Beauty'],
+      fr: ['Fiduciaires & Cabinets', 'Restauration & Hôtellerie', 'Tech B2B & Finance', 'Salons & Beauté'],
+      en: ['Trust & Legal Practices', 'Fine Dining & Hospitality', 'B2B Tech & Wealth', 'Salons & Wellness'],
+    },
+    serviceAngles: {
+      web: {
+        it: 'Portali corporate multilingua per fiduciarie e studi a Lugano con caricamento sotto 1.5s, conformità nLPD svizzera e moduli di qualificazione lead.',
+        de: 'Mehrsprachige Unternehmensportale für Treuhandbüros und Kanzleien in Lugano unter 1,5s Ladezeit und voller nDSG-Konformität.',
+        fr: 'Portails corporate multilingues pour fiduciaires et cabinets à Lugano sous 1,5s avec conformité nLPD suisse.',
+        en: 'Multilingual corporate portals for Lugano trust firms and practices loading under 1.5s with full Swiss FADP compliance.',
+      },
+      ecommerce: {
+        it: 'Prenotazione tavoli, gift card digitali e vendita diretta con TWINT e Apple Pay per boutique, enoteche e locali di Lugano Centro e Paradiso.',
+        de: 'Tischbuchung, digitale Gutscheine und Direktverkauf mit TWINT & Apple Pay für Boutiquen und Gastronomie in Lugano.',
+        fr: 'Réservation directe, cartes cadeaux et vente en ligne avec TWINT pour boutiques et tables du centre de Lugano.',
+        en: 'Direct table reservations, digital vouchers, and TWINT/Apple Pay checkout for Lugano boutiques and dining venues.',
+      },
+      seo: {
+        it: 'Dominio del Google Map Pack su Lugano Centro, Paradiso e Cassarate grazie alla verifica NAP con RankUpList e alle citazioni editoriali di SitiTicino.ch.',
+        de: 'Top-Platzierungen im Google Map Pack für Lugano Zentrum, Paradiso und Cassarate durch RankUpList-NAP-Abgleich.',
+        fr: 'Domination du Map Pack Google sur Lugano Centre, Paradiso et Cassarate via la cohérence NAP RankUpList.',
+        en: 'Google Map Pack leadership across Lugano Center, Paradiso, and Cassarate via RankUpList NAP verification and SitiTicino.ch.',
+      },
+      ai: {
+        it: 'Centralini vocali AI in 4 lingue per ristoranti e saloni luganesi: gestiscono richieste in italiano, tedesco e inglese durante il picco del pranzo e della sera.',
+        de: 'Viersprachige KI-Telefonassistenten für Luganeser Restaurants und Salons zur Entlastung während der Stoßzeiten.',
+        fr: 'Standards vocaux IA en 4 langues pour restaurants et salons de Lugano durant les heures de pointe.',
+        en: '4-language AI voice receptionists for Lugano restaurants and salons handling lunch and dinner rush calls seamlessly.',
+      },
+    },
+    localKeywords: {
+      it: ['web agency Lugano', 'siti web Lugano', 'SEO locale Lugano', 'agente AI ristorante Lugano'],
+      de: ['Webagentur Lugano', 'Website erstellen Lugano', 'Lokale SEO Lugano'],
+      fr: ['agence web Lugano', 'création site Lugano', 'SEO local Lugano'],
+      en: ['web agency Lugano', 'Lugano local SEO', 'AI voice agent Lugano'],
     },
     primaryKeyword: 'web agency Lugano',
     featuredCaseSlug: 'il-vicolo-lugano',
@@ -826,6 +940,50 @@ export const TICINO_CITIES: TicinoCityProfile[] = [
       fr: 'Optimisation Google Business sur Bellinzona, Giubiasco et les vallées du nord.',
       en: 'Google Business Profile optimization spanning Bellinzona, Giubiasco, and northern valleys.',
     },
+    districtsAndHubs: {
+      it: 'Bellinzona Centro, Giubiasco, Monte Carasso, Sementina, Arbedo-Castione, Riviera',
+      de: 'Bellinzona Zentrum, Giubiasco, Monte Carasso, Sementina, Arbedo-Castione',
+      fr: 'Bellinzona Centre, Giubiasco, Monte Carasso, Sementina, Arbedo-Castione',
+      en: 'Bellinzona Center, Giubiasco, Monte Carasso, Sementina, Arbedo-Castione',
+    },
+    keyIndustries: {
+      it: ['Edilizia & Artigianato', 'Studi medici & dentistici', 'Fornitori enti pubblici', 'Servizi B2B & Mobilità'],
+      de: ['Bauwesen & Handwerk', 'Arzt- & Zahnarztpraxen', 'Öffentliche Zulieferer', 'B2B-Dienstleister'],
+      fr: ['Construction & Artisanat', 'Cabinets médicaux', 'Fournisseurs publics', 'Services B2B'],
+      en: ['Construction & Trades', 'Medical & Dental Clinics', 'Public Sector Suppliers', 'B2B Regional Services'],
+    },
+    serviceAngles: {
+      web: {
+        it: 'Siti accessibili WCAG 2.2 AA e portali istituzionali per studi tecnici, imprese edili e fornitori dell’Alto Ticino con preventivazione chiara e schede certificate.',
+        de: 'Barrierefreie WCAG 2.2 AA Websites und klare Angebotsportale für Bauunternehmen, Praxen und Dienstleister in Bellinzona.',
+        fr: 'Sites accessibles WCAG 2.2 AA et portails techniques rapides pour entreprises du bâtiment et cabinets du Bellinzonese.',
+        en: 'WCAG 2.2 AA compliant corporate sites and fast technical portals for Bellinzona trades, clinics, and B2B suppliers.',
+      },
+      ecommerce: {
+        it: 'Cataloghi B2B e prenotazione appuntamenti online per cliniche, officine e rivenditori di Giubiasco e Castione con fatturazione QR svizzera.',
+        de: 'B2B-Kataloge und Online-Terminbuchung für Praxen und Fachbetriebe in Giubiasco und Castione mit Schweizer QR-Rechnung.',
+        fr: 'Catalogues B2B et prise de rendez-vous en ligne pour cliniques et commerces de Giubiasco avec facturation QR suisse.',
+        en: 'B2B order catalogs and online appointment booking for Giubiasco clinics and suppliers integrated with Swiss QR invoicing.',
+      },
+      seo: {
+        it: 'Posizionamento organico su tutto l’agglomerato di Bellinzona e valli (Biasca, Mesolcina) con allineamento directory Search.ch, Local.ch e SitiTicino.ch.',
+        de: 'Organische Sichtbarkeit für Bellinzona, Giubiasco und obere Täler inklusive Search.ch-, Local.ch- und SitiTicino.ch-Abgleich.',
+        fr: 'Positionnement organique sur Bellinzona et les vallées du nord avec synchronisation Search.ch, Local.ch et SitiTicino.ch.',
+        en: 'Organic search visibility across Bellinzona, Giubiasco, and northern valleys backed by Search.ch, Local.ch, and SitiTicino.ch.',
+      },
+      ai: {
+        it: 'Segreteria telefonica AI per studi medici, dentistici e artigiani del Bellinzonese: filtra urgenze, prenota visite e invia promemoria SMS anti no-show.',
+        de: 'KI-Telefonsekretariat für Arztpraxen und Handwerksbetriebe in Bellinzona mit Triage und automatischer Terminerinnerung.',
+        fr: 'Secrétariat vocal IA pour cabinets médicaux et artisans de Bellinzona : filtrage des urgences et rappels SMS.',
+        en: 'AI phone reception for Bellinzona medical practices and trades handling appointment triage and SMS reminders.',
+      },
+    },
+    localKeywords: {
+      it: ['siti web Bellinzona', 'SEO Bellinzona', 'web agency Alto Ticino', 'gestionale artigiani Ticino'],
+      de: ['Websites Bellinzona', 'SEO Bellinzona', 'Webagentur Nordtessin'],
+      fr: ['sites web Bellinzona', 'SEO Bellinzona', 'agence digitale Haut-Tessin'],
+      en: ['websites Bellinzona', 'Bellinzona SEO', 'Ticino B2B digital agency'],
+    },
     primaryKeyword: 'siti web Bellinzona',
     featuredCaseSlug: 'swiss-lead-finder',
     stats: {
@@ -861,8 +1019,52 @@ export const TICINO_CITIES: TicinoCityProfile[] = [
       fr: 'SEO bilingue IT/DE pour séjours, restauration et bien-être entre Locarno et Ascona.',
       en: 'Bilingual IT/DE search strategy for stays, dining, and wellness across Locarno, Muralto, and Ascona.',
     },
+    districtsAndHubs: {
+      it: 'Piazza Grande, Muralto, Ascona, Losone, Minusio, Tenero, Valle Maggia',
+      de: 'Piazza Grande, Muralto, Ascona, Losone, Minusio, Tenero, Maggiatal',
+      fr: 'Piazza Grande, Muralto, Ascona, Losone, Minusio, Tenero, Val Maggia',
+      en: 'Piazza Grande, Muralto, Ascona, Losone, Minusio, Tenero, Valle Maggia',
+    },
+    keyIndustries: {
+      it: ['Hotel & Case vacanza', 'Ristoranti sul lungolago', 'Saloni Beauty & Spa', 'Retail & Esperienze locali'],
+      de: ['Hotels & Ferienwohnungen', 'See-Gastronomie', 'Beauty & Spa Salons', 'Retail & Erlebnisse'],
+      fr: ['Hôtels & Résidences', 'Restaurants lacustres', 'Salons Beauté & Spa', 'Commerce & Loisirs'],
+      en: ['Hotels & Holiday Stays', 'Lakeside Restaurants', 'Beauty Salons & Spas', 'Local Retail & Tours'],
+    },
+    serviceAngles: {
+      web: {
+        it: 'Esperienze editoriali veloci IT/DE/FR/EN per strutture ricettive, grotto e boutique di Ascona e Locarno con gallerie leggere e zero PDF pesanti.',
+        de: 'Schnelle viersprachige Websites für Hotels, Grotti und Boutiquen in Ascona und Locarno ohne schwere PDF-Dateien.',
+        fr: 'Sites quadrilingues rapides pour hôtels, grotti et boutiques d’Ascona et Locarno sans PDF lourds.',
+        en: 'Fast 4-language editorial storefronts for Ascona & Locarno hotels, grotti, and boutiques with lightweight media.',
+      },
+      ecommerce: {
+        it: 'Motori di prenotazione diretta senza commissioni OTA: pacchetti weekend, camere e tavoli pagabili in CHF/EUR con conferma immediata.',
+        de: 'Provisionsfreie Direktbuchungssysteme für Zimmer, Wochenendpakete und Tische mit CHF/EUR-Zahlung.',
+        fr: 'Moteurs de réservation directe sans commission OTA pour séjours et tables en CHF/EUR.',
+        en: 'Commission-free direct booking engines for rooms, weekend stays, and tables with instant CHF/EUR checkout.',
+      },
+      seo: {
+        it: 'Strategia SEO bilingue italiano/tedesco pensata per intercettare i turisti da Zurigo, Basilea e Berna che cercano soggiorni e ristoranti sul Lago Maggiore.',
+        de: 'Zweisprachige IT/DE-SEO-Strategie gezielt für Gäste aus Zürich, Basel und Bern auf der Suche nach Urlaub am Lago Maggiore.',
+        fr: 'Stratégie SEO bilingue IT/DE ciblant les voyageurs de Zurich, Bâle et Berne sur le Lac Majeur.',
+        en: 'Bilingual IT/DE search positioning capturing Zurich, Basel, and Bern travelers searching Lake Maggiore stays and dining.',
+      },
+      ai: {
+        it: 'Agenti vocali AI ideali per terrazze, pizzerie e saloni di bellezza tra Locarno e Ascona: rispondono in tedesco svizzero/standard, italiano e inglese durante l’alta stagione.',
+        de: 'KI-Sprachagenten für Terrassenrestaurants und Salons in Locarno und Ascona – beantworten Anrufe in DE, IT und EN in der Hochsaison.',
+        fr: 'Agents vocaux IA pour terrasses et salons de Locarno et Ascona : accueil fluide en allemand, italien et anglais en saison.',
+        en: 'AI voice agents for Locarno & Ascona restaurants and salons answering German, Italian, and English peak-season calls.',
+      },
+    },
+    localKeywords: {
+      it: ['siti web Locarno', 'booking diretto hotel Ticino', 'SEO turismo Ascona', 'segreteria AI salone Locarno'],
+      de: ['Website Hotel Tessin', 'Direktbuchung Ascona', 'SEO Locarno Tourismus'],
+      fr: ['site web Locarno', 'réservation directe Ascona', 'SEO tourisme Tessin'],
+      en: ['Locarno web agency', 'Ascona hotel direct booking', 'Lake Maggiore local SEO'],
+    },
     primaryKeyword: 'siti web Locarno ospitalità',
-    featuredCaseSlug: 'casa-bidia',
+    featuredCaseSlug: 'il-vicolo-lugano',
     stats: {
       businessesServed: '28+',
       avgLighthouse: '96/100',
@@ -895,6 +1097,50 @@ export const TICINO_CITIES: TicinoCityProfile[] = [
       de: 'Grenzüberschreitende B2B-Integration CH/IT, schnelle Produktkataloge und gezielte Google-Kampagnen.',
       fr: 'Intégration B2B transfrontalière CH/IT, catalogues rapides et campagnes Google ciblées.',
       en: 'Cross-border CH/IT B2B lead pipelines, fast digital catalogs, and targeted Sottoceneri Google campaigns.',
+    },
+    districtsAndHubs: {
+      it: 'Mendrisio, Chiasso, Balerna, Stabio, Riva San Vitale, Coldrerio, Morbio Inferiore',
+      de: 'Mendrisio, Chiasso, Balerna, Stabio, Riva San Vitale, Coldrerio',
+      fr: 'Mendrisio, Chiasso, Balerna, Stabio, Riva San Vitale, Coldrerio',
+      en: 'Mendrisio, Chiasso, Balerna, Stabio, Riva San Vitale, Coldrerio',
+    },
+    keyIndustries: {
+      it: ['Manifattura & Precisione', 'Logistica & Dogana', 'Retail & Showrooms', 'Servizi B2B Chiasso'],
+      de: ['Fertigung & Präzision', 'Logistik & Zoll', 'Retail & Showrooms', 'B2B-Dienstleister Chiasso'],
+      fr: ['Industrie & Précision', 'Logistique & Douane', 'Retail & Showrooms', 'Services B2B Chiasso'],
+      en: ['Precision Manufacturing', 'Logistics & Trade', 'Retail & Showrooms', 'Chiasso B2B Services'],
+    },
+    serviceAngles: {
+      web: {
+        it: 'Portali industriali B2B, schede tecniche indicizzabili e landing ad alta conversione per aziende di Stabio, Balerna e zona doganale di Chiasso.',
+        de: 'Industrielle B2B-Portale und technische Produktkataloge für Betriebe in Stabio, Balerna und Chiasso.',
+        fr: 'Portails industriels B2B et fiches techniques indexables pour entreprises de Stabio, Balerna et Chiasso.',
+        en: 'B2B industrial portals and indexable technical spec sheets for companies in Stabio, Balerna, and Chiasso.',
+      },
+      ecommerce: {
+        it: 'E-commerce B2B e D2C con listini differenziati per rivenditori, gestione IVA CH/EU e metodi di pagamento TWINT, carte e fattura aziendale.',
+        de: 'B2B- und D2C-Shops mit Händlerpreisen, CH/EU-MwSt-Logik sowie TWINT- und Rechnungszahlung.',
+        fr: 'E-commerce B2B et D2C avec grilles revendeurs, gestion TVA CH/UE, TWINT et facturation entreprise.',
+        en: 'B2B and D2C storefronts featuring wholesale price tiers, CH/EU VAT rules, TWINT, and corporate invoicing.',
+      },
+      seo: {
+        it: 'Presidio Google per parole chiave B2B, logistica e servizi locali nel Mendrisiotto con supporto di Swiss Lead Finder per l’espansione commerciale in Svizzera.',
+        de: 'Google-Präsenz für B2B-, Logistik- und lokale Dienstleistungs-Keywords im Mendrisiotto inklusive Swiss Lead Finder.',
+        fr: 'Visibilité Google sur les requêtes B2B et services du Mendrisiotto appuyée par Swiss Lead Finder.',
+        en: 'Search visibility for B2B, logistics, and local service queries across Mendrisiotto paired with Swiss Lead Finder outreach.',
+      },
+      ai: {
+        it: 'Centralini AI vocali e automazione richieste per PMI ad alto volume di chiamate tra Mendrisio e Chiasso: qualifica preventivi e smista reparti in tempo reale.',
+        de: 'KI-Sprachagenten für KMU mit hohem Anrufaufkommen in Mendrisio und Chiasso zur Offert-Vorqualifizierung.',
+        fr: 'Agents vocaux IA pour PME à fort volume d’appels entre Mendrisio et Chiasso : qualification et routage direct.',
+        en: 'AI voice reception for high-volume Mendrisio & Chiasso SMEs qualifying quote requests and routing departments live.',
+      },
+    },
+    localKeywords: {
+      it: ['web agency Mendrisio', 'siti web Chiasso', 'e-commerce B2B Ticino', 'automazione AI Mendrisiotto'],
+      de: ['Webagentur Mendrisio', 'B2B E-Commerce Chiasso', 'KMU Digitalisierung Tessin'],
+      fr: ['agence web Mendrisio', 'e-commerce B2B Chiasso', 'automatisation IA Tessin'],
+      en: ['web agency Mendrisio', 'Chiasso B2B websites', 'Mendrisiotto AI automation'],
     },
     primaryKeyword: 'web agency Mendrisio',
     featuredCaseSlug: 'aurora-ai',
@@ -933,28 +1179,28 @@ export const TESTIMONIALS: TestimonialItem[] = [
     },
   },
   {
-    id: 'rev-bidia',
+    id: 'rev-speedyjob',
     authorName: 'Chiara Fontana',
     role: {
-      it: 'Direttrice Ospitalità',
-      de: 'Hospitality-Leiterin',
-      fr: 'Directrice Hospitalité',
-      en: 'Hospitality Director',
+      it: 'Head of Operations',
+      de: 'Leiterin Operations',
+      fr: 'Directrice des Opérations',
+      en: 'Head of Operations',
     },
-    company: 'Casa Bidia',
-    city: 'Locarno',
+    company: 'SpeedyJob',
+    city: 'Lugano',
     rating: 5,
     quote: {
-      it: 'Il sito quadrilingue ha risolto il problema delle prenotazioni da Zurigo e Basilea. Finalmente gli ospiti prenotano direttamente dal telefono senza passare dai portali con commissioni.',
-      de: 'Die viersprachige Website hat unsere Direktbuchungen aus Zürich und Basel deutlich gesteigert – ganz ohne hohe Portalgebühren.',
-      fr: 'Le site quadrilingue a transformé nos réservations directes depuis Zurich et Bâle, sans payer de lourdes commissions aux portails.',
-      en: 'The 4-language website unlocked direct mobile bookings from Zurich and Basel, cutting our reliance on third-party commission portals.',
+      it: 'Avevamo bisogno di un portale veloce dove i candidati potessero inviare la candidatura da smartphone in meno di un minuto. Le candidature completate sono più che raddoppiate.',
+      de: 'Wir brauchten ein schnelles Portal, auf dem Bewerber mobil in unter einer Minute abschließen können. Die abgeschlossenen Bewerbungen haben sich mehr als verdoppelt.',
+      fr: 'Il nous fallait un portail rapide où les candidats postulent sur mobile en moins d’une minute. Les candidatures finalisées ont plus que doublé.',
+      en: 'We needed a fast portal where applicants could apply on mobile in under a minute. Completed mobile applications more than doubled.',
     },
     outcome: {
-      it: '+52% prenotazioni dirette nella prima stagione',
-      de: '+52 % Direktbuchungen in der ersten Saison',
-      fr: '+52 % réservations directes en une saison',
-      en: '+52% direct bookings in the first season',
+      it: '+110% candidature mobile completate',
+      de: '+110 % abgeschlossene Mobil-Bewerbungen',
+      fr: '+110 % candidatures mobiles finalisées',
+      en: '+110% completed mobile applications',
     },
   },
   {
@@ -985,12 +1231,12 @@ export const TESTIMONIALS: TestimonialItem[] = [
 ];
 
 export const CLIENT_LOGOS = [
-  'Reverse Editing',
-  'Casa Bidia',
+  'SpeedyJob',
+  'Reverse Editing Shop',
+  'Aurora Phone',
+  'PixaSolar',
+  'Visual Studio Facile',
   'Il Vicolo Lugano',
-  'Aurora ADV',
-  'DJ Magix',
-  'Aurora AI',
   'SitiTicino.ch',
   'SalviaPet',
 ];

@@ -224,6 +224,16 @@ export interface UiStrings {
     necessaryLabel: string;
     analyticsLabel: string;
   };
+  seoUi: {
+    homeLabel: string;
+    heroImageAlt: string;
+    districtsLabel: string;
+    industriesLabel: string;
+    serviceAngleLabel: string;
+    keywordsLabel: string;
+    relatedServiceLabel: string;
+    sitiTicinoNetworkLabel: string;
+  };
 }
 
 export const TRANSLATIONS: Record<Language, UiStrings> = {
@@ -468,8 +478,8 @@ export const TRANSLATIONS: Record<Language, UiStrings> = {
     },
     footer: {
       tagline: 'Digital Venture Studio & Agency Group — Piattaforme SaaS proprietarie, siti web ad alte prestazioni e agenti AI vocali.',
-      address: 'Via Nassa 21 · 6900 Lugano · Svizzera',
-      vat: 'CHE-418.920.314 IVA · GWD Group Sagl',
+      address: 'Lugano',
+      vat: 'GWD Group',
       navigationTitle: 'Mappa del sito',
       legalTitle: 'Conformità & Legale',
       privacyLink: 'Informativa Privacy (nLPD / GDPR)',
@@ -491,6 +501,16 @@ export const TRANSLATIONS: Record<Language, UiStrings> = {
       savePreferences: 'Salva scelte',
       necessaryLabel: 'Cookie tecnici necessari (sempre attivi)',
       analyticsLabel: 'Statistiche aggregate privacy-first',
+    },
+    seoUi: {
+      homeLabel: 'Home',
+      heroImageAlt: 'Ecosistema digitale GWD Group a Lugano: piattaforme SaaS, sviluppo web, SEO locale Ticino e agenti AI',
+      districtsLabel: 'Comuni e quartieri serviti',
+      industriesLabel: 'Settori chiave locali',
+      serviceAngleLabel: 'Approccio su misura per il territorio',
+      keywordsLabel: 'Ricerche locali presidiate',
+      relatedServiceLabel: 'Servizio agenzia collegato',
+      sitiTicinoNetworkLabel: 'Rete territoriale SitiTicino.ch',
     },
   },
   de: {
@@ -734,8 +754,8 @@ export const TRANSLATIONS: Record<Language, UiStrings> = {
     },
     footer: {
       tagline: 'Digital Venture Studio & Agency Group — Eigene SaaS-Plattformen, High-Speed-Websites und KI-Sprachagenten.',
-      address: 'Via Nassa 21 · 6900 Lugano · Schweiz',
-      vat: 'CHE-418.920.314 MWST · GWD Group Sagl',
+      address: 'Lugano',
+      vat: 'GWD Group',
       navigationTitle: 'Sitemap',
       legalTitle: 'Rechtliches & nDSG',
       privacyLink: 'Datenschutz (nDSG / DSGVO)',
@@ -757,6 +777,16 @@ export const TRANSLATIONS: Record<Language, UiStrings> = {
       savePreferences: 'Auswahl speichern',
       necessaryLabel: 'Technisch notwendige Cookies (immer aktiv)',
       analyticsLabel: 'Datenschutzfreundliche Statistiken',
+    },
+    seoUi: {
+      homeLabel: 'Startseite',
+      heroImageAlt: 'Digitales Ökosystem der GWD Group in Lugano: SaaS-Plattformen, Webentwicklung, lokale SEO Tessin und KI-Agenten',
+      districtsLabel: 'Abgedeckte Gemeinden & Quartiere',
+      industriesLabel: 'Lokale Schlüsselbranchen',
+      serviceAngleLabel: 'Spezifischer Ansatz vor Ort',
+      keywordsLabel: 'Fokussierte lokale Suchbegriffe',
+      relatedServiceLabel: 'Verknüpfte Agenturleistung',
+      sitiTicinoNetworkLabel: 'Regionales Netzwerk SitiTicino.ch',
     },
   },
   fr: {
@@ -1000,8 +1030,8 @@ export const TRANSLATIONS: Record<Language, UiStrings> = {
     },
     footer: {
       tagline: 'Digital Venture Studio & Agency Group — Plateformes SaaS propriétaires, sites web performants et agents vocaux IA.',
-      address: 'Via Nassa 21 · 6900 Lugano · Suisse',
-      vat: 'CHE-418.920.314 TVA · GWD Group Sagl',
+      address: 'Lugano',
+      vat: 'GWD Group',
       navigationTitle: 'Plan du site',
       legalTitle: 'Conformité & Légal',
       privacyLink: 'Confidentialité (nLPD / RGPD)',
@@ -1023,6 +1053,16 @@ export const TRANSLATIONS: Record<Language, UiStrings> = {
       savePreferences: 'Enregistrer',
       necessaryLabel: 'Cookies techniques nécessaires (toujours actifs)',
       analyticsLabel: 'Statistiques agrégées sans suivi invasif',
+    },
+    seoUi: {
+      homeLabel: 'Accueil',
+      heroImageAlt: 'Écosystème digital GWD Group à Lugano : plateformes SaaS, développement web, SEO local Tessin et agents IA',
+      districtsLabel: 'Communes et quartiers couverts',
+      industriesLabel: 'Secteurs clés locaux',
+      serviceAngleLabel: 'Approche dédiée au territoire',
+      keywordsLabel: 'Requêtes locales ciblées',
+      relatedServiceLabel: 'Service agence associé',
+      sitiTicinoNetworkLabel: 'Réseau territorial SitiTicino.ch',
     },
   },
   en: {
@@ -1266,8 +1306,8 @@ export const TRANSLATIONS: Record<Language, UiStrings> = {
     },
     footer: {
       tagline: 'Digital Venture Studio & Agency Group — Proprietary SaaS platforms, high-performance websites, and AI voice agents.',
-      address: 'Via Nassa 21 · 6900 Lugano · Switzerland',
-      vat: 'CHE-418.920.314 VAT · GWD Group Sagl',
+      address: 'Lugano',
+      vat: 'GWD Group',
       navigationTitle: 'Sitemap',
       legalTitle: 'Compliance & Legal',
       privacyLink: 'Privacy Policy (Swiss FADP / GDPR)',
@@ -1289,6 +1329,16 @@ export const TRANSLATIONS: Record<Language, UiStrings> = {
       savePreferences: 'Save preferences',
       necessaryLabel: 'Strictly necessary cookies (always active)',
       analyticsLabel: 'Privacy-first aggregated analytics',
+    },
+    seoUi: {
+      homeLabel: 'Home',
+      heroImageAlt: 'GWD Group digital ecosystem in Lugano: proprietary SaaS platforms, web development, Ticino local SEO, and AI agents',
+      districtsLabel: 'Districts & municipalities served',
+      industriesLabel: 'Key local industries',
+      serviceAngleLabel: 'Tailored regional strategy',
+      keywordsLabel: 'Target local search queries',
+      relatedServiceLabel: 'Connected agency service',
+      sitiTicinoNetworkLabel: 'SitiTicino.ch regional network',
     },
   },
 };

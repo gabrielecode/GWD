@@ -99,6 +99,15 @@ export interface TicinoCityProfile {
   headline: LocalizedText;
   description: LocalizedText;
   localFocus: LocalizedText;
+  districtsAndHubs: LocalizedText;
+  keyIndustries: LocalizedStringList;
+  serviceAngles: {
+    web: LocalizedText;
+    ecommerce: LocalizedText;
+    seo: LocalizedText;
+    ai: LocalizedText;
+  };
+  localKeywords: LocalizedStringList;
   primaryKeyword: string;
   featuredCaseSlug: string;
   stats: {

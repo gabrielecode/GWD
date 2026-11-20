@@ -1,10 +1,12 @@
-import { ArrowLeft, ArrowRight, CheckCircle2, Users } from 'lucide-react';
+import { ArrowLeft, ArrowRight, ArrowUpRight, CheckCircle2, Users } from 'lucide-react';
 import { Language, ProjectItem } from '../types/showcase';
 import { TRANSLATIONS } from '../data/translations';
 import { getProjectBySlug } from '../data/projects';
+import { SERVICES } from '../data/services';
 import { StatusBadge } from '../components/StatusBadge';
 import { DevicePreview } from '../components/DevicePreview';
 import { ProjectCard } from '../components/ProjectCard';
+import { Breadcrumbs } from '../components/Breadcrumbs';
 
 interface ProductDetailViewProps {
   project: ProjectItem;
@@ -22,10 +24,27 @@ export function ProductDetailView({
     .map((slug) => getProjectBySlug(slug))
     .filter((item): item is ProjectItem => Boolean(item));
 
+  const relatedServiceSlug =
+    project.slug === 'rankuplist' || project.slug === 'sititicino-geoboost'
+      ? 'seo-locale'
+      : project.slug === 'auto-social-publisher'
+      ? 'agenti-ai-vocali'
+      : project.slug === 'salviapet'
+      ? 'ecommerce'
+      : 'siti-web';
+  const relatedService = SERVICES.find((s) => s.slug === relatedServiceSlug) || SERVICES[0];
+
   return (
     <div className="mx-auto max-w-[1280px] px-4 sm:px-6 lg:px-8 py-10 lg:py-16 space-y-16">
-      {/* Breadcrumb back */}
-      <div>
+      <div className="flex flex-wrap items-center justify-between gap-4">
+        <Breadcrumbs
+          items={[
+            { label: t.seoUi.homeLabel, path: '/' },
+            { label: t.nav.products, path: '/prodotti' },
+            { label: project.name },
+          ]}
+          onNavigate={onNavigate}
+        />
         <button
           type="button"
           onClick={() => onNavigate('/prodotti')}
@@ -122,8 +141,27 @@ export function ProductDetailView({
               {project.targetAudience[lang]}
             </p>
           </div>
-          <div className="pt-4 border-t border-[#292524] text-xs text-[#A8A29E]">
-            {project.results[lang]}
+          <div className="pt-4 border-t border-[#292524] space-y-2.5 text-xs text-[#A8A29E]">
+            <p>{project.results[lang]}</p>
+            <div className="flex flex-wrap items-center justify-between gap-2 pt-2">
+              <button
+                type="button"
+                onClick={() => onNavigate(`/servizi/${relatedService.slug}`)}
+                className="inline-flex items-center gap-1 text-[#2DD4BF] hover:underline font-medium cursor-pointer"
+              >
+                <span>{t.seoUi.relatedServiceLabel}: {relatedService.shortTitle[lang]}</span>
+                <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
+              </button>
+              <a
+                href="https://sititicino.ch"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1 text-[#A8A29E] hover:text-[#FAFAF9]"
+              >
+                <span>SitiTicino.ch</span>
+                <ArrowUpRight className="h-3 w-3" aria-hidden="true" />
+              </a>
+            </div>
           </div>
         </div>
       </section>

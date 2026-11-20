@@ -5,6 +5,7 @@ import { getProjectBySlug } from '../data/projects';
 import { StatusBadge } from '../components/StatusBadge';
 import { DevicePreview } from '../components/DevicePreview';
 import { ProjectCard } from '../components/ProjectCard';
+import { Breadcrumbs } from '../components/Breadcrumbs';
 
 interface WorkDetailViewProps {
   project: ProjectItem;
@@ -22,9 +23,27 @@ export function WorkDetailView({
     .map((slug) => getProjectBySlug(slug))
     .filter((item): item is ProjectItem => Boolean(item));
 
+  const mapServicePath = (label: string): string => {
+    const lower = label.toLowerCase();
+    if (lower.includes('ristor')) return '/servizi/agenti-ai-ristoranti';
+    if (lower.includes('parrucch') || lower.includes('salon')) return '/servizi/agenti-ai-parrucchieri';
+    if (lower.includes('ai') || lower.includes('vocal') || lower.includes('sprach') || lower.includes('voice')) return '/servizi/agenti-ai-vocali';
+    if (lower.includes('seo') || lower.includes('google') || lower.includes('maps')) return '/servizi/seo-locale';
+    if (lower.includes('book') || lower.includes('comm') || lower.includes('prenot')) return '/servizi/ecommerce';
+    return '/servizi/siti-web';
+  };
+
   return (
     <div className="mx-auto max-w-[1280px] px-4 sm:px-6 lg:px-8 py-10 lg:py-16 space-y-16">
-      <div>
+      <div className="flex flex-wrap items-center justify-between gap-4">
+        <Breadcrumbs
+          items={[
+            { label: t.seoUi.homeLabel, path: '/' },
+            { label: t.nav.works, path: '/lavori' },
+            { label: project.name },
+          ]}
+          onNavigate={onNavigate}
+        />
         <button
           type="button"
           onClick={() => onNavigate('/lavori')}
@@ -146,10 +165,19 @@ export function WorkDetailView({
             {project.servicesUsed[lang].map((srv) => (
               <li
                 key={srv}
-                className="flex items-center gap-2.5 text-sm text-[#FAFAF9] border-b border-[#292524] pb-2.5 last:border-b-0"
+                className="border-b border-[#292524] pb-2.5 last:border-b-0"
               >
-                <Check className="h-4 w-4 text-[#FBBF24] shrink-0" aria-hidden="true" />
-                <span>{srv}</span>
+                <button
+                  type="button"
+                  onClick={() => onNavigate(mapServicePath(srv))}
+                  className="flex w-full items-center justify-between gap-2.5 text-sm text-[#FAFAF9] hover:text-[#FBBF24] transition-colors cursor-pointer text-left"
+                >
+                  <span className="inline-flex items-center gap-2.5">
+                    <Check className="h-4 w-4 text-[#FBBF24] shrink-0" aria-hidden="true" />
+                    <span>{srv}</span>
+                  </span>
+                  <ArrowRight className="h-3.5 w-3.5 text-[#A8A29E] shrink-0" aria-hidden="true" />
+                </button>
               </li>
             ))}
           </ul>

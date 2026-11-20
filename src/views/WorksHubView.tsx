@@ -5,6 +5,7 @@ import { TRANSLATIONS } from '../data/translations';
 import { getAgencyProjects } from '../data/projects';
 import { ProjectCard } from '../components/ProjectCard';
 import { ProjectCardSkeleton } from '../components/ProjectCardSkeleton';
+import { Breadcrumbs } from '../components/Breadcrumbs';
 
 interface WorksHubViewProps {
   lang: Language;
@@ -33,6 +34,14 @@ export function WorksHubView({ lang, onNavigate }: WorksHubViewProps) {
 
   return (
     <div className="mx-auto max-w-[1280px] px-4 sm:px-6 lg:px-8 py-12 lg:py-16 space-y-12">
+      <Breadcrumbs
+        items={[
+          { label: t.seoUi.homeLabel, path: '/' },
+          { label: t.nav.works },
+        ]}
+        onNavigate={onNavigate}
+      />
+
       <header className="glass-panel rounded-3xl p-6 sm:p-10 max-w-4xl space-y-4">
         <p className="text-xs font-medium uppercase tracking-wider text-[#FBBF24]">
           {t.dualEngine.agencyTag} · GWD Group

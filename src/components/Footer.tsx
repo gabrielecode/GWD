@@ -1,6 +1,8 @@
 import { ArrowUpRight } from 'lucide-react';
 import { Language } from '../types/showcase';
 import { TRANSLATIONS } from '../data/translations';
+import { BUSINESS_INFO } from '../data/business';
+import { TICINO_CITIES } from '../data/services';
 
 interface FooterProps {
   lang: Language;
@@ -29,22 +31,20 @@ export function Footer({
               onClick={() => onNavigate('/')}
               className="font-display text-xl font-bold tracking-tight text-[#FAFAF9] cursor-pointer"
             >
-              GWD Group <span className="text-[#A8A29E] font-normal">· GWD + SitiTicino</span>
+              {BUSINESS_INFO.brandName} <span className="text-[#A8A29E] font-normal">· GWD + SitiTicino</span>
             </button>
             <p className="text-sm leading-relaxed text-[#A8A29E] max-w-md">
               {t.footer.tagline}
             </p>
-            <div className="pt-2 space-y-1 text-xs font-mono text-[#A8A29E]">
-              <p>{t.footer.address}</p>
-              <p>{t.footer.vat}</p>
-              <p>+41 91 000 42 10 · hello@gwdgroup.ch</p>
-            </div>
+            <address className="not-italic pt-2 text-xs font-mono text-[#A8A29E]">
+              <p>{BUSINESS_INFO.address.locality}</p>
+            </address>
           </div>
 
           <div className="md:col-span-3 space-y-3">
-            <h3 className="font-display text-sm font-semibold text-[#FAFAF9]">
+            <h2 className="font-display text-sm font-semibold text-[#FAFAF9]">
               {t.footer.navigationTitle}
-            </h3>
+            </h2>
             <ul className="space-y-2 text-sm">
               <li>
                 <button
@@ -96,9 +96,9 @@ export function Footer({
 
           <div className="md:col-span-4 space-y-6">
             <div className="space-y-3">
-              <h3 className="font-display text-sm font-semibold text-[#FAFAF9]">
+              <h2 className="font-display text-sm font-semibold text-[#FAFAF9]">
                 {t.footer.legalTitle}
-              </h3>
+              </h2>
               <ul className="space-y-2 text-sm">
                 <li>
                   <button
@@ -178,7 +178,20 @@ export function Footer({
 
         <div className="mt-10 pt-6 border-t border-[#292524] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs text-[#A8A29E]">
           <p>{t.footer.copyright}</p>
-          <p className="font-mono">Lugano · Bellinzona · Locarno · Mendrisio</p>
+          <div className="flex flex-wrap items-center gap-2 font-mono">
+            {TICINO_CITIES.map((city, idx) => (
+              <span key={city.slug} className="inline-flex items-center gap-2">
+                {idx > 0 && <span aria-hidden="true">·</span>}
+                <button
+                  type="button"
+                  onClick={() => onNavigate(`/servizi/${city.slug}`)}
+                  className="hover:text-[#FAFAF9] transition-colors cursor-pointer"
+                >
+                  {city.name}
+                </button>
+              </span>
+            ))}
+          </div>
         </div>
       </div>
     </footer>

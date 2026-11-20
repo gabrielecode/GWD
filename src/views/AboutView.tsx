@@ -1,6 +1,9 @@
-import { ArrowRight, Globe, Layers } from 'lucide-react';
+import { ArrowRight, Globe, Layers, MapPin } from 'lucide-react';
 import { Language } from '../types/showcase';
 import { TRANSLATIONS } from '../data/translations';
+import { BUSINESS_INFO } from '../data/business';
+import { TICINO_CITIES } from '../data/services';
+import { Breadcrumbs } from '../components/Breadcrumbs';
 
 interface AboutViewProps {
   lang: Language;
@@ -12,9 +15,17 @@ export function AboutView({ lang, onNavigate }: AboutViewProps) {
 
   return (
     <div className="mx-auto max-w-[1280px] px-4 sm:px-6 lg:px-8 py-12 lg:py-16 space-y-16">
+      <Breadcrumbs
+        items={[
+          { label: t.seoUi.homeLabel, path: '/' },
+          { label: t.nav.about },
+        ]}
+        onNavigate={onNavigate}
+      />
+
       <header className="max-w-3xl space-y-4">
         <p className="text-sm font-medium text-[#2DD4BF]">
-          GWD Group · Lugano, Svizzera
+          {BUSINESS_INFO.brandName} · {BUSINESS_INFO.address.locality}
         </p>
         <h1 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-[#FAFAF9]">
           {t.about.title}
@@ -25,13 +36,17 @@ export function AboutView({ lang, onNavigate }: AboutViewProps) {
       </header>
 
       {/* Group Story */}
-      <section className="rounded-2xl border border-[#292524] bg-[#1C1917] p-6 sm:p-10 space-y-4">
+      <section className="rounded-2xl border border-[#292524] bg-[#1C1917] p-6 sm:p-10 space-y-5">
         <h2 className="font-display text-2xl font-bold text-[#FAFAF9]">
           {t.about.groupStoryTitle}
         </h2>
         <p className="text-base text-[#A8A29E] leading-relaxed max-w-4xl">
           {t.about.groupStoryBody}
         </p>
+        <div className="pt-4 border-t border-[#292524] flex flex-wrap gap-x-6 gap-y-2 text-xs font-mono text-[#A8A29E]">
+          <span>{BUSINESS_INFO.brandName}</span>
+          <span>{BUSINESS_INFO.address.locality}</span>
+        </div>
       </section>
 
       {/* Two Group Brands: GWD & SitiTicino */}
@@ -74,14 +89,24 @@ export function AboutView({ lang, onNavigate }: AboutViewProps) {
             <p className="text-sm sm:text-base text-[#A8A29E] leading-relaxed">
               {t.about.sitiTicinoDesc}
             </p>
-            <button
-              type="button"
-              onClick={() => onNavigate('/lavori')}
-              className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#FBBF24] hover:underline underline-offset-4 cursor-pointer"
-            >
-              <span>{t.dualEngine.agencyCta}</span>
-              <ArrowRight className="h-4 w-4" aria-hidden="true" />
-            </button>
+            <div className="flex flex-wrap items-center gap-4">
+              <button
+                type="button"
+                onClick={() => onNavigate('/lavori')}
+                className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#FBBF24] hover:underline underline-offset-4 cursor-pointer"
+              >
+                <span>{t.dualEngine.agencyCta}</span>
+                <ArrowRight className="h-4 w-4" aria-hidden="true" />
+              </button>
+              <a
+                href="https://sititicino.ch"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-xs font-mono text-[#A8A29E] hover:text-[#FAFAF9]"
+              >
+                sititicino.ch ↗
+              </a>
+            </div>
           </div>
         </div>
       </section>
@@ -107,6 +132,32 @@ export function AboutView({ lang, onNavigate }: AboutViewProps) {
                 {st.desc}
               </p>
             </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Ticino District Hubs */}
+      <section className="space-y-4">
+        <h2 className="font-display text-xl font-bold text-[#FAFAF9]">
+          {t.socialProof.zonesLabel}
+        </h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {TICINO_CITIES.map((city) => (
+            <button
+              key={city.slug}
+              type="button"
+              onClick={() => onNavigate(`/servizi/${city.slug}`)}
+              className="rounded-2xl border border-[#292524] bg-[#1C1917] p-5 text-left hover:border-[#2DD4BF]/50 transition-colors cursor-pointer space-y-1.5"
+            >
+              <div className="flex items-center justify-between text-sm font-semibold text-[#FAFAF9]">
+                <span className="inline-flex items-center gap-1.5">
+                  <MapPin className="h-3.5 w-3.5 text-[#2DD4BF]" aria-hidden="true" />
+                  {city.name}
+                </span>
+                <ArrowRight className="h-3.5 w-3.5 text-[#A8A29E]" aria-hidden="true" />
+              </div>
+              <p className="text-xs text-[#A8A29E]">{city.districtsAndHubs[lang]}</p>
+            </button>
           ))}
         </div>
       </section>

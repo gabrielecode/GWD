@@ -1,7 +1,9 @@
-import { ArrowUpRight, Clock, Mail, MapPin, MessageCircle, Phone } from 'lucide-react';
+import { Clock, MapPin } from 'lucide-react';
 import { Language } from '../types/showcase';
 import { TRANSLATIONS } from '../data/translations';
+import { BUSINESS_INFO } from '../data/business';
 import { ContactForm } from '../components/ContactForm';
+import { Breadcrumbs } from '../components/Breadcrumbs';
 
 interface ContactViewProps {
   lang: Language;
@@ -11,15 +13,19 @@ interface ContactViewProps {
 export function ContactView({ lang, onNavigate }: ContactViewProps) {
   const t = TRANSLATIONS[lang];
 
-  const whatsappUrl =
-    'https://wa.me/41910004210?text=' +
-    encodeURIComponent('Buongiorno GWD Group, vorrei fissare una consulenza.');
-
   return (
     <div className="mx-auto max-w-[1280px] px-4 sm:px-6 lg:px-8 py-12 lg:py-16 space-y-12">
+      <Breadcrumbs
+        items={[
+          { label: t.seoUi.homeLabel, path: '/' },
+          { label: t.nav.contact },
+        ]}
+        onNavigate={onNavigate}
+      />
+
       <header className="max-w-3xl space-y-4">
         <p className="text-sm font-medium text-[#2DD4BF]">
-          GWD Group · Lugano
+          {BUSINESS_INFO.brandName} · {BUSINESS_INFO.address.locality}
         </p>
         <h1 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-[#FAFAF9]">
           {t.contactPage.title}
@@ -30,7 +36,7 @@ export function ContactView({ lang, onNavigate }: ContactViewProps) {
       </header>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-        {/* Left: Direct Channels + Swiss Phone + Email + Lugano Map + Response Times */}
+        {/* Left: Generic Lugano location + Hours + Lugano Map + Response Times */}
         <div className="lg:col-span-5 space-y-6">
           <div className="rounded-2xl border border-[#292524] bg-[#1C1917] p-6 space-y-5">
             <h2 className="font-display text-lg font-semibold text-[#FAFAF9]">
@@ -38,50 +44,13 @@ export function ContactView({ lang, onNavigate }: ContactViewProps) {
             </h2>
 
             <div className="space-y-4 text-sm">
-              <a
-                href={whatsappUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center justify-between gap-3 rounded-xl border border-[#2DD4BF]/35 bg-[#0C0A09] p-3.5 hover:border-[#2DD4BF] transition-colors"
-              >
-                <span className="inline-flex items-center gap-2.5 text-[#FAFAF9] font-medium">
-                  <MessageCircle className="h-4 w-4 text-[#2DD4BF]" aria-hidden="true" />
-                  <span>{t.quickContact.whatsappDirect}</span>
-                </span>
-                <ArrowUpRight className="h-4 w-4 text-[#2DD4BF]" aria-hidden="true" />
-              </a>
-
-              <div className="flex items-start gap-3 pt-1">
-                <Phone className="h-4 w-4 text-[#A8A29E] mt-1 shrink-0" aria-hidden="true" />
-                <div>
-                  <div className="text-xs text-[#A8A29E]">{t.contactPage.phoneLabel}</div>
-                  <a
-                    href="tel:+41910004210"
-                    className="font-mono text-[#FAFAF9] hover:text-[#2DD4BF]"
-                  >
-                    +41 91 000 42 10
-                  </a>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-3">
-                <Mail className="h-4 w-4 text-[#A8A29E] mt-1 shrink-0" aria-hidden="true" />
-                <div>
-                  <div className="text-xs text-[#A8A29E]">{t.contactPage.emailLabel}</div>
-                  <a
-                    href="mailto:hello@gwdgroup.ch"
-                    className="font-mono text-[#FAFAF9] hover:text-[#2DD4BF]"
-                  >
-                    hello@gwdgroup.ch
-                  </a>
-                </div>
-              </div>
-
               <div className="flex items-start gap-3">
                 <MapPin className="h-4 w-4 text-[#A8A29E] mt-1 shrink-0" aria-hidden="true" />
                 <div>
                   <div className="text-xs text-[#A8A29E]">{t.contactPage.addressLabel}</div>
-                  <div className="text-[#FAFAF9]">{t.footer.address}</div>
+                  <address className="not-italic text-[#FAFAF9]">
+                    {BUSINESS_INFO.brandName} · {BUSINESS_INFO.address.locality}
+                  </address>
                 </div>
               </div>
 
@@ -89,7 +58,7 @@ export function ContactView({ lang, onNavigate }: ContactViewProps) {
                 <Clock className="h-4 w-4 text-[#A8A29E] mt-1 shrink-0" aria-hidden="true" />
                 <div>
                   <div className="text-xs text-[#A8A29E]">{t.contactPage.hoursLabel}</div>
-                  <div className="text-[#FAFAF9]">{t.contactPage.hoursValue}</div>
+                  <div className="text-[#FAFAF9]">{BUSINESS_INFO.openingHours.displayLabel}</div>
                 </div>
               </div>
             </div>
@@ -107,11 +76,11 @@ export function ContactView({ lang, onNavigate }: ContactViewProps) {
           {/* Architectural Lugano Map Box */}
           <div className="rounded-2xl border border-[#292524] bg-[#1C1917] p-6 space-y-4">
             <div className="flex items-center justify-between gap-2">
-              <h3 className="font-display text-base font-semibold text-[#FAFAF9]">
+              <h2 className="font-display text-base font-semibold text-[#FAFAF9]">
                 {t.contactPage.mapTitle}
-              </h3>
+              </h2>
               <span className="font-mono text-xs text-[#A8A29E]">
-                46.0037° N, 8.9511° E
+                {BUSINESS_INFO.geo.latitude.toFixed(4)}° N, {BUSINESS_INFO.geo.longitude.toFixed(4)}° E
               </span>
             </div>
             <div className="relative h-48 rounded-xl border border-[#292524] bg-[#0C0A09] overflow-hidden p-4 flex flex-col justify-between">
@@ -139,12 +108,12 @@ export function ContactView({ lang, onNavigate }: ContactViewProps) {
                 <span>Mendrisio · 20 min</span>
               </div>
               <div className="relative z-10 self-center rounded-xl border border-[#2DD4BF]/40 bg-[#1C1917]/95 px-3.5 py-2 text-xs text-[#FAFAF9]">
-                <span className="font-semibold text-[#2DD4BF]">GWD Group</span> · Via Nassa 21, Lugano
+                <span className="font-semibold text-[#2DD4BF]">{BUSINESS_INFO.brandName}</span> · {BUSINESS_INFO.address.locality}
               </div>
               <div className="relative z-10 flex items-center justify-between text-xs font-mono text-[#A8A29E]">
                 <span>Locarno · 35 min</span>
                 <a
-                  href="https://maps.google.com/?q=Via+Nassa+21,+6900+Lugano"
+                  href="https://maps.google.com/?q=Lugano,+Switzerland"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-[#2DD4BF] hover:underline"
