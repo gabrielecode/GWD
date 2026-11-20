@@ -284,7 +284,11 @@ export function resolveSeoMetadata(params: {
   );
 
   const hreflangs: HreflangLink[] = [
-    ...ALL_LANGS.map((code) => ({
+    {
+      hreflang: lang,
+      href: canonicalUrl,
+    },
+    ...ALL_LANGS.filter((code) => code !== lang).map((code) => ({
       hreflang: code,
       href: buildCanonicalRouteUrl(
         origin,
@@ -678,9 +682,10 @@ export function resolveSeoMetadata(params: {
     };
   }
 
-  // 8. Legal (/privacy, /cookie)
-  if (path === '/privacy' || path === '/cookie') {
+  // 8. Legal (/privacy, /cookie, /impressum)
+  if (path === '/privacy' || path === '/cookie' || path === '/impressum') {
     const isPrivacy = path === '/privacy';
+    const isImpressum = path === '/impressum';
     const titleByLang: Record<Language, string> = isPrivacy
       ? {
           it: 'Informativa Privacy nLPD / GDPR · GWD Group',
@@ -688,18 +693,37 @@ export function resolveSeoMetadata(params: {
           fr: 'Confidentialité nLPD / RGPD · GWD Group',
           en: 'Privacy Policy Swiss FADP / GDPR · GWD',
         }
+      : isImpressum
+      ? {
+          it: 'Impressum Dati Aziendali LCSI · GWD Group',
+          de: 'Impressum & Angaben UWG · GWD Group',
+          fr: 'Impressum & Mentions LCD · GWD Group',
+          en: 'Impressum Corporate Notice · GWD Group',
+        }
       : {
           it: 'Preferenze Cookie nLPD / GDPR · GWD Group',
           de: 'Cookie-Einstellungen nDSG · GWD Group',
           fr: 'Préférences Cookies nLPD · GWD Group',
           en: 'Cookie Preferences FADP / GDPR · GWD',
         };
-    const descByLang: Record<Language, string> = {
-      it: 'Trattamento dati personali e gestione cookie di GWD Group (Lugano) conforme alla legge svizzera nLPD e al GDPR europeo.',
-      de: 'Datenschutz und Cookie-Verwaltung von GWD Group (Lugano) gemäß Schweizer nDSG und europäischer DSGVO.',
-      fr: 'Traitement des données et gestion des cookies de GWD Group (Lugano) conforme à la nLPD suisse et au RGPD.',
-      en: 'Data protection and cookie preferences for GWD Group (Lugano), compliant with Swiss FADP (nLPD) and EU GDPR.',
-    };
+    const descByLang: Record<Language, string> = isImpressum
+      ? {
+          it: 'Impressum e dati societari di GWD Group (Lugano) ai sensi della Legge federale contro la concorrenza sleale (LCSI art. 3).',
+          de: 'Impressum und Unternehmensangaben der GWD Group (Lugano) gemäss Schweizer UWG Art. 3.',
+          fr: 'Impressum et mentions légales de GWD Group (Lugano) conformément à la loi suisse contre la concurrence déloyale (LCD art. 3).',
+          en: 'Corporate disclosure and Impressum for GWD Group (Lugano) pursuant to Art. 3 of the Swiss Act Against Unfair Competition (UWG).',
+        }
+      : {
+          it: 'Trattamento dati personali e gestione cookie di GWD Group (Lugano) conforme alla legge svizzera nLPD e al GDPR europeo.',
+          de: 'Datenschutz und Cookie-Verwaltung von GWD Group (Lugano) gemäß Schweizer nDSG und europäischer DSGVO.',
+          fr: 'Traitement des données et gestion des cookies de GWD Group (Lugano) conforme à la nLPD suisse et au RGPD.',
+          en: 'Data protection and cookie preferences for GWD Group (Lugano), compliant with Swiss FADP (nLPD) and EU GDPR.',
+        };
+    const pageBreadcrumbName = isPrivacy
+      ? t.footer.privacyLink
+      : isImpressum
+      ? t.footer.impressumLink
+      : t.footer.cookieLink;
     return {
       title: clampText(titleByLang[lang], 60),
       description: clampText(descByLang[lang], 155),
@@ -718,7 +742,7 @@ export function resolveSeoMetadata(params: {
           buildBreadcrumbSchema(origin, [
             { name: t.seoUi.homeLabel, url: buildCanonicalRouteUrl(origin, '/', lang) },
             {
-              name: isPrivacy ? t.footer.privacyLink : t.footer.cookieLink,
+              name: pageBreadcrumbName,
               url: canonicalUrl,
             },
           ]),
@@ -752,7 +776,11 @@ export function resolveSeoMetadata(params: {
     ogImageAlt,
     robots: 'index, follow',
     hreflangs: [
-      ...ALL_LANGS.map((code) => ({
+      {
+        hreflang: lang,
+        href: buildCanonicalRouteUrl(origin, '/', lang),
+      },
+      ...ALL_LANGS.filter((code) => code !== lang).map((code) => ({
         hreflang: code,
         href: buildCanonicalRouteUrl(origin, '/', code),
       })),

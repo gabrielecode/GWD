@@ -284,6 +284,18 @@ export default function App() {
       );
     }
 
+    if (currentPath === '/impressum') {
+      return (
+        <LegalView
+          mode="impressum"
+          lang={lang}
+          cookiePrefs={cookiePrefs}
+          onUpdateCookies={handleUpdateCookies}
+          onNavigate={navigate}
+        />
+      );
+    }
+
     // Fallback to Home
     return (
       <HomeView
@@ -297,6 +309,12 @@ export default function App() {
 
   return (
     <div className="min-h-screen flex flex-col bg-[#0C0A09] text-[#FAFAF9] overflow-x-clip">
+      <a
+        href="#main"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2.5 focus:bg-[#2DD4BF] focus:text-[#0C0A09] focus:font-semibold focus:rounded-lg focus:shadow-xl focus:outline-none focus:ring-2 focus:ring-[#FAFAF9]"
+      >
+        Vai al contenuto
+      </a>
       <SeoHead currentPath={currentPath} lang={lang} city={city} />
       <Header
         currentPath={currentPath}
@@ -305,7 +323,7 @@ export default function App() {
         onChangeLang={handleChangeLang}
       />
 
-      <main className="flex-1 pt-14 lg:pt-16">
+      <main id="main" className="flex-1 pt-14 lg:pt-16">
         {renderRoute()}
       </main>
 

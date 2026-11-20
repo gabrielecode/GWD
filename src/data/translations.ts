@@ -219,6 +219,7 @@ export interface UiStrings {
     legalTitle: string;
     privacyLink: string;
     cookieLink: string;
+    impressumLink: string;
     languageTitle: string;
     copyright: string;
   };
@@ -508,7 +509,8 @@ export const TRANSLATIONS: Record<Language, UiStrings> = {
       navigationTitle: 'Mappa del sito',
       legalTitle: 'Conformità & Legale',
       privacyLink: 'Informativa Privacy (nLPD / GDPR)',
-      cookieLink: 'Preferenze Cookie',
+      cookieLink: 'Preferenze Cookie & Dati',
+      impressumLink: 'Impressum (Dati aziendali)',
       languageTitle: 'Lingua',
       copyright: '© 2026 GWD Group (GWD + SitiTicino). Tutti i diritti riservati.',
     },
@@ -797,7 +799,8 @@ export const TRANSLATIONS: Record<Language, UiStrings> = {
       navigationTitle: 'Sitemap',
       legalTitle: 'Rechtliches & nDSG',
       privacyLink: 'Datenschutz (nDSG / DSGVO)',
-      cookieLink: 'Cookie-Einstellungen',
+      cookieLink: 'Cookie-Einstellungen & Speicher',
+      impressumLink: 'Impressum & Unternehmensangaben',
       languageTitle: 'Sprache',
       copyright: '© 2026 GWD Group (GWD + SitiTicino). Alle Rechte vorbehalten.',
     },
@@ -1086,7 +1089,8 @@ export const TRANSLATIONS: Record<Language, UiStrings> = {
       navigationTitle: 'Plan du site',
       legalTitle: 'Conformité & Légal',
       privacyLink: 'Confidentialité (nLPD / RGPD)',
-      cookieLink: 'Préférences Cookies',
+      cookieLink: 'Préférences Cookies & Données',
+      impressumLink: 'Impressum (Mentions légales)',
       languageTitle: 'Langue',
       copyright: '© 2026 GWD Group (GWD + SitiTicino). Tous droits réservés.',
     },
@@ -1375,7 +1379,8 @@ export const TRANSLATIONS: Record<Language, UiStrings> = {
       navigationTitle: 'Sitemap',
       legalTitle: 'Compliance & Legal',
       privacyLink: 'Privacy Policy (Swiss FADP / GDPR)',
-      cookieLink: 'Cookie Preferences',
+      cookieLink: 'Cookie Preferences & Storage',
+      impressumLink: 'Impressum (Corporate Notice)',
       languageTitle: 'Language',
       copyright: '© 2026 GWD Group (GWD + SitiTicino). All rights reserved.',
     },

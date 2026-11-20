@@ -121,6 +121,15 @@ export function Footer({
                 <li>
                   <button
                     type="button"
+                    onClick={() => onNavigate('/impressum')}
+                    className="hover:text-[#FAFAF9] transition-colors cursor-pointer"
+                  >
+                    {t.footer.impressumLink}
+                  </button>
+                </li>
+                <li>
+                  <button
+                    type="button"
                     onClick={onOpenCookieSettings}
                     className="text-xs text-[#2DD4BF] hover:underline underline-offset-4 cursor-pointer"
                   >

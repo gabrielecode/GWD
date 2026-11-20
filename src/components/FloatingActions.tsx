@@ -56,7 +56,7 @@ export function FloatingActions({
               <button
                 type="button"
                 onClick={onCloseCookieModal}
-                aria-label="Chiudi"
+                aria-label={t.nav.menuClose}
                 className="text-[#A8A29E] hover:text-[#FAFAF9] cursor-pointer"
               >
                 <X className="h-4 w-4" aria-hidden="true" />
@@ -65,7 +65,19 @@ export function FloatingActions({
           </div>
 
           <p className="text-xs text-[#A8A29E] leading-relaxed mb-4">
-            {t.cookieBanner.description}
+            {t.cookieBanner.description}{' '}
+            {onNavigate && (
+              <button
+                type="button"
+                onClick={() => {
+                  onNavigate('/cookie');
+                  onCloseCookieModal();
+                }}
+                className="text-[#FAFAF9] underline underline-offset-2 hover:text-[#2DD4BF] cursor-pointer ml-1"
+              >
+                {t.footer.cookieLink}
+              </button>
+            )}
           </p>
 
           {customizeOpen && (

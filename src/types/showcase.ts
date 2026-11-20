@@ -134,6 +134,8 @@ export interface CookiePreferences {
   decided: boolean;
 }
 
+export type LegalMode = 'privacy' | 'cookie' | 'impressum';
+
 export interface SitiTicinoAppItem {
   id: 'pratiko' | 'rankuplist' | 'swissleadfinder' | 'karepet' | 'demapp';
   name: string;

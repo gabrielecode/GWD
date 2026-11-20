@@ -71,27 +71,32 @@ function generateSitemap() {
     { path: '/contatti', changefreq: 'monthly', priority: '0.8' },
   ];
 
-  const urlBlocks = routes.map((route) => {
-    const loc = escapeXml(buildLangUrl(route.path, 'it'));
-    const alternates = [
-      ...LANGS.map(
-        (lang) =>
-          `    <xhtml:link rel="alternate" hreflang="${lang}" href="${escapeXml(
-            buildLangUrl(route.path, lang)
-          )}" />`
-      ),
-      `    <xhtml:link rel="alternate" hreflang="x-default" href="${loc}" />`,
-    ].join('\n');
+  const urlBlocks = routes.flatMap((route) => {
+    return LANGS.map((currentLang) => {
+      const loc = escapeXml(buildLangUrl(route.path, currentLang));
+      const alternates = [
+        `    <xhtml:link rel="alternate" hreflang="${currentLang}" href="${loc}" />`,
+        ...LANGS.filter((lang) => lang !== currentLang).map(
+          (lang) =>
+            `    <xhtml:link rel="alternate" hreflang="${lang}" href="${escapeXml(
+              buildLangUrl(route.path, lang)
+            )}" />`
+        ),
+        `    <xhtml:link rel="alternate" hreflang="x-default" href="${escapeXml(
+          buildLangUrl(route.path, 'it')
+        )}" />`,
+      ].join('\n');
 
-    return [
-      '  <url>',
-      `    <loc>${loc}</loc>`,
-      `    <lastmod>${TODAY}</lastmod>`,
-      `    <changefreq>${route.changefreq}</changefreq>`,
-      `    <priority>${route.priority}</priority>`,
-      alternates,
-      '  </url>',
-    ].join('\n');
+      return [
+        '  <url>',
+        `    <loc>${loc}</loc>`,
+        `    <lastmod>${TODAY}</lastmod>`,
+        `    <changefreq>${route.changefreq}</changefreq>`,
+        `    <priority>${currentLang === 'it' ? route.priority : (Math.max(0.2, parseFloat(route.priority) - 0.1)).toFixed(1)}</priority>`,
+        alternates,
+        '  </url>',
+      ].join('\n');
+    });
   });
 
   const xml = [
@@ -105,7 +110,7 @@ function generateSitemap() {
 
   const outPath = path.join(ROOT_DIR, 'public/sitemap.xml');
   fs.writeFileSync(outPath, xml, 'utf8');
-  console.log(`Generated ${outPath} with ${routes.length} canonical routes (${LANGS.join(', ')}, x-default).`);
+  console.log(`Generated ${outPath} with ${urlBlocks.length} URLs across ${routes.length} routes (${LANGS.join(', ')}, x-default).`);
 }
 
 generateSitemap();

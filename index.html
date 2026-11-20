@@ -43,12 +43,101 @@
       href="/assets/aistudio/hero-ecosystem.webp"
       fetchpriority="high"
     />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
-      rel="stylesheet"
-    />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "Organization",
+            "@id": "https://gwdgroup.ch/#organization",
+            "name": "GWD Group — GWD + SitiTicino",
+            "legalName": "GWD Group",
+            "url": "https://gwdgroup.ch",
+            "logo": "https://gwdgroup.ch/favicon.ico",
+            "sameAs": [
+              "https://sititicino.ch",
+              "https://swissleadfinder.ch",
+              "https://rankuplist.com",
+              "https://pratiko.ch",
+              "https://salviapet.com"
+            ],
+            "address": {
+              "@type": "PostalAddress",
+              "addressLocality": "Lugano",
+              "addressRegion": "TI",
+              "addressCountry": "CH"
+            }
+          },
+          {
+            "@type": ["LocalBusiness", "ProfessionalService"],
+            "@id": "https://gwdgroup.ch/#localbusiness",
+            "name": "GWD Group — GWD + SitiTicino",
+            "url": "https://gwdgroup.ch",
+            "image": "https://gwdgroup.ch/assets/aistudio/AI_marketing_network_UI_illustra__8cfdf428_b55f773d.jpg",
+            "priceRange": "CHF",
+            "parentOrganization": {
+              "@id": "https://gwdgroup.ch/#organization"
+            },
+            "address": {
+              "@type": "PostalAddress",
+              "addressLocality": "Lugano",
+              "addressRegion": "TI",
+              "addressCountry": "CH"
+            },
+            "geo": {
+              "@type": "GeoCoordinates",
+              "latitude": 46.0037,
+              "longitude": 8.9511
+            },
+            "openingHoursSpecification": [
+              {
+                "@type": "OpeningHoursSpecification",
+                "dayOfWeek": [
+                  "Monday",
+                  "Tuesday",
+                  "Wednesday",
+                  "Thursday",
+                  "Friday"
+                ],
+                "opens": "08:30",
+                "closes": "18:30"
+              }
+            ],
+            "areaServed": [
+              {
+                "@type": "City",
+                "name": "Lugano"
+              },
+              {
+                "@type": "City",
+                "name": "Bellinzona"
+              },
+              {
+                "@type": "City",
+                "name": "Locarno"
+              },
+              {
+                "@type": "City",
+                "name": "Mendrisio"
+              },
+              {
+                "@type": "AdministrativeArea",
+                "name": "Canton Ticino"
+              }
+            ],
+            "knowsLanguage": ["it", "de", "fr", "en"],
+            "description": "Da Lugano seguiamo studi fiduciari, ristoranti del centro, boutique hotel e aziende tech con siti ad alte prestazioni, SEO locale e segreterie vocali AI.",
+            "sameAs": [
+              "https://sititicino.ch",
+              "https://swissleadfinder.ch",
+              "https://rankuplist.com",
+              "https://pratiko.ch",
+              "https://salviapet.com"
+            ]
+          }
+        ]
+      }
+    </script>
   </head>
   <body class="bg-[#0C0A09] text-[#FAFAF9] antialiased selection:bg-[#2DD4BF]/30 selection:text-white">
     <div id="root"></div>

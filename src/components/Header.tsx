@@ -46,6 +46,7 @@ export function Header({
         <button
           type="button"
           onClick={() => handleLinkClick('/')}
+          aria-label="GWD Group — Home"
           className="flex items-center gap-2.5 text-left whitespace-nowrap shrink-0 cursor-pointer"
         >
           <svg

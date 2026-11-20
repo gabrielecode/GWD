@@ -28,7 +28,6 @@ import { StatusBadge } from '../components/StatusBadge';
 import { DevicePreview } from '../components/DevicePreview';
 import { ContactForm } from '../components/ContactForm';
 import {
-  HeroAtmosphericArt,
   ProjectThumbnail,
   ServiceCardKind,
   ServicePreviewThumbnail,
@@ -190,7 +189,41 @@ export function HomeView({
               </div>
 
               <div className="lg:col-span-7">
-                <HeroAtmosphericArt lang={lang} />
+                <div className="relative h-full min-h-[260px] sm:min-h-[340px] lg:min-h-[400px] w-full overflow-hidden rounded-2xl border border-[#292524] bg-[#0C0A09] shadow-2xl">
+                  <picture>
+                    <source srcSet="/assets/aistudio/hero-ecosystem.webp" type="image/webp" />
+                    <img
+                      src="/assets/aistudio/AI_marketing_network_UI_illustra__8cfdf428_b55f773d.jpg"
+                      alt={t.seoUi.heroImageAlt}
+                      width={1376}
+                      height={768}
+                      loading="eager"
+                      fetchPriority="high"
+                      decoding="async"
+                      className="h-full w-full object-cover object-[48%_56%] scale-[1.15] select-none"
+                    />
+                  </picture>
+
+                  {/* Edge-blending vignette to integrate cleanly with dark charcoal surface and trim baked screenshot borders */}
+                  <div
+                    className="pointer-events-none absolute inset-0"
+                    style={{
+                      background:
+                        'linear-gradient(180deg, rgba(12, 10, 9, 0.55) 0%, transparent 18%, transparent 74%, rgba(12, 10, 9, 0.92) 100%), linear-gradient(90deg, rgba(12, 10, 9, 0.65) 0%, transparent 16%, transparent 88%, rgba(12, 10, 9, 0.6) 100%)',
+                    }}
+                    aria-hidden="true"
+                  />
+
+                  <div className="absolute bottom-3.5 left-3.5 right-3.5 z-20 flex flex-wrap items-center justify-between gap-2 rounded-2xl border border-[#292524] bg-[#0C0A09]/85 px-4 py-2.5 backdrop-blur-md">
+                    <div className="flex items-center gap-2.5 text-xs">
+                      <span className="h-2 w-2 rounded-full bg-[#22C55E]" aria-hidden="true" />
+                      <span className="font-medium text-[#FAFAF9]">GWD + SitiTicino</span>
+                    </div>
+                    <span className="font-mono text-[11px] text-[#A8A29E]">
+                      6 SaaS · 10 Client Works · 4 Lingue
+                    </span>
+                  </div>
+                </div>
               </div>
             </div>
 
