@@ -512,7 +512,7 @@ export const TRANSLATIONS: Record<Language, UiStrings> = {
       cookieLink: 'Preferenze Cookie & Dati',
       impressumLink: 'Impressum (Dati aziendali)',
       languageTitle: 'Lingua',
-      copyright: '© 2026 Kreativalab(kreativalab + SitiTicino). Tutti i diritti riservati.',
+      copyright: '© 2026 Kreativalab. Tutti i diritti riservati.',
     },
     whatsapp: {
       label: 'WhatsApp',
@@ -802,7 +802,7 @@ export const TRANSLATIONS: Record<Language, UiStrings> = {
       cookieLink: 'Cookie-Einstellungen & Speicher',
       impressumLink: 'Impressum & Unternehmensangaben',
       languageTitle: 'Sprache',
-      copyright: '© 2026 Kreativalab(kreativalab + SitiTicino). Alle Rechte vorbehalten.',
+      copyright: '© 2026 Kreativalab. Alle Rechte vorbehalten.',
     },
     whatsapp: {
       label: 'WhatsApp',
@@ -1092,7 +1092,7 @@ export const TRANSLATIONS: Record<Language, UiStrings> = {
       cookieLink: 'Préférences Cookies & Données',
       impressumLink: 'Impressum (Mentions légales)',
       languageTitle: 'Langue',
-      copyright: '© 2026 Kreativalab(kreativalab + SitiTicino). Tous droits réservés.',
+      copyright: '© 2026 Kreativalab. Tous droits réservés.',
     },
     whatsapp: {
       label: 'WhatsApp',
@@ -1382,7 +1382,7 @@ export const TRANSLATIONS: Record<Language, UiStrings> = {
       cookieLink: 'Cookie Preferences & Storage',
       impressumLink: 'Impressum (Corporate Notice)',
       languageTitle: 'Language',
-      copyright: '© 2026 Kreativalab(kreativalab + SitiTicino). All rights reserved.',
+      copyright: '© 2026 Kreativalab. All rights reserved.',
     },
     whatsapp: {
       label: 'WhatsApp',

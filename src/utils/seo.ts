@@ -759,10 +759,10 @@ export function resolveSeoMetadata(params: {
     en: 'kreativalab Group — Digital Venture Studio & Agency | Lugano',
   };
   const homeDescs: Record<Language, string> = {
-    it: 'Venture Studio SaaS e Web Agency a Lugano (kreativalab + SitiTicino): piattaforme B2B, siti veloci, SEO locale in Ticino e agenti AI vocali 24/7.',
-    de: 'SaaS Venture Studio & Webagentur in Lugano (kreativalab + SitiTicino): B2B-Software, schnelle Websites, lokale SEO Tessin und KI-Sprachagenten.',
-    fr: 'Venture Studio SaaS & Agence Web à Lugano (kreativalab + SitiTicino) : logiciels B2B, sites rapides, SEO local Tessin et agents vocaux IA 24/7.',
-    en: 'SaaS Venture Studio & Web Agency in Lugano (kreativalab + SitiTicino): B2B platforms, fast websites, Ticino local SEO, and 24/7 AI voice agents.',
+    it: 'Venture Studio SaaS e Web Agency a Lugano : piattaforme B2B, siti veloci, SEO locale in Ticino e agenti AI vocali 24/7.',
+    de: 'SaaS Venture Studio & Webagentur in Lugano : B2B-Software, schnelle Websites, lokale SEO Tessin und KI-Sprachagenten.',
+    fr: 'Venture Studio SaaS & Agence Web à Lugano  : logiciels B2B, sites rapides, SEO local Tessin et agents vocaux IA 24/7.',
+    en: 'SaaS Venture Studio & Web Agency in Lugano : B2B platforms, fast websites, Ticino local SEO, and 24/7 AI voice agents.',
   };
 
   return {
