@@ -131,6 +131,20 @@ export const SERVICES: ServiceItem[] = [
           en: 'Yes: centralized content catalogs ensure new products or case studies automatically inherit layout and SEO metadata.',
         },
       },
+      {
+        question: {
+          it: 'Come viene gestito il preventivo e la proprietà di dominio e codice?',
+          de: 'Wie sind Offerte sowie Eigentum an Domain und Code geregelt?',
+          fr: 'Comment sont gérés le devis ainsi que la propriété du domaine et du code ?',
+          en: 'How are pricing and ownership of the domain and codebase handled?',
+        },
+        answer: {
+          it: 'Ogni progetto parte da un preventivo trasparente a fasi fisse; dominio, hosting svizzero e codice sorgente restano al 100% di proprietà della tua azienda.',
+          de: 'Jedes Projekt basiert auf einer transparenten Fixpreis-Offerte; Domain, Schweizer Hosting und Quellcode bleiben zu 100 % Eigentum Ihres Unternehmens.',
+          fr: 'Chaque mandat repose sur un devis transparent par phases ; le nom de domaine, l’hébergement suisse et le code restent à 100 % votre propriété.',
+          en: 'Every build starts with a fixed-scope milestone quote; your domain, Swiss hosting, and source code remain 100% owned by your business.',
+        },
+      },
     ],
     targetKeywords: {
       it: ['web agency Lugano', 'siti web Ticino', 'sviluppo web veloce Svizzera'],
@@ -267,6 +281,20 @@ export const SERVICES: ServiceItem[] = [
           de: 'Ja: Wir richten CHF/EUR-Preise, Schweizer MwSt-Sätze (8,1 % / 2,6 %), Post-Tarife und Abholung vor Ort ein.',
           fr: 'Oui : gestion CHF/EUR, TVA suisse (8,1 % / 2,6 %), tarifs Poste Suisse et retrait sur place.',
           en: 'Yes: we configure CHF/EUR pricing, Swiss VAT rates (8.1% / 2.6%), Swiss Post shipping rules, and local pickup.',
+        },
+      },
+      {
+        question: {
+          it: 'Possiamo migrare prodotti e ordini da un vecchio shop senza perdere traffico Google?',
+          de: 'Können Produkte und Bestellungen ohne Google-Ranking-Verlust migriert werden?',
+          fr: 'Peut-on migrer catalogue et commandes sans perdre le référencement Google ?',
+          en: 'Can we migrate products and orders from an older store without losing Google rankings?',
+        },
+        answer: {
+          it: 'Sì: mappiamo redirect 301 per ogni URL esistente, preserviamo i metadati indicizzati e validiamo i dati strutturati Product prima della messa online.',
+          de: 'Ja: Wir richten saubere 301-Weiterleitungen für jede bestehende URL ein, übernehmen indexierte Metadaten und prüfen Product-Schema vor dem Go-Live.',
+          fr: 'Oui : nous configurons des redirections 301 pour chaque URL existante, conservons les métadonnées indexées et validons le balisage Product.',
+          en: 'Yes: we map 301 redirects for every existing URL, preserve indexed metadata, and validate Product structured data prior to launch.',
         },
       },
     ],
@@ -407,6 +435,20 @@ export const SERVICES: ServiceItem[] = [
           en: 'Each district hub (Lugano, Bellinzona, Locarno, Mendrisio) features distinct industry context, neighborhood signals, local case studies, and tailored Schema.org markup.',
         },
       },
+      {
+        question: {
+          it: 'La scheda Google Business Profile rimane di proprietà esclusiva della nostra azienda?',
+          de: 'Bleibt das Google Business Profile vollständig im Eigentum unseres Unternehmens?',
+          fr: 'La fiche Google Business Profile reste-t-elle la propriété exclusive de notre entreprise ?',
+          en: 'Does our Google Business Profile remain 100% owned by our company?',
+        },
+        answer: {
+          it: 'Sempre: operiamo come gestori autorizzati sul tuo account Google Business e forniamo report mensili verificabili su chiamate, indicazioni e clic.',
+          de: 'Immer: Wir arbeiten als autorisierte Verwalter in Ihrem Google-Konto und liefern monatliche Berichte zu Anrufen, Routenanfragen und Klicks.',
+          fr: 'Toujours : nous intervenons en tant que gestionnaire autorisé sur votre compte Google et livrons des rapports mensuels sur appels et clics.',
+          en: 'Always: we work as authorized managers inside your own Google Business account and deliver transparent monthly call and click reports.',
+        },
+      },
     ],
     targetKeywords: {
       it: ['SEO locale Ticino', 'posizionamento Google Lugano', 'Google Business Profile Bellinzona'],
@@ -543,6 +585,20 @@ export const SERVICES: ServiceItem[] = [
           de: 'Ja: Anrufer werden zu Beginn informiert, es werden nur notwendige Buchungsdaten erfasst und gemäß nDSG/DSGVO geschützt.',
           fr: 'Oui : l’appelant est informé dès l’accueil, seules les données minimales de réservation sont collectées selon la nLPD et le RGPD.',
           en: 'Yes: callers receive an upfront notice, only minimal booking fields are stored, and logs follow strict Swiss FADP and GDPR safeguards.',
+        },
+      },
+      {
+        question: {
+          it: 'Cosa succede se un cliente fa una richiesta imprevista o urgente?',
+          de: 'Was passiert bei unerwarteten oder dringenden Anliegen am Telefon?',
+          fr: 'Que se passe-t-il si un client formule une demande imprévue ou urgente ?',
+          en: 'What happens when a caller has an unexpected or urgent request?',
+        },
+        answer: {
+          it: 'L’agente riconosce le parole chiave prioritarie e trasferisce subito la chiamata al numero di reperibilità oppure invia un avviso immediato su WhatsApp.',
+          de: 'Der Agent erkennt definierte Prioritätskriterien und stellt sofort an Ihre Notfallnummer durch oder sendet eine Sofortmeldung per WhatsApp.',
+          fr: 'L’agent détecte les critères prioritaires et transfère aussitôt l’appel vers votre ligne directe ou envoie une alerte WhatsApp immédiate.',
+          en: 'The agent detects priority keywords and immediately transfers the call to your designated staff line or triggers an instant WhatsApp alert.',
         },
       },
     ],
@@ -684,6 +740,20 @@ export const SERVICES: ServiceItem[] = [
           en: 'Yes, the agent detects the caller’s language within 2 seconds and switches seamlessly between Italian, German, French, and English.',
         },
       },
+      {
+        question: {
+          it: 'Possiamo aggiornare rapidamente giorni di chiusura straordinaria o piatti del giorno?',
+          de: 'Können Ruhetage oder Tagesmenüs kurzfristig angepasst werden?',
+          fr: 'Peut-on mettre à jour rapidement les fermetures exceptionnelles ou plats du jour ?',
+          en: 'Can we quickly update holiday closures or daily specials?',
+        },
+        answer: {
+          it: 'Sì: basta un messaggio o una modifica rapida dal pannello dedicato per aggiornare in tempo reale regole di disponibilità, terrazza e menu.',
+          de: 'Ja: Eine kurze Nachricht oder Anpassung im Dashboard genügt, um Verfügbarkeiten, Terrassenregeln und Menühinweise in Echtzeit zu aktualisieren.',
+          fr: 'Oui : un simple message ou ajustement dans l’interface met à jour en temps réel disponibilités, terrasse et suggestions du chef.',
+          en: 'Yes: a quick update in the control panel—or even a short message—updates availability rules, terrace status, and daily specials immediately.',
+        },
+      },
     ],
     targetKeywords: {
       it: ['agente AI ristorante', 'prenotazione tavoli AI Lugano', 'segreteria ristorante Ticino'],
@@ -821,6 +891,20 @@ export const SERVICES: ServiceItem[] = [
           de: 'In 5–7 Arbeitstagen übernehmen wir Behandlungsliste, Stylisten-Zeiten, Öffnungszeiten und Rufumleitung.',
           fr: 'En 5 à 7 jours ouvrés, nous intégrons vos prestations, durées par coiffeur et renvoi d’appel.',
           en: 'Within 5–7 business days we configure your treatment durations, stylist schedules, and Swiss phone forwarding.',
+        },
+      },
+      {
+        question: {
+          it: 'È necessario cambiare il numero di telefono attuale del salone?',
+          de: 'Muss die bestehende Telefonnummer des Salons geändert werden?',
+          fr: 'Faut-il changer le numéro de téléphone actuel du salon ?',
+          en: 'Do we need to change our salon’s existing phone number?',
+        },
+        answer: {
+          it: 'No: manteniamo il vostro numero fisso o mobile storico attivando la deviazione automatica su occupato, mancata risposta o fuori orario.',
+          de: 'Nein: Ihre bestehende Festnetz- oder Mobilnummer bleibt erhalten – wir aktivieren die Weiterleitung bei Besetzt, Nichtannahme oder nach Feierabend.',
+          fr: 'Non : vous conservez votre numéro habituel grâce au renvoi d’appel automatique sur occupation, non-réponse ou hors horaires.',
+          en: 'No: you keep your existing landline or mobile number using automatic forwarding on busy, unanswered, or after-hours calls.',
         },
       },
     ],

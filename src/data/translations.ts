@@ -91,6 +91,18 @@ export interface UiStrings {
     aiRestaurantsCta: string;
     aiSalonsCta: string;
   };
+  homeFaq: {
+    eyebrow: string;
+    sectionTitle: string;
+    sectionSubtitle: string;
+    allCategories: string;
+    expandAll: string;
+    collapseAll: string;
+    questionsLabel: string;
+    exploreServiceCta: string;
+    contactBridgeText: string;
+    contactBridgeCta: string;
+  };
   socialProof: {
     sectionTitle: string;
     sectionSubtitle: string;
@@ -347,6 +359,19 @@ export const TRANSLATIONS: Record<Language, UiStrings> = {
       exploreService: 'Approfondisci servizio',
       aiRestaurantsCta: 'Agenti AI Ristoranti',
       aiSalonsCta: 'Agenti AI Parrucchieri',
+    },
+    homeFaq: {
+      eyebrow: 'Domande frequenti · Servizi',
+      sectionTitle: 'Risposte chiare per ogni categoria di servizio',
+      sectionSubtitle:
+        'Seleziona una categoria ed espandi le domande più frequenti su tempi, proprietà del progetto, integrazioni svizzere e operatività.',
+      allCategories: 'Tutte le categorie',
+      expandAll: 'Espandi tutte',
+      collapseAll: 'Chiudi tutte',
+      questionsLabel: 'domande',
+      exploreServiceCta: 'Scheda servizio',
+      contactBridgeText: 'Hai un’esigenza tecnica specifica per la tua azienda?',
+      contactBridgeCta: 'Parla con il team',
     },
     socialProof: {
       sectionTitle: 'Aziende, recensioni e presenza in Ticino',
@@ -624,6 +649,19 @@ export const TRANSLATIONS: Record<Language, UiStrings> = {
       aiRestaurantsCta: 'KI-Agenten Restaurants',
       aiSalonsCta: 'KI-Agenten Friseursalons',
     },
+    homeFaq: {
+      eyebrow: 'Häufige Fragen · Leistungen',
+      sectionTitle: 'Klare Antworten für jede Leistungskategorie',
+      sectionSubtitle:
+        'Wählen Sie eine Kategorie und klappen Sie die häufigsten Fragen zu Laufzeiten, Eigentumsrechten, Schweizer Zahlungsarten und Integrationen auf.',
+      allCategories: 'Alle Kategorien',
+      expandAll: 'Alle öffnen',
+      collapseAll: 'Alle schließen',
+      questionsLabel: 'Fragen',
+      exploreServiceCta: 'Leistungsdetails',
+      contactBridgeText: 'Haben Sie eine spezifische Anforderung für Ihr Unternehmen?',
+      contactBridgeCta: 'Mit dem Team sprechen',
+    },
     socialProof: {
       sectionTitle: 'Kunden, Bewertungen & Tessiner Präsenz',
       sectionSubtitle:
@@ -900,6 +938,19 @@ export const TRANSLATIONS: Record<Language, UiStrings> = {
       aiRestaurantsCta: 'Agents IA Restaurants',
       aiSalonsCta: 'Agents IA Coiffeurs',
     },
+    homeFaq: {
+      eyebrow: 'Questions fréquentes · Services',
+      sectionTitle: 'Des réponses concrètes par catégorie de service',
+      sectionSubtitle:
+        'Sélectionnez un domaine et dépliez les questions clés sur les délais, la propriété technique, les paiements suisses et les intégrations.',
+      allCategories: 'Toutes les catégories',
+      expandAll: 'Tout déplier',
+      collapseAll: 'Tout replier',
+      questionsLabel: 'questions',
+      exploreServiceCta: 'Voir le service',
+      contactBridgeText: 'Un besoin technique particulier pour votre activité ?',
+      contactBridgeCta: 'Contacter l’équipe',
+    },
     socialProof: {
       sectionTitle: 'Clients, avis Google et ancrage au Tessin',
       sectionSubtitle:
@@ -1175,6 +1226,19 @@ export const TRANSLATIONS: Record<Language, UiStrings> = {
       exploreService: 'Explore service',
       aiRestaurantsCta: 'AI Agents Restaurants',
       aiSalonsCta: 'AI Agents Hair Salons',
+    },
+    homeFaq: {
+      eyebrow: 'FAQ · Service Categories',
+      sectionTitle: 'Clear answers across every service category',
+      sectionSubtitle:
+        'Select a service category and expand common questions covering timelines, code ownership, Swiss integrations, and daily operations.',
+      allCategories: 'All categories',
+      expandAll: 'Expand all',
+      collapseAll: 'Collapse all',
+      questionsLabel: 'questions',
+      exploreServiceCta: 'Service details',
+      contactBridgeText: 'Have a specific technical question for your business?',
+      contactBridgeCta: 'Talk to our team',
     },
     socialProof: {
       sectionTitle: 'Clients, Google reviews & Ticino footprint',

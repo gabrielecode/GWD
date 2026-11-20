@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import {
   ArrowRight,
-  ArrowUpRight,
   Award,
   Briefcase,
   Calendar,
@@ -9,7 +8,6 @@ import {
   Globe,
   Layers,
   MapPin,
-  MessageCircle,
   Play,
   Search,
   Sparkles,
@@ -37,6 +35,7 @@ import {
 } from '../components/VisualThumbnails';
 import { SitiTicinoAppsSection } from '../components/SitiTicinoAppsSection';
 import { ProjectCardSkeleton } from '../components/ProjectCardSkeleton';
+import { ServiceFaqSection } from '../components/ServiceFaqSection';
 import { getHeroStudioStats } from '../utils/studioStats';
 
 interface HomeViewProps {
@@ -880,6 +879,12 @@ export function HomeView({
           </div>
         </div>
       </section>
+
+      {/* BLOCK 7B: FAQ INTERATTIVE PER CATEGORIA DI SERVIZIO */}
+      <ServiceFaqSection
+        lang={lang}
+        onNavigate={(p) => onNavigate(p)}
+      />
 
       {/* BLOCK 8: CONTATTO RAPIDO */}
       <section id="contatto-rapido">
