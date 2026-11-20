@@ -29,9 +29,15 @@ export function Footer({
             <button
               type="button"
               onClick={() => onNavigate('/')}
-              className="font-display text-xl font-bold tracking-tight text-[#FAFAF9] cursor-pointer"
+              className="inline-flex items-center gap-2.5 font-display text-xl font-bold tracking-tight text-[#FAFAF9] cursor-pointer"
             >
-              {BUSINESS_INFO.brandName}
+              <img
+                src="https://i.postimg.cc/zbbY84tF/logo.jpg"
+                alt=""
+                aria-hidden="true"
+                className="h-7 w-7 rounded-lg object-cover shrink-0"
+              />
+              <span>{BUSINESS_INFO.brandName}</span>
             </button>
             <p className="text-sm leading-relaxed text-[#A8A29E] max-w-md">
               {t.footer.tagline}
