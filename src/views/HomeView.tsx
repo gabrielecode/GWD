@@ -54,9 +54,6 @@ export function HomeView({
   const heroStats = getHeroStudioStats(lang);
   const [selectedCaseSlug, setSelectedCaseSlug] = useState<string>('reverse-editing');
   const [searchQuery, setSearchQuery] = useState('');
-  const [callDay, setCallDay] = useState('Mar');
-  const [callSlot, setCallSlot] = useState('10:30');
-  const [callBooked, setCallBooked] = useState(false);
   const [isGridLoading, setIsGridLoading] = useState(false);
   const isFirstFilterRun = useRef(true);
 
@@ -951,76 +948,20 @@ export function HomeView({
                     </div>
                   </div>
 
-                  {!callBooked ? (
-                    <>
-                      <div className="grid grid-cols-2 gap-3">
-                        <div>
-                          <span className="block text-[11px] text-[#A8A29E] mb-1.5">
-                            {t.quickContact.selectDay}
-                          </span>
-                          <div className="flex gap-1">
-                            {['Lun', 'Mar', 'Gio'].map((d) => (
-                              <button
-                                key={d}
-                                type="button"
-                                onClick={() => setCallDay(d)}
-                                className={`flex-1 rounded-lg py-1.5 text-xs font-mono cursor-pointer border ${
-                                  callDay === d
-                                    ? 'border-[#FBBF24] bg-[#FBBF24] text-[#0C0A09] font-semibold'
-                                    : 'border-[#292524] bg-[#1C1917] text-[#A8A29E]'
-                                }`}
-                              >
-                                {d}
-                              </button>
-                            ))}
-                          </div>
-                        </div>
-
-                        <div>
-                          <span className="block text-[11px] text-[#A8A29E] mb-1.5">
-                            {t.quickContact.selectSlot}
-                          </span>
-                          <div className="flex gap-1">
-                            {['10:30', '15:00'].map((slot) => (
-                              <button
-                                key={slot}
-                                type="button"
-                                onClick={() => setCallSlot(slot)}
-                                className={`flex-1 rounded-lg py-1.5 text-xs font-mono cursor-pointer border ${
-                                  callSlot === slot
-                                    ? 'border-[#FBBF24] bg-[#FBBF24] text-[#0C0A09] font-semibold'
-                                    : 'border-[#292524] bg-[#1C1917] text-[#A8A29E]'
-                                }`}
-                              >
-                                {slot}
-                              </button>
-                            ))}
-                          </div>
-                        </div>
-                      </div>
-
-                      <button
-                        type="button"
-                        onClick={() => setCallBooked(true)}
-                        className="w-full rounded-full border border-[#FBBF24]/50 bg-[#FBBF24]/10 py-2.5 text-xs font-semibold text-[#FBBF24] hover:bg-[#FBBF24]/20 transition-colors cursor-pointer min-h-[42px]"
-                      >
-                        {t.quickContact.confirmCall}
-                      </button>
-                    </>
-                  ) : (
-                    <div className="rounded-xl border border-[#22C55E]/40 bg-[#1C1917] p-3 flex items-center justify-between gap-3">
-                      <span className="text-xs text-[#22C55E] font-medium">
-                        {t.quickContact.callConfirmed}: {callDay} · {callSlot} CET
-                      </span>
-                      <button
-                        type="button"
-                        onClick={() => setCallBooked(false)}
-                        className="text-xs text-[#A8A29E] hover:text-[#FAFAF9] underline cursor-pointer"
-                      >
-                        {lang === 'de' ? 'Ändern' : lang === 'fr' ? 'Modifier' : lang === 'en' ? 'Change' : 'Modifica'}
-                      </button>
-                    </div>
-                  )}
+                  <a
+                    href="https://cal.com/kreativalab/call-20-minuti"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block w-full rounded-full border border-[#FBBF24]/50 bg-[#FBBF24]/10 py-2.5 text-center text-xs font-semibold leading-[26px] text-[#FBBF24] hover:bg-[#FBBF24]/20 transition-colors min-h-[42px]"
+                  >
+                    {lang === 'de'
+                      ? 'Termin im Kalender wählen'
+                      : lang === 'fr'
+                      ? 'Choisir un créneau'
+                      : lang === 'en'
+                      ? 'Pick a time slot'
+                      : 'Scegli giorno e orario'}
+                  </a>
 
                   <p className="text-xs text-[#A8A29E]">
                     {t.quickContact.responseTime}
