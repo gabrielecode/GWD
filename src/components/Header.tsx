@@ -49,19 +49,12 @@ export function Header({
           aria-label="kreativalab — Home"
           className="flex items-center gap-2.5 text-left whitespace-nowrap shrink-0 cursor-pointer"
         >
-          <svg
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
+          <img
+            src="https://i.postimg.cc/zbbY84tF/logo.jpg"
+            alt=""
             aria-hidden="true"
-            className="shrink-0"
-          >
-            <rect x="2" y="2" width="9" height="9" rx="3" fill="#2DD4BF" />
-            <rect x="13" y="2" width="9" height="9" rx="3" fill="#FBBF24" />
-            <rect x="2" y="13" width="9" height="9" rx="3" fill="#60A5FA" />
-            <rect x="13" y="13" width="9" height="9" rx="3" stroke="#FAFAF9" strokeOpacity="0.65" strokeWidth="1.8" />
-          </svg>
+            className="h-7 w-7 rounded-lg object-cover shrink-0"
+          />
           <span className="font-display text-lg font-bold tracking-tight text-[#FAFAF9]">
             kreativalab
           </span>
