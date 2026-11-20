@@ -6,7 +6,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const ROOT_DIR = path.resolve(__dirname, '..');
 
-const SITE_URL = (process.env.VITE_SITE_URL || 'https://gwdgroup.ch').replace(/\/$/, '');
+const SITE_URL = (process.env.VITE_SITE_URL || 'https://kreativalab.ch').replace(/\/$/, '');
 const LANGS = ['it', 'de', 'fr', 'en'];
 const TODAY = new Date().toISOString().slice(0, 10);
 
