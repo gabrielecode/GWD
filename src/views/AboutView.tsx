@@ -49,7 +49,7 @@ export function AboutView({ lang, onNavigate }: AboutViewProps) {
         </div>
       </section>
 
-      {/* Two Group Brands: GWD & SitiTicino */}
+      {/* Dual Engine: Studio & Agency */}
       <section className="space-y-6">
         <h2 className="font-display text-2xl font-bold text-[#FAFAF9]">
           {t.about.brandsTitle}

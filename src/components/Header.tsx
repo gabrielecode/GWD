@@ -46,7 +46,7 @@ export function Header({
         <button
           type="button"
           onClick={() => handleLinkClick('/')}
-          aria-label="GWD Group — Home"
+          aria-label="kreativalab — Home"
           className="flex items-center gap-2.5 text-left whitespace-nowrap shrink-0 cursor-pointer"
         >
           <svg
@@ -63,7 +63,7 @@ export function Header({
             <rect x="13" y="13" width="9" height="9" rx="3" stroke="#FAFAF9" strokeOpacity="0.65" strokeWidth="1.8" />
           </svg>
           <span className="font-display text-lg font-bold tracking-tight text-[#FAFAF9]">
-            GWD Group
+            kreativalab
           </span>
         </button>
 

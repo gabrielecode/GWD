@@ -217,7 +217,7 @@ export function HomeView({
                   <div className="absolute bottom-3.5 left-3.5 right-3.5 z-20 flex flex-wrap items-center justify-between gap-2 rounded-2xl border border-[#292524] bg-[#0C0A09]/85 px-4 py-2.5 backdrop-blur-md">
                     <div className="flex items-center gap-2.5 text-xs">
                       <span className="h-2 w-2 rounded-full bg-[#22C55E]" aria-hidden="true" />
-                      <span className="font-medium text-[#FAFAF9]">GWD + SitiTicino</span>
+                      <span className="font-medium text-[#FAFAF9]">kreativalab</span>
                     </div>
                     <span className="font-mono text-[11px] text-[#A8A29E]">
                       6 SaaS · 10 Client Works · 4 Lingue
@@ -229,7 +229,7 @@ export function HomeView({
 
             {/* Data-Driven Hero Credibility Stats Bar */}
             <div
-              aria-label="GWD Group Metrics"
+              aria-label="kreativalab Metrics"
               className="mt-7 pt-6 border-t border-[#292524]/80 grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4"
             >
               <div className="rounded-2xl border border-[#292524] bg-[#0C0A09]/75 px-4 py-3.5 flex items-center gap-3.5 transition-colors hover:border-[#2DD4BF]/40">
@@ -927,7 +927,7 @@ export function HomeView({
               <div className="lg:col-span-5 space-y-6">
                 <div>
                   <p className="text-xs font-medium uppercase tracking-wider text-[#FBBF24] mb-2">
-                    GWD Group · Lugano
+                    kreativalab · Lugano
                   </p>
                   <h2 className="font-display text-3xl sm:text-4xl font-bold tracking-tight text-[#FAFAF9]">
                     {t.quickContact.sectionTitle}

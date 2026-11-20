@@ -44,7 +44,7 @@ export function ProductsHubView({ lang, onNavigate }: ProductsHubViewProps) {
 
       <header className="glass-panel rounded-3xl p-6 sm:p-10 max-w-4xl space-y-4">
         <p className="text-xs font-medium uppercase tracking-wider text-[#2DD4BF]">
-          {t.dualEngine.saasTag} · GWD Group
+          {t.dualEngine.saasTag} · kreativalab
         </p>
         <h1 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-[#FAFAF9]">
           {t.dualEngine.saasTitle}

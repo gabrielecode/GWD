@@ -31,7 +31,7 @@ export function Footer({
               onClick={() => onNavigate('/')}
               className="font-display text-xl font-bold tracking-tight text-[#FAFAF9] cursor-pointer"
             >
-              {BUSINESS_INFO.brandName} <span className="text-[#A8A29E] font-normal">· GWD + SitiTicino</span>
+              {BUSINESS_INFO.brandName}
             </button>
             <p className="text-sm leading-relaxed text-[#A8A29E] max-w-md">
               {t.footer.tagline}
