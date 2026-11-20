@@ -152,7 +152,7 @@ export const LEGAL_CONTENT: Record<Language, LegalContentBundle> = {
       subtitle:
         'Trasparenza tecnica su storage e privacy: nessun cookie di profilazione pubblicitaria o tracker di terze parti.',
       intro:
-        'GWD Group adotta un’architettura web orientata alla massima privacy degli utenti. Questo sito non utilizza cookie di terze parti per profilazione comportamentale (come Meta Pixel, Google Analytics convenzionale o tracker pubblicitari).',
+        'Kreativalabadotta un’architettura web orientata alla massima privacy degli utenti. Questo sito non utilizza cookie di terze parti per profilazione comportamentale (come Meta Pixel, Google Analytics convenzionale o tracker pubblicitari).',
       noProfilingNotice:
         'Zero tracker di profilazione: i font e le icone sono memorizzati in locale e non inviano dati a server esterni.',
       storageTableTitle: 'Archiviazione tecnica attiva sul vostro browser',
@@ -187,7 +187,7 @@ export const LEGAL_CONTENT: Record<Language, LegalContentBundle> = {
       statusTitle: 'Stato societario e dati di registro',
       statusBadge: 'In fase di formalizzazione / costituzione notarile',
       statusBody:
-        'GWD Group opera come Digital Venture Studio & Web Agency a Lugano (Canton Ticino). La ragione sociale formale, l’indirizzo civico esatto e l’eventuale iscrizione nel Registro di commercio / numero IDI (UID) e partita IVA svizzera sono attualmente in fase di definizione notarile e registrazione definitiva. I dati societari verranno aggiornati puntualmente in questo Impressum al completamento delle pratiche di registro.',
+        'Kreativalabopera come Digital Venture Studio & Web Agency a Lugano (Canton Ticino). La ragione sociale formale, l’indirizzo civico esatto e l’eventuale iscrizione nel Registro di commercio / numero IDI (UID) e partita IVA svizzera sono attualmente in fase di definizione notarile e registrazione definitiva. I dati societari verranno aggiornati puntualmente in questo Impressum al completamento delle pratiche di registro.',
       headquartersTitle: 'Sede operativa e territorio',
       locationDetails: [
         `Località: ${BUSINESS_INFO.address.locality}`,
@@ -201,7 +201,7 @@ export const LEGAL_CONTENT: Record<Language, LegalContentBundle> = {
         'Per comunicazioni istituzionali, richieste di preventivo, offerte o notifiche formali è attivo il modulo nella pagina Contatti (con riscontro entro 4 ore lavorative) oppure i canali diretti del gruppo indicati nel sito.',
       disclaimerTitle: 'Esclusione di responsabilità per contenuti e collegamenti esterni',
       disclaimerBody:
-        'I contenuti di questo sito sono stati redatti con la massima cura e vengono regolarmente verificati. GWD Group non assume tuttavia responsabilità per l’esattezza o la completezza dei contenuti di terze parti raggiungibili tramite collegamenti esterni (link contrassegnati con ↗ verso piattaforme collegate come sititicino.ch, swissleadfinder.ch, rankuplist.com, pratiko.ch, salviapet.com), la cui responsabilità ricade esclusivamente sui rispettivi gestori.',
+        'I contenuti di questo sito sono stati redatti con la massima cura e vengono regolarmente verificati. Kreativalabnon assume tuttavia responsabilità per l’esattezza o la completezza dei contenuti di terze parti raggiungibili tramite collegamenti esterni (link contrassegnati con ↗ verso piattaforme collegate come sititicino.ch, swissleadfinder.ch, rankuplist.com, pratiko.ch, salviapet.com), la cui responsabilità ricade esclusivamente sui rispettivi gestori.',
       copyrightTitle: 'Proprietà intellettuale e diritti d’autore',
       copyrightBody:
         'Tutti i testi, l’architettura software, il codice sorgente, le grafiche, i loghi dei prodotti proprietari e il layout visivo presenti su questo sito sono protetti dal diritto d’autore svizzero e internazionale. Qualsiasi riproduzione, elaborazione o diffusione non autorizzata per iscritto è vietata.',
@@ -280,7 +280,7 @@ export const LEGAL_CONTENT: Record<Language, LegalContentBundle> = {
       subtitle:
         'Vollständige technische Transparenz: Keine Werbe-Tracker oder Profiling-Cookies von Drittanbietern.',
       intro:
-        'GWD Group verzichtet konsequent auf invasive Tracking-Technologien. Diese Website setzt keine Profiling-Cookies oder Werbepixel von Drittanbietern (wie Meta Pixel oder konventionelles Google Analytics) ein.',
+        'Kreativalabverzichtet konsequent auf invasive Tracking-Technologien. Diese Website setzt keine Profiling-Cookies oder Werbepixel von Drittanbietern (wie Meta Pixel oder konventionelles Google Analytics) ein.',
       noProfilingNotice:
         'Kein Werbetracking: Schriftarten, Skripte und Icons werden vollständig lokal gehostet.',
       storageTableTitle: 'Im Browser genutzte technische Speichertechnologien',
@@ -315,7 +315,7 @@ export const LEGAL_CONTENT: Record<Language, LegalContentBundle> = {
       statusTitle: 'Rechtlicher Status & Registerangaben',
       statusBadge: 'In notarieller Vorbereitung / Gründung',
       statusBody:
-        'GWD Group agiert als Digital Venture Studio und Webagentur in Lugano (Kanton Tessin). Die offizielle juristische Gesellschaftsform, die genaue postalische Anschrift sowie die Eintragung im Handelsregister samt Schweizer UID / MWST-Nummer befinden sich derzeit in der notariellen Gründungs- und Registrierungsphase. Nach Abschluss des Registereintrags werden die vollständigen Registerangaben umgehend hier veröffentlicht.',
+        'Kreativalabagiert als Digital Venture Studio und Webagentur in Lugano (Kanton Tessin). Die offizielle juristische Gesellschaftsform, die genaue postalische Anschrift sowie die Eintragung im Handelsregister samt Schweizer UID / MWST-Nummer befinden sich derzeit in der notariellen Gründungs- und Registrierungsphase. Nach Abschluss des Registereintrags werden die vollständigen Registerangaben umgehend hier veröffentlicht.',
       headquartersTitle: 'Standort & Betriebssitz',
       locationDetails: [
         `Ort: ${BUSINESS_INFO.address.locality}`,
@@ -332,7 +332,7 @@ export const LEGAL_CONTENT: Record<Language, LegalContentBundle> = {
         'Die Inhalte dieses Webauftritts wurden mit größter Sorgfalt erstellt. Für externe Links zu verbundenen Gruppenplattformen (z. B. sititicino.ch, swissleadfinder.ch, rankuplist.com, pratiko.ch, salviapet.com) übernehmen wir keine Haftung; für deren Inhalte sind ausschließlich die jeweiligen Betreiber verantwortlich.',
       copyrightTitle: 'Urheberrecht & geistiges Eigentum',
       copyrightBody:
-        'Die auf dieser Website veröffentlichten Inhalte, Quellcodes, Texte, Marken und Designs unterliegen dem schweizerischen Urheberrecht. Jede Vervielfältigung, Bearbeitung oder Verbreitung bedarf der vorherigen schriftlichen Zustimmung der GWD Group.',
+        'Die auf dieser Website veröffentlichten Inhalte, Quellcodes, Texte, Marken und Designs unterliegen dem schweizerischen Urheberrecht. Jede Vervielfältigung, Bearbeitung oder Verbreitung bedarf der vorherigen schriftlichen Zustimmung der Kreativalab.',
     },
   },
   fr: {
@@ -408,7 +408,7 @@ export const LEGAL_CONTENT: Record<Language, LegalContentBundle> = {
       subtitle:
         'Transparence technique complète : aucun cookie publicitaire ou traceur invasif de tiers.',
       intro:
-        'GWD Group applique les principes de minimisation : ce site ne dépose aucun cookie de profilage commercial tiers (comme Meta Pixel ou Google Analytics standard).',
+        'Kreativalabapplique les principes de minimisation : ce site ne dépose aucun cookie de profilage commercial tiers (comme Meta Pixel ou Google Analytics standard).',
       noProfilingNotice:
         'Aucun traceur publicitaire : tous les composants et polices sont servis en local.',
       storageTableTitle: 'Technologies de stockage actives sur votre terminal',
@@ -443,7 +443,7 @@ export const LEGAL_CONTENT: Record<Language, LegalContentBundle> = {
       statusTitle: 'Statut juridique et immatriculation',
       statusBadge: 'En cours de formalisation notariale / constitution',
       statusBody:
-        'GWD Group opère en qualité de Venture Studio & Agence Web à Lugano (Canton du Tessin). La forme juridique définitive, l’adresse postale exacte ainsi que le numéro IDE (UID) / numéro TVA suisse sont en cours de constitution notariale et d’enregistrement au Registre du commerce. Les données d’immatriculation définitives seront publiées ici dès leur validation légale.',
+        'Kreativalabopère en qualité de Venture Studio & Agence Web à Lugano (Canton du Tessin). La forme juridique définitive, l’adresse postale exacte ainsi que le numéro IDE (UID) / numéro TVA suisse sont en cours de constitution notariale et d’enregistrement au Registre du commerce. Les données d’immatriculation définitives seront publiées ici dès leur validation légale.',
       headquartersTitle: 'Siège et localisation',
       locationDetails: [
         `Localité : ${BUSINESS_INFO.address.locality}`,
@@ -457,7 +457,7 @@ export const LEGAL_CONTENT: Record<Language, LegalContentBundle> = {
         'Pour toute notification ou demande formelle, le formulaire de contact en ligne (réponse sous 4 heures ouvrées) ou les lignes directes du groupe sont à votre disposition.',
       disclaimerTitle: 'Exclusion de responsabilité',
       disclaimerBody:
-        'Les informations publiées sur ce site sont rédigées avec soin. GWD Group décline toute responsabilité quant aux contenus des sites tiers accessibles par des liens externes.',
+        'Les informations publiées sur ce site sont rédigées avec soin. Kreativalabdécline toute responsabilité quant aux contenus des sites tiers accessibles par des liens externes.',
       copyrightTitle: 'Propriété intellectuelle et droits d’auteur',
       copyrightBody:
         'L’ensemble des contenus, codes sources, marques et designs de ce site sont protégés par le droit d’auteur suisse et international. Toute reproduction non autorisée est interdite.',
@@ -536,7 +536,7 @@ export const LEGAL_CONTENT: Record<Language, LegalContentBundle> = {
       subtitle:
         'Zero behavioral tracking cookies or third-party marketing pixels.',
       intro:
-        'GWD Group follows strict privacy-first web principles. This website does not deploy third-party advertising or profiling cookies (such as Meta Pixel or standard Google Analytics trackers).',
+        'Kreativalabfollows strict privacy-first web principles. This website does not deploy third-party advertising or profiling cookies (such as Meta Pixel or standard Google Analytics trackers).',
       noProfilingNotice:
         'No ad trackers deployed: all fonts, scripts, and graphical icons are self-hosted locally.',
       storageTableTitle: 'Technical Storage Employed in Your Browser',
@@ -571,7 +571,7 @@ export const LEGAL_CONTENT: Record<Language, LegalContentBundle> = {
       statusTitle: 'Corporate Registration Status',
       statusBadge: 'In Formation / Notarial Formalization',
       statusBody:
-        'GWD Group operates as a Digital Venture Studio & Web Agency in Lugano (Canton Ticino). Formal corporate statutory form, exact street address, and Swiss Commercial Register UID / VAT numbers are currently undergoing notarial formalization and commercial register registration. Final registration records will be updated directly in this Impressum upon formal entry.',
+        'Kreativalaboperates as a Digital Venture Studio & Web Agency in Lugano (Canton Ticino). Formal corporate statutory form, exact street address, and Swiss Commercial Register UID / VAT numbers are currently undergoing notarial formalization and commercial register registration. Final registration records will be updated directly in this Impressum upon formal entry.',
       headquartersTitle: 'Operational Location',
       locationDetails: [
         `Locality: ${BUSINESS_INFO.address.locality}`,
@@ -585,7 +585,7 @@ export const LEGAL_CONTENT: Record<Language, LegalContentBundle> = {
         'For institutional inquiries, project briefs, or official communications, please utilize the Contact form (response within 4 business hours) or direct team channels on the site.',
       disclaimerTitle: 'Liability Disclaimer for Content & Links',
       disclaimerBody:
-        'All contents on this site have been prepared with the highest care. GWD Group accepts no liability for third-party links to affiliated group platforms (e.g., sititicino.ch, swissleadfinder.ch, rankuplist.com, pratiko.ch, salviapet.com), for which the respective operators remain solely responsible.',
+        'All contents on this site have been prepared with the highest care. Kreativalabaccepts no liability for third-party links to affiliated group platforms (e.g., sititicino.ch, swissleadfinder.ch, rankuplist.com, pratiko.ch, salviapet.com), for which the respective operators remain solely responsible.',
       copyrightTitle: 'Intellectual Property & Copyright',
       copyrightBody:
         'All textual content, codebases, architectures, and brand assets on this web application are protected by Swiss and international copyright laws. Unauthorized reproduction is strictly prohibited.',

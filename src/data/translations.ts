@@ -267,7 +267,7 @@ export const TRANSLATIONS: Record<Language, UiStrings> = {
       'ai-division': 'Divisione AI',
     },
     hero: {
-      eyebrow: 'GWD Group · Lugano, Svizzera',
+      eyebrow: 'Kreativalab· Lugano, Svizzera',
       title: 'Digital Venture Studio & Agency',
       subtitle:
         'Un solo gruppo con due motori operativi: progettiamo piattaforme SaaS proprietarie per il mercato B2B e realizziamo siti web, SEO locale e agenti AI vocali per le imprese del Ticino.',
@@ -469,7 +469,7 @@ export const TRANSLATIONS: Record<Language, UiStrings> = {
         'Uniamo la disciplina ingegneristica di un Venture Studio SaaS alla concretezza operativa di un’agenzia digitale radicata a Lugano.',
       groupStoryTitle: 'Un modello integrato, zero intermediari',
       groupStoryBody:
-        'GWD Group nasce per superare il divario tra agenzie creative lente e software house distanti dal business locale. Da una parte sviluppiamo e gestiamo asset SaaS proprietari in produzione; dall’altra trasferiamo quella stessa solidità tecnica ai siti web, alle campagne e agli agenti AI delle PMI ticinesi.',
+        'Kreativalabnasce per superare il divario tra agenzie creative lente e software house distanti dal business locale. Da una parte sviluppiamo e gestiamo asset SaaS proprietari in produzione; dall’altra trasferiamo quella stessa solidità tecnica ai siti web, alle campagne e agli agenti AI delle PMI ticinesi.',
       brandsTitle: 'Architettura dei brand del gruppo',
       gwdTitle: 'GWD · Digital Venture Studio',
       gwdDesc:
@@ -488,7 +488,7 @@ export const TRANSLATIONS: Record<Language, UiStrings> = {
       ctaButton: 'Parla del tuo progetto',
     },
     contactPage: {
-      title: 'Contatti · GWD Group Lugano',
+      title: 'Contatti · KreativalabLugano',
       subtitle:
         'Raccontaci cosa vuoi costruire o ottimizzare. Rispondiamo in giornata con una valutazione tecnica chiara.',
       directChannels: 'Canali diretti svizzeri',
@@ -505,18 +505,18 @@ export const TRANSLATIONS: Record<Language, UiStrings> = {
     footer: {
       tagline: 'Digital Venture Studio & Agency Group — Piattaforme SaaS proprietarie, siti web ad alte prestazioni e agenti AI vocali.',
       address: 'Lugano',
-      vat: 'GWD Group',
+      vat: 'Kreativalab',
       navigationTitle: 'Mappa del sito',
       legalTitle: 'Conformità & Legale',
       privacyLink: 'Informativa Privacy (nLPD / GDPR)',
       cookieLink: 'Preferenze Cookie & Dati',
       impressumLink: 'Impressum (Dati aziendali)',
       languageTitle: 'Lingua',
-      copyright: '© 2026 GWD Group (GWD + SitiTicino). Tutti i diritti riservati.',
+      copyright: '© 2026 Kreativalab(GWD + SitiTicino). Tutti i diritti riservati.',
     },
     whatsapp: {
       label: 'WhatsApp',
-      ariaLabel: 'Contatta GWD Group su WhatsApp',
+      ariaLabel: 'Contatta Kreativalabsu WhatsApp',
     },
     cookieBanner: {
       title: 'Rispetto della tua privacy (nLPD / GDPR)',
@@ -531,7 +531,7 @@ export const TRANSLATIONS: Record<Language, UiStrings> = {
     },
     seoUi: {
       homeLabel: 'Home',
-      heroImageAlt: 'Ecosistema digitale GWD Group a Lugano: piattaforme SaaS, sviluppo web, SEO locale Ticino e agenti AI',
+      heroImageAlt: 'Ecosistema digitale Kreativalaba Lugano: piattaforme SaaS, sviluppo web, SEO locale Ticino e agenti AI',
       districtsLabel: 'Comuni e quartieri serviti',
       industriesLabel: 'Settori chiave locali',
       serviceAngleLabel: 'Approccio su misura per il territorio',
@@ -557,7 +557,7 @@ export const TRANSLATIONS: Record<Language, UiStrings> = {
       'ai-division': 'KI-Division',
     },
     hero: {
-      eyebrow: 'GWD Group · Lugano, Schweiz',
+      eyebrow: 'Kreativalab· Lugano, Schweiz',
       title: 'Digital Venture Studio & Agency',
       subtitle:
         'Eine Gruppe mit zwei operativen Motoren: Wir entwickeln eigene B2B-SaaS-Plattformen und realisieren schnelle Websites, lokale SEO und KI-Sprachagenten für Unternehmen im Tessin.',
@@ -759,7 +759,7 @@ export const TRANSLATIONS: Record<Language, UiStrings> = {
         'Wir verbinden die Produkt-DNA eines SaaS Venture Studios mit der lokalen Schlagkraft einer Tessiner Digitalagentur in Lugano.',
       groupStoryTitle: 'Ein integriertes Modell ohne Reibungsverluste',
       groupStoryBody:
-        'GWD Group schließt die Lücke zwischen langsamen Kreativagenturen und rein abstrakten Softwarehäusern. Unsere eigenen produktiven SaaS-Systeme setzen den technischen Maßstab für jedes Kundenprojekt in der Schweiz.',
+        'Kreativalabschließt die Lücke zwischen langsamen Kreativagenturen und rein abstrakten Softwarehäusern. Unsere eigenen produktiven SaaS-Systeme setzen den technischen Maßstab für jedes Kundenprojekt in der Schweiz.',
       brandsTitle: 'Markenarchitektur der Gruppe',
       gwdTitle: 'GWD · Digital Venture Studio',
       gwdDesc:
@@ -778,7 +778,7 @@ export const TRANSLATIONS: Record<Language, UiStrings> = {
       ctaButton: 'Projekt besprechen',
     },
     contactPage: {
-      title: 'Kontakt · GWD Group Lugano',
+      title: 'Kontakt · KreativalabLugano',
       subtitle:
         'Schildern Sie uns Ihr Vorhaben. Sie erhalten noch am selben Arbeitstag eine fundierte technische Einschätzung.',
       directChannels: 'Direkte Schweizer Kontaktkanäle',
@@ -795,18 +795,18 @@ export const TRANSLATIONS: Record<Language, UiStrings> = {
     footer: {
       tagline: 'Digital Venture Studio & Agency Group — Eigene SaaS-Plattformen, High-Speed-Websites und KI-Sprachagenten.',
       address: 'Lugano',
-      vat: 'GWD Group',
+      vat: 'Kreativalab',
       navigationTitle: 'Sitemap',
       legalTitle: 'Rechtliches & nDSG',
       privacyLink: 'Datenschutz (nDSG / DSGVO)',
       cookieLink: 'Cookie-Einstellungen & Speicher',
       impressumLink: 'Impressum & Unternehmensangaben',
       languageTitle: 'Sprache',
-      copyright: '© 2026 GWD Group (GWD + SitiTicino). Alle Rechte vorbehalten.',
+      copyright: '© 2026 Kreativalab(GWD + SitiTicino). Alle Rechte vorbehalten.',
     },
     whatsapp: {
       label: 'WhatsApp',
-      ariaLabel: 'GWD Group auf WhatsApp kontaktieren',
+      ariaLabel: 'Kreativalabauf WhatsApp kontaktieren',
     },
     cookieBanner: {
       title: 'Schutz Ihrer Privatsphäre (nDSG / DSGVO)',
@@ -821,7 +821,7 @@ export const TRANSLATIONS: Record<Language, UiStrings> = {
     },
     seoUi: {
       homeLabel: 'Startseite',
-      heroImageAlt: 'Digitales Ökosystem der GWD Group in Lugano: SaaS-Plattformen, Webentwicklung, lokale SEO Tessin und KI-Agenten',
+      heroImageAlt: 'Digitales Ökosystem der Kreativalabin Lugano: SaaS-Plattformen, Webentwicklung, lokale SEO Tessin und KI-Agenten',
       districtsLabel: 'Abgedeckte Gemeinden & Quartiere',
       industriesLabel: 'Lokale Schlüsselbranchen',
       serviceAngleLabel: 'Spezifischer Ansatz vor Ort',
@@ -847,7 +847,7 @@ export const TRANSLATIONS: Record<Language, UiStrings> = {
       'ai-division': 'Division IA',
     },
     hero: {
-      eyebrow: 'GWD Group · Lugano, Suisse',
+      eyebrow: 'Kreativalab· Lugano, Suisse',
       title: 'Digital Venture Studio & Agency',
       subtitle:
         'Un groupe à double moteur : nous créons des plateformes SaaS B2B propriétaires et concevons des sites rapides, du SEO local et des agents vocaux IA pour les entreprises du Tessin.',
@@ -1049,7 +1049,7 @@ export const TRANSLATIONS: Record<Language, UiStrings> = {
         'Nous unissons la rigueur d’un Venture Studio SaaS et l’efficacité terrain d’une agence digitale ancrée à Lugano.',
       groupStoryTitle: 'Un modèle intégré, sans intermédiaires',
       groupStoryBody:
-        'GWD Group comble le fossé entre les agences traditionnelles lentes et les éditeurs logiciels éloignés des PME locales. Nos propres SaaS imposent un niveau d’exigence technique appliqué à chaque projet client au Tessin.',
+        'Kreativalabcomble le fossé entre les agences traditionnelles lentes et les éditeurs logiciels éloignés des PME locales. Nos propres SaaS imposent un niveau d’exigence technique appliqué à chaque projet client au Tessin.',
       brandsTitle: 'Architecture des marques du groupe',
       gwdTitle: 'GWD · Digital Venture Studio',
       gwdDesc:
@@ -1068,7 +1068,7 @@ export const TRANSLATIONS: Record<Language, UiStrings> = {
       ctaButton: 'Parler de votre projet',
     },
     contactPage: {
-      title: 'Contact · GWD Group Lugano',
+      title: 'Contact · KreativalabLugano',
       subtitle:
         'Présentez-nous votre objectif. Nous revenons vers vous le jour même avec une analyse claire.',
       directChannels: 'Canaux directs en Suisse',
@@ -1085,18 +1085,18 @@ export const TRANSLATIONS: Record<Language, UiStrings> = {
     footer: {
       tagline: 'Digital Venture Studio & Agency Group — Plateformes SaaS propriétaires, sites web performants et agents vocaux IA.',
       address: 'Lugano',
-      vat: 'GWD Group',
+      vat: 'Kreativalab',
       navigationTitle: 'Plan du site',
       legalTitle: 'Conformité & Légal',
       privacyLink: 'Confidentialité (nLPD / RGPD)',
       cookieLink: 'Préférences Cookies & Données',
       impressumLink: 'Impressum (Mentions légales)',
       languageTitle: 'Langue',
-      copyright: '© 2026 GWD Group (GWD + SitiTicino). Tous droits réservés.',
+      copyright: '© 2026 Kreativalab(GWD + SitiTicino). Tous droits réservés.',
     },
     whatsapp: {
       label: 'WhatsApp',
-      ariaLabel: 'Contacter GWD Group sur WhatsApp',
+      ariaLabel: 'Contacter Kreativalabsur WhatsApp',
     },
     cookieBanner: {
       title: 'Respect de votre vie privée (nLPD / RGPD)',
@@ -1111,7 +1111,7 @@ export const TRANSLATIONS: Record<Language, UiStrings> = {
     },
     seoUi: {
       homeLabel: 'Accueil',
-      heroImageAlt: 'Écosystème digital GWD Group à Lugano : plateformes SaaS, développement web, SEO local Tessin et agents IA',
+      heroImageAlt: 'Écosystème digital Kreativalabà Lugano : plateformes SaaS, développement web, SEO local Tessin et agents IA',
       districtsLabel: 'Communes et quartiers couverts',
       industriesLabel: 'Secteurs clés locaux',
       serviceAngleLabel: 'Approche dédiée au territoire',
@@ -1137,7 +1137,7 @@ export const TRANSLATIONS: Record<Language, UiStrings> = {
       'ai-division': 'AI Division',
     },
     hero: {
-      eyebrow: 'GWD Group · Lugano, Switzerland',
+      eyebrow: 'Kreativalab· Lugano, Switzerland',
       title: 'Digital Venture Studio & Agency',
       subtitle:
         'One group powered by two engines: we build proprietary B2B SaaS platforms while delivering high-speed websites, local SEO, and AI voice agents for businesses across Ticino.',
@@ -1339,7 +1339,7 @@ export const TRANSLATIONS: Record<Language, UiStrings> = {
         'Combining the product discipline of a SaaS Venture Studio with the execution speed of a Lugano-rooted digital agency.',
       groupStoryTitle: 'An integrated model with zero handoff friction',
       groupStoryBody:
-        'GWD Group bridges the gap between slow traditional agencies and remote software vendors. Our live SaaS platforms set the engineering bar applied directly to every client build across Ticino and Switzerland.',
+        'Kreativalabbridges the gap between slow traditional agencies and remote software vendors. Our live SaaS platforms set the engineering bar applied directly to every client build across Ticino and Switzerland.',
       brandsTitle: 'Group brand architecture',
       gwdTitle: 'GWD · Digital Venture Studio',
       gwdDesc:
@@ -1358,7 +1358,7 @@ export const TRANSLATIONS: Record<Language, UiStrings> = {
       ctaButton: 'Discuss your project',
     },
     contactPage: {
-      title: 'Contact · GWD Group Lugano',
+      title: 'Contact · KreativalabLugano',
       subtitle:
         'Tell us what you want to launch or optimize. We reply the same business day with a clear technical assessment.',
       directChannels: 'Direct Swiss channels',
@@ -1375,18 +1375,18 @@ export const TRANSLATIONS: Record<Language, UiStrings> = {
     footer: {
       tagline: 'Digital Venture Studio & Agency Group — Proprietary SaaS platforms, high-performance websites, and AI voice agents.',
       address: 'Lugano',
-      vat: 'GWD Group',
+      vat: 'Kreativalab',
       navigationTitle: 'Sitemap',
       legalTitle: 'Compliance & Legal',
       privacyLink: 'Privacy Policy (Swiss FADP / GDPR)',
       cookieLink: 'Cookie Preferences & Storage',
       impressumLink: 'Impressum (Corporate Notice)',
       languageTitle: 'Language',
-      copyright: '© 2026 GWD Group (GWD + SitiTicino). All rights reserved.',
+      copyright: '© 2026 Kreativalab(GWD + SitiTicino). All rights reserved.',
     },
     whatsapp: {
       label: 'WhatsApp',
-      ariaLabel: 'Contact GWD Group on WhatsApp',
+      ariaLabel: 'Contact Kreativalabon WhatsApp',
     },
     cookieBanner: {
       title: 'Your privacy matters (Swiss FADP / GDPR)',
@@ -1401,7 +1401,7 @@ export const TRANSLATIONS: Record<Language, UiStrings> = {
     },
     seoUi: {
       homeLabel: 'Home',
-      heroImageAlt: 'GWD Group digital ecosystem in Lugano: proprietary SaaS platforms, web development, Ticino local SEO, and AI agents',
+      heroImageAlt: 'Kreativalabdigital ecosystem in Lugano: proprietary SaaS platforms, web development, Ticino local SEO, and AI agents',
       districtsLabel: 'Districts & municipalities served',
       industriesLabel: 'Key local industries',
       serviceAngleLabel: 'Tailored regional strategy',

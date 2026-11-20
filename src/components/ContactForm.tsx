@@ -56,7 +56,7 @@ export function ContactForm({
     }
 
     // CAMBIA QUI IL TUO INDIRIZZO EMAIL DI DESTINAZIONE
-    const destinatario = 'info@kreativalab.ch';
+    const destinatario = 'contatto@kreativalab.ch';
     
     const code = `KL-${Math.floor(1000 + Math.random() * 9000)}`;
     const oggetto = encodeURIComponent(`Richiesta dal sito kreativalab (${code}) - ${need}`);
