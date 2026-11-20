@@ -3,4 +3,4 @@ Allow: /
 
 Disallow: /api/
 
-Sitemap: https://gwdgroup.ch/sitemap.xml
+Sitemap: https://www.kreativalab.ch/sitemap.xml

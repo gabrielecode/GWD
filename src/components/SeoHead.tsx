@@ -89,7 +89,7 @@ export function SeoHead({ currentPath, lang, city }: SeoHeadProps) {
     syncHreflangLinks(seo.hreflangs);
 
     // Open Graph
-    upsertMetaTag('property', 'og:site_name', 'GWD Group');
+    upsertMetaTag('property', 'og:site_name', 'Kreativalab');
     upsertMetaTag('property', 'og:title', seo.title);
     upsertMetaTag('property', 'og:description', seo.description);
     upsertMetaTag('property', 'og:type', seo.ogType);

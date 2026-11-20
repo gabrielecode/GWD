@@ -1,35 +1,36 @@
-# GWD Group
-
+# Kreativalab
+ 
 > Digital Venture Studio & Agency a Lugano (Canton Ticino, Svizzera). Un solo gruppo con due motori operativi: sviluppo di piattaforme SaaS B2B proprietarie e realizzazione di siti web veloci, SEO locale cantonale e agenti AI vocali per le imprese del territorio.
-
+ 
 ## Brand del Gruppo
-- **GWD (Digital Venture Studio)**: Progetta, lancia e scala piattaforme SaaS B2B proprietarie (lead intelligence svizzera, automazione SEO locale, social publishing AI, piattaforme verticali).
+- **Kreativalab (Digital Venture Studio)**: Progetta, lancia e scala piattaforme SaaS B2B proprietarie (lead intelligence svizzera, automazione SEO locale, social publishing AI, piattaforme verticali).
 - **SitiTicino (Agency & Local Growth)**: Soluzioni digitali ad alte prestazioni per aziende e professionisti di Lugano, Bellinzona, Locarno e Mendrisio.
-
+ 
 ## Servizi Principali
 - **Siti Web ad Alte Prestazioni**: Architetture veloci, conformi a WCAG 2.2 AA, Core Web Vitals tutti in verde e percorsi di conversione rapidi su mobile.
 - **E-Commerce & Pagamenti Svizzeri**: Piattaforme e-commerce performanti con TWINT, PostFinance, Stripe e checkout multi-valuta CHF/EUR.
 - **SEO Locale in Ticino**: Ottimizzazione per i motori di ricerca e Google Business Profile nei distretti di Lugano, Bellinzona, Locarno e Mendrisio.
 - **Agenti AI Vocali 24/7**: Assistenti vocali telefonici intelligenti per ristoranti, parrucchieri e PMI, capaci di gestire prenotazioni e richieste h24.
-
+ 
 ## Piattaforme SaaS Proprietarie
 - **SwissLeadFinder**: Intelligence e scouting lead B2B su aziende e registri della Svizzera.
 - **RankUpList**: Piattaforma di monitoraggio SEO e visibilità locale per PMI.
 - **SocialTrend AI**: Suite di generazione e pianificazione social multilingue basata su AI.
 - **SpeedyJob**: Portale di annunci e recruiting rapido per il mercato del lavoro svizzero.
-- **Pratiko**: Gestionale verticale per scuole ed enti di formazione.
+- **Pratiko**: Software svizzero di fatturazione e preventivi per artigiani e piccole imprese.
 - **SalviaPet**: Piattaforma digitale per la salute animale e la gestione veterinaria.
-
+ 
 ## Pagine Principali
-- [Home Page](https://gwdgroup.ch/): Presentazione dell'ecosistema, metriche reali e architettura a doppio motore.
-- [Prodotti SaaS](https://gwdgroup.ch/prodotti): Hub delle 6 piattaforme software B2B proprietarie.
-- [Lavori & Casi Studio](https://gwdgroup.ch/lavori): Raccolta dei progetti cliente con analisi Sfida, Soluzione e Risultato.
-- [Servizi](https://gwdgroup.ch/servizi): Approfondimento su siti web, e-commerce, SEO locale e agenti vocali AI.
-- [Chi Siamo](https://gwdgroup.ch/chi-siamo): Il gruppo dietro GWD e SitiTicino, standard tecnici e trasparenza E-E-A-T.
-- [Contatti](https://gwdgroup.ch/contatti): Modulo di contatto rapido, call di 20 minuti e canali diretti a Lugano.
-- [Sitemap](https://gwdgroup.ch/sitemap.xml): Mappa del sito XML multilingue (IT, DE, FR, EN).
-
+- [Home Page](https://www.kreativalab.ch/): Presentazione dell'ecosistema, metriche reali e architettura a doppio motore.
+- [Prodotti SaaS](https://www.kreativalab.ch/prodotti): Hub delle 6 piattaforme software B2B proprietarie.
+- [Lavori & Casi Studio](https://www.kreativalab.ch/lavori): Raccolta dei progetti cliente con analisi Sfida, Soluzione e Risultato.
+- [Servizi](https://www.kreativalab.ch/servizi): Approfondimento su siti web, e-commerce, SEO locale e agenti vocali AI.
+- [Chi Siamo](https://www.kreativalab.ch/chi-siamo): Il gruppo dietro Kreativalab e SitiTicino, standard tecnici e trasparenza E-E-A-T.
+- [Contatti](https://www.kreativalab.ch/contatti): Modulo di contatto rapido, call di 20 minuti e canali diretti a Lugano.
+- [Sitemap](https://www.kreativalab.ch/sitemap.xml): Mappa del sito XML multilingue (IT, DE, FR, EN).
+ 
 ## Informazioni & Dati di Contatto
 - **Sede**: Lugano, Canton Ticino, Svizzera
-- **Sito Ufficiale**: https://gwdgroup.ch
+- **Sito Ufficiale**: https://www.kreativalab.ch
 - **Lingue**: Italiano (principale), Tedesco, Francese, Inglese
+ 
