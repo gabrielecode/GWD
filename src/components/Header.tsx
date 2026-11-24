@@ -61,7 +61,7 @@ export function Header({
           className="flex items-center gap-2.5 text-left whitespace-nowrap shrink-0 cursor-pointer"
         >
           <img
-            src="https://i.postimg.cc/zbbY84tF/logo.jpg"
+            src="/logo.jpg"
             alt=""
             aria-hidden="true"
             width="28"
@@ -126,8 +126,9 @@ export function Header({
           </div>
 
           <a
-            href={getHref('/contatti')}
-            onClick={(e) => handleLinkClick(e, '/contatti')}
+            href="https://cal.com/kreativalab/call-20-minuti"
+            target="_blank"
+            rel="noopener"
             className="hidden md:inline-flex items-center gap-1.5 justify-center rounded-full bg-[#FAFAF9] px-4 py-2 text-xs font-semibold text-[#0C0A09] hover:bg-[#2DD4BF] transition-colors whitespace-nowrap shrink-0 cursor-pointer min-h-[38px]"
           >
             <span>{t.nav.ctaHeader}</span>
@@ -192,8 +193,10 @@ export function Header({
             </div>
 
             <a
-              href={getHref('/contatti')}
-              onClick={(e) => handleLinkClick(e, '/contatti')}
+              href="https://cal.com/kreativalab/call-20-minuti"
+              target="_blank"
+              rel="noopener"
+              onClick={() => setMobileMenuOpen(false)}
               className="flex-1 inline-flex items-center justify-center gap-1.5 rounded-full bg-[#FAFAF9] px-4 py-2.5 text-sm font-semibold text-[#0C0A09] min-h-[44px] cursor-pointer"
             >
               <span>{t.nav.ctaHeader}</span>

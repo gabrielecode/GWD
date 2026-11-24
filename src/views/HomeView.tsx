@@ -159,21 +159,30 @@ export function HomeView({
                 </p>
 
                 <div className="mt-8 flex flex-wrap items-center gap-3.5">
-                  <button
-                    type="button"
-                    onClick={() => onNavigate('/prodotti')}
+                  <a
+                    href="https://cal.com/kreativalab/call-20-minuti"
+                    target="_blank"
+                    rel="noopener"
                     className="inline-flex items-center gap-2 rounded-full bg-[#2DD4BF] px-5 py-3 text-sm font-semibold text-[#0C0A09] hover:opacity-90 transition-opacity cursor-pointer min-h-[44px] whitespace-nowrap shadow-lg"
                   >
                     <span>{t.hero.ctaPrimary}</span>
                     <ArrowRight className="h-4 w-4" aria-hidden="true" />
-                  </button>
+                  </a>
 
-                  <button
-                    type="button"
-                    onClick={() => {
-                      const el = document.getElementById('contatto-rapido');
-                      if (el) el.scrollIntoView({ behavior: 'smooth' });
-                      else onNavigate('/contatti');
+                  <a
+                    href={lang === 'it' ? '/contatti' : `/contatti?lang=${lang}`}
+                    onClick={(e) => {
+                      if (
+                        e.metaKey ||
+                        e.ctrlKey ||
+                        e.shiftKey ||
+                        e.altKey ||
+                        e.button !== 0
+                      ) {
+                        return;
+                      }
+                      e.preventDefault();
+                      onNavigate('/contatti');
                     }}
                     className="inline-flex items-center gap-2.5 rounded-full border border-[#292524] bg-[#0C0A09] pr-5 pl-2.5 py-2 text-sm font-medium text-[#FAFAF9] hover:border-[#FBBF24] transition-colors cursor-pointer min-h-[44px] whitespace-nowrap"
                   >
@@ -181,7 +190,7 @@ export function HomeView({
                       <Play className="h-3.5 w-3.5 fill-current" aria-hidden="true" />
                     </span>
                     <span>{t.hero.ctaSecondary}</span>
-                  </button>
+                  </a>
                 </div>
               </div>
 

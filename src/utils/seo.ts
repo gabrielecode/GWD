@@ -88,7 +88,7 @@ function buildOrganizationSchema(origin: string): Record<string, unknown> {
     name: BUSINESS_INFO.combinedBrand,
     legalName: BUSINESS_INFO.brandName,
     url: origin,
-    logo: 'https://i.postimg.cc/zbbY84tF/logo.jpg',
+    logo: '/logo.jpg',
     sameAs: BUSINESS_INFO.sameAs,
     address: {
       '@type': 'PostalAddress',

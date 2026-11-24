@@ -47,7 +47,7 @@ export function Footer({
               className="inline-flex items-center gap-2.5 font-display text-xl font-bold tracking-tight text-[#FAFAF9] cursor-pointer"
             >
               <img
-                src="https://i.postimg.cc/zbbY84tF/logo.jpg"
+                src="/logo.jpg"
                 alt=""
                 aria-hidden="true"
                 width="28"

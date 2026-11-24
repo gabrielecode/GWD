@@ -257,7 +257,7 @@ export const TRANSLATIONS: Record<Language, UiStrings> = {
       services: 'Servizi',
       about: 'Chi siamo',
       contact: 'Contatti',
-      ctaHeader: 'Parla del tuo progetto',
+      ctaHeader: 'Prenota una call gratuita di 20 minuti',
       menuOpen: 'Apri menu',
       menuClose: 'Chiudi menu',
     },
@@ -271,8 +271,8 @@ export const TRANSLATIONS: Record<Language, UiStrings> = {
       title: 'Digital Venture Studio & Agency',
       subtitle:
         'Un solo gruppo con due motori operativi: progettiamo piattaforme SaaS proprietarie per il mercato B2B e realizziamo siti web, SEO locale e agenti AI vocali per le imprese del Ticino.',
-      ctaPrimary: 'Scopri i prodotti',
-      ctaSecondary: 'Richiedi preventivo',
+      ctaPrimary: 'Prenota una call gratuita di 20 minuti',
+      ctaSecondary: 'Scrivici',
       metrics: [
         { value: '10', label: 'Aree di progetto' },
         { value: '13', label: 'Schede progetto indicizzabili' },
@@ -547,7 +547,7 @@ export const TRANSLATIONS: Record<Language, UiStrings> = {
       services: 'Leistungen',
       about: 'Über uns',
       contact: 'Kontakt',
-      ctaHeader: 'Projekt besprechen',
+      ctaHeader: 'Kostenloses 20-Min.-Gespräch buchen',
       menuOpen: 'Menü öffnen',
       menuClose: 'Menü schließen',
     },
@@ -561,8 +561,8 @@ export const TRANSLATIONS: Record<Language, UiStrings> = {
       title: 'Digital Venture Studio & Agency',
       subtitle:
         'Eine Gruppe mit zwei operativen Motoren: Wir entwickeln eigene B2B-SaaS-Plattformen und realisieren schnelle Websites, lokale SEO und KI-Sprachagenten für Unternehmen im Tessin.',
-      ctaPrimary: 'Produkte entdecken',
-      ctaSecondary: 'Offerte anfordern',
+      ctaPrimary: 'Kostenloses 20-Min.-Gespräch buchen',
+      ctaSecondary: 'Schreiben Sie uns',
       metrics: [
         { value: '10', label: 'Projektbereiche' },
         { value: '13', label: 'Indexierbare Projektseiten' },
@@ -837,7 +837,7 @@ export const TRANSLATIONS: Record<Language, UiStrings> = {
       services: 'Services',
       about: 'À propos',
       contact: 'Contact',
-      ctaHeader: 'Parler du projet',
+      ctaHeader: 'Réserver un appel gratuit de 20 min',
       menuOpen: 'Ouvrir le menu',
       menuClose: 'Fermer le menu',
     },
@@ -851,8 +851,8 @@ export const TRANSLATIONS: Record<Language, UiStrings> = {
       title: 'Digital Venture Studio & Agency',
       subtitle:
         'Un groupe à double moteur : nous créons des plateformes SaaS B2B propriétaires et concevons des sites rapides, du SEO local et des agents vocaux IA pour les entreprises du Tessin.',
-      ctaPrimary: 'Découvrir les produits',
-      ctaSecondary: 'Demander un devis',
+      ctaPrimary: 'Réserver un appel gratuit de 20 min',
+      ctaSecondary: 'Écrivez-nous',
       metrics: [
         { value: '10', label: 'Domaines de projet' },
         { value: '13', label: 'Fiches indexables' },
@@ -1127,7 +1127,7 @@ export const TRANSLATIONS: Record<Language, UiStrings> = {
       services: 'Services',
       about: 'About',
       contact: 'Contact',
-      ctaHeader: 'Discuss your project',
+      ctaHeader: 'Book a free 20-min call',
       menuOpen: 'Open menu',
       menuClose: 'Close menu',
     },
@@ -1141,8 +1141,8 @@ export const TRANSLATIONS: Record<Language, UiStrings> = {
       title: 'Digital Venture Studio & Agency',
       subtitle:
         'One group powered by two engines: we build proprietary B2B SaaS platforms while delivering high-speed websites, local SEO, and AI voice agents for businesses across Ticino.',
-      ctaPrimary: 'Explore products',
-      ctaSecondary: 'Request a quote',
+      ctaPrimary: 'Book a free 20-min call',
+      ctaSecondary: 'Write to us',
       metrics: [
         { value: '10', label: 'Project areas' },
         { value: '13', label: 'Indexable project pages' },
