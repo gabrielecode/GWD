@@ -78,8 +78,8 @@ export const SITITICINO_APPS: SitiTicinoAppItem[] = [
       fr: 'B2B Data Intelligence',
       en: 'B2B Data Intelligence',
     },
-    url: 'https://swissleadfinder.ch/it',
-    domainLabel: 'swissleadfinder.ch/it',
+    url: 'https://swissleadfinder.ch',
+    domainLabel: 'swissleadfinder.ch',
     description: {
       it: 'Piattaforma di B2B data intelligence per il mercato svizzero: ricerca mirata di aziende locali, arricchimento anagrafico verificato ed export pronto per il CRM nel rispetto della nLPD.',
       de: 'B2B-Data-Intelligence-Plattform für den Schweizer Markt: gezielte Suche lokaler Unternehmen, verifizierte Stammdaten-Anreicherung und CRM-Export gemäß nDSG.',
@@ -112,8 +112,8 @@ export const SITITICINO_APPS: SitiTicinoAppItem[] = [
       fr: 'WebApp & PWA',
       en: 'WebApp & PWA',
     },
-    url: 'https://karepet.app',
-    domainLabel: 'karepet.app',
+    url: 'https://karepet.ch',
+    domainLabel: 'karepet.ch',
     description: {
       it: 'WebApp & PWA all-in-one per la cura degli animali domestici: cartella clinica veterinaria, calcolo diete BARF e gestione routine quotidiane.',
       de: 'All-in-One-WebApp & PWA für Haustierpflege: digitale Tierarztakte, BARF-Futterberechnung und Verwaltung täglicher Routinen.',

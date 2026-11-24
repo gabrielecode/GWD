@@ -253,7 +253,7 @@ export const SERVICES: ServiceItem[] = [
         'Sub-second mobile cart and checkout interactions',
       ],
     },
-    relatedCaseSlugs: ['reverse-editing-shop', 'il-vicolo-lugano', 'salviapet'],
+    relatedCaseSlugs: ['reverse-editing-shop', 'il-vicolo-lugano', 'karepet'],
     faqs: [
       {
         question: {
@@ -1322,5 +1322,5 @@ export const CLIENT_LOGOS = [
   'Visual Studio Facile',
   'Il Vicolo Lugano',
   'SitiTicino.ch',
-  'SalviaPet',
+  'Karepet',
 ];

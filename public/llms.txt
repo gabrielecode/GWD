@@ -18,7 +18,7 @@
 - **SocialTrend AI**: Suite di generazione e pianificazione social multilingue basata su AI.
 - **SpeedyJob**: Portale di annunci e recruiting rapido per il mercato del lavoro svizzero.
 - **Pratiko**: Software svizzero di fatturazione e preventivi per artigiani e piccole imprese.
-- **SalviaPet**: Piattaforma digitale per la salute animale e la gestione veterinaria.
+- **Karepet**: Piattaforma digitale per la salute animale e la gestione veterinaria.
  
 ## Pagine Principali
 - [Home Page](https://www.kreativalab.ch/): Presentazione dell'ecosistema, metriche reali e architettura a doppio motore.

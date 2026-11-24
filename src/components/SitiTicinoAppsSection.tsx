@@ -125,7 +125,7 @@ function AppMiniatureSiteFallback({ app }: { app: SitiTicinoAppItem }) {
         <div className="h-full w-full bg-gradient-to-br from-[#ECFDF5] via-[#F8FAFC] to-[#E0F2FE] text-[#0F172A] p-3 flex flex-col justify-between">
           <div className="flex items-center justify-between border-b border-emerald-200/70 pb-1.5">
             <span className="font-display text-[10px] font-bold text-emerald-900">
-              Karepet<span className="text-emerald-600">.app</span>
+              Karepet<span className="text-emerald-600">.ch</span>
             </span>
             <span className="rounded-full bg-emerald-600 px-2 py-0.5 text-[7px] font-bold text-white">
               WebApp &amp; PWA

@@ -375,7 +375,7 @@ function renderSiteBodyPreview(project: ProjectItem, lang: Language) {
         </div>
       );
 
-    case 'salviapet':
+    case 'karepet':
       return (
         <div className="space-y-2">
           <div className="rounded-md bg-[#1C1917] border border-[#2DD4BF]/30 p-2.5 flex items-center justify-between gap-2">
@@ -443,7 +443,7 @@ function renderSiteBodyPreview(project: ProjectItem, lang: Language) {
 const IFRAME_ALLOWED_PROJECT_SLUGS = new Set([
   'rankuplist',
   'sititicino-geoboost',
-  'salviapet',
+  'karepet',
   'aurora-adv',
   'reverse-editing-shop',
   'aurora-phone',

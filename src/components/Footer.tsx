@@ -165,7 +165,7 @@ export function Footer({
             <div className="flex flex-wrap items-center justify-between gap-4 pt-4 border-t border-[#292524]">
               <div className="flex items-center gap-4 text-xs">
                 <a
-                  href="https://www.linkedin.com"
+                  href="https://www.linkedin.com/company/kreativalab"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-1 hover:text-[#FAFAF9] transition-colors"

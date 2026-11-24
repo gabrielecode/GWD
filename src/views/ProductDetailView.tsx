@@ -29,7 +29,7 @@ export function ProductDetailView({
       ? 'seo-locale'
       : project.slug === 'auto-social-publisher'
       ? 'agenti-ai-vocali'
-      : project.slug === 'salviapet'
+      : project.slug === 'karepet'
       ? 'ecommerce'
       : 'siti-web';
   const relatedService = SERVICES.find((s) => s.slug === relatedServiceSlug) || SERVICES[0];

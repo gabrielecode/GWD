@@ -143,7 +143,7 @@ export const PROJECTS: ProjectItem[] = [
     relatedSlugs: ['rankuplist', 'sititicino-geoboost', 'ata-school-scraper'],
     previewTheme: {
       primaryHex: '#2DD4BF',
-      domainUrl: 'app.swissleadfinder.ch',
+      domainUrl: 'swissleadfinder.ch',
       desktopHeadline: {
         it: 'Ricerca Lead · Distretto Lugano',
         de: 'Lead-Suche · Bezirk Lugano',
@@ -308,7 +308,7 @@ export const PROJECTS: ProjectItem[] = [
     relatedSlugs: ['sititicino-geoboost', 'swiss-lead-finder', 'il-vicolo-lugano'],
     previewTheme: {
       primaryHex: '#2DD4BF',
-      domainUrl: 'app.rankuplist.com',
+      domainUrl: 'rankuplist.com',
       desktopHeadline: {
         it: 'Coerenza Directory & Map Pack',
         de: 'Verzeichnis-Konsistenz & Map Pack',
@@ -473,7 +473,7 @@ export const PROJECTS: ProjectItem[] = [
     relatedSlugs: ['rankuplist', 'swiss-lead-finder', 'speedyjob'],
     previewTheme: {
       primaryHex: '#2DD4BF',
-      domainUrl: 'geoboost.sititicino.ch',
+      domainUrl: 'sititicino.ch',
       desktopHeadline: {
         it: 'Copertura Organica Canton Ticino',
         de: 'Organische Abdeckung Kanton Tessin',
@@ -634,11 +634,11 @@ export const PROJECTS: ProjectItem[] = [
       en: ['AI editorial workflow', 'Multi-channel scheduler', 'Brand glossary engine'],
     },
     techStack: ['TypeScript', 'Gemini AI', 'Redis Queues', 'Meta & LinkedIn API'],
-    externalUrl: 'https://kreativalab.ch/auto-social-publisher',
+    externalUrl: 'https://autosocialpubblisher.lovable.app',
     relatedSlugs: ['aurora-ai', 'aurora-adv', 'swiss-lead-finder'],
     previewTheme: {
       primaryHex: '#60A5FA',
-      domainUrl: 'studio.autosocial.ch',
+      domainUrl: 'autosocialpubblisher.lovable.app',
       desktopHeadline: {
         it: 'Calendario Editoriale AI · IT / DE / FR',
         de: 'KI-Redaktionsplan · IT / DE / FR',
@@ -665,8 +665,8 @@ export const PROJECTS: ProjectItem[] = [
     },
   },
   {
-    slug: 'salviapet',
-    name: 'SalviaPet',
+    slug: 'karepet',
+    name: 'Karepet',
     engine: 'saas',
     status: 'live-saas',
     featured: false,
@@ -731,10 +731,10 @@ export const PROJECTS: ProjectItem[] = [
       en: 'Scattered paper records, missed booster shots, and missing allergy histories during urgent veterinary visits.',
     },
     solution: {
-      it: 'SalviaPet centralizza vaccini, referti, terapie e contatti del veterinario in una web app mobile-first collegata a medaglietta QR.',
-      de: 'SalviaPet bündelt Impfungen, Befunde und Tierarztkontakte in einer Mobile-First-App mit QR-Halsbandmarke.',
-      fr: 'SalviaPet centralise vaccins, ordonnances et contacts vétérinaires dans une web app reliée à une médaille QR.',
-      en: 'SalviaPet unifies vaccination logs, clinical reports, and vet contacts in a mobile-first web app linked to a scannable QR tag.',
+      it: 'Karepet centralizza vaccini, referti, terapie e contatti del veterinario in una web app mobile-first collegata a medaglietta QR.',
+      de: 'Karepet bündelt Impfungen, Befunde und Tierarztkontakte in einer Mobile-First-App mit QR-Halsbandmarke.',
+      fr: 'Karepet centralise vaccins, ordonnances et contacts vétérinaires dans une web app reliée à une médaille QR.',
+      en: 'Karepet unifies vaccination logs, clinical reports, and vet contacts in a mobile-first web app linked to a scannable QR tag.',
     },
     results: {
       it: 'Migliore puntualità nei richiami clinici e adozione immediata da parte di proprietari e studi veterinari in Svizzera e Italia.',
@@ -799,11 +799,11 @@ export const PROJECTS: ProjectItem[] = [
       en: ['Mobile-first Web App', 'Dynamic QR tags', 'Encrypted document vault'],
     },
     techStack: ['React PWA', 'Supabase', 'Edge Storage', 'QR Vector Engine'],
-    externalUrl: 'https://salviapet.com',
+    externalUrl: 'https://karepet.ch',
     relatedSlugs: ['auto-social-publisher', 'swiss-lead-finder', 'pixasolar'],
     previewTheme: {
       primaryHex: '#2DD4BF',
-      domainUrl: 'app.salviapet.com',
+      domainUrl: 'karepet.ch',
       desktopHeadline: {
         it: 'Scheda Sanitaria · Leo (Golden Retriever)',
         de: 'Gesundheitskarte · Leo (Golden Retriever)',
@@ -964,11 +964,11 @@ export const PROJECTS: ProjectItem[] = [
       en: ['Distributed crawler', 'AI PDF extraction', 'Real-time alert engine'],
     },
     techStack: ['Python', 'Gemini Vision PDF', 'PostgreSQL', 'Telegram Webhook'],
-    externalUrl: 'https://kreativalab.ch/ata-school-scraper',
+    externalUrl: 'https://ataschoolscraper.lovable.app',
     relatedSlugs: ['swiss-lead-finder', 'aurora-ai', 'auto-social-publisher'],
     previewTheme: {
       primaryHex: '#60A5FA',
-      domainUrl: 'monitor.atascraper.app',
+      domainUrl: 'ataschoolscraper.lovable.app',
       desktopHeadline: {
         it: 'Monitoraggio Bandi & Interpelli',
         de: 'Ausschreibungs-Monitor',
