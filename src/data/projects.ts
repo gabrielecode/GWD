@@ -11,7 +11,7 @@ export const PROJECTS: ProjectItem[] = [
     status: 'live-saas',
     featured: true,
     activeUsersCount: 1420,
-    previewImage: '/assets/previews/swiss-lead-finder.webp',
+    previewImage: '/assets/aistudio/Screenshot__1490__50979606.png',
     category: {
       it: 'Prodotto SaaS',
       de: 'SaaS-Produkt',

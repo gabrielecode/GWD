@@ -95,6 +95,7 @@ export const SITITICINO_APPS: SitiTicinoAppItem[] = [
     accentHex: '#2DD4BF',
     badgeText: 'nLPD OK',
     activeUsersCount: 1420,
+    previewImage: '/assets/aistudio/Screenshot__1490__50979606.png',
     techStack: ['Next.js', 'TypeScript', 'PostgreSQL', 'Puppeteer'],
     technicalTags: {
       it: ['Data Intelligence B2B', 'Arricchimento nLPD', 'Export CRM'],

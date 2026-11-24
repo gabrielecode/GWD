@@ -148,6 +148,7 @@ export interface SitiTicinoAppItem {
   accentHex: string;
   badgeText: string;
   activeUsersCount?: number;
+  previewImage?: string;
   techStack: string[];
   technicalTags: LocalizedStringList;
 }

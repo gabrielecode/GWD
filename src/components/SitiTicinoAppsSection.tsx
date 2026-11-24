@@ -251,6 +251,7 @@ function SitiTicinoAppCard({
           title={app.name}
           allowIframe={IFRAME_ALLOWED_APPS.has(app.id)}
           allowScreenshotApi={app.id === 'swissleadfinder'}
+          previewImage={app.previewImage}
           accent={frameAccent}
           fallbackContent={<AppMiniatureSiteFallback app={app} />}
           className="mb-5"

@@ -206,6 +206,7 @@ export function BrowserFrame({
                 {previewImage ? (
                   <img
                     src={previewImage}
+                    alt={`Anteprima desktop della piattaforma ${title} (${domainLabel})`}
                     loading="lazy"
                     className="absolute inset-0 h-full w-full object-cover object-top"
                   />

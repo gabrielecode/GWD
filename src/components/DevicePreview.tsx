@@ -72,6 +72,24 @@ export function DevicePreview({
       {/* Viewport */}
       <div className="p-4 sm:p-6 bg-[#0C0A09]">
         {deviceMode === 'desktop' ? (
+          project.previewImage ? (
+            <div className="rounded-xl border border-[#292524] bg-[#1C1917] overflow-hidden">
+              <a
+                href={project.externalUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block relative w-full bg-[#0C0A09] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2DD4BF]"
+                aria-label={`${project.name} — ${project.previewTheme.domainUrl}`}
+              >
+                <img
+                  src={project.previewImage}
+                  alt={`Anteprima desktop della piattaforma ${project.name} (${project.previewTheme.domainUrl})`}
+                  loading="lazy"
+                  className="w-full h-auto block object-cover object-top"
+                />
+              </a>
+            </div>
+          ) : (
           <div className="rounded-xl border border-[#292524] bg-[#1C1917] p-5 sm:p-6">
             <div className="flex items-center justify-between gap-4 border-b border-[#292524] pb-4 mb-5">
               <div className="flex items-center gap-2.5 min-w-0">
@@ -170,6 +188,7 @@ export function DevicePreview({
               </div>
             </div>
           </div>
+          )
         ) : (
           <div className="mx-auto max-w-[320px] rounded-3xl border border-[#292524] bg-[#1C1917] p-4 shadow-2xl">
             <div className="mx-auto mb-4 h-1 w-12 rounded-full bg-[#292524]" aria-hidden="true" />
