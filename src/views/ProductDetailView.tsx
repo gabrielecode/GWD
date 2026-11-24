@@ -7,6 +7,7 @@ import { StatusBadge } from '../components/StatusBadge';
 import { DevicePreview } from '../components/DevicePreview';
 import { ProjectCard } from '../components/ProjectCard';
 import { Breadcrumbs } from '../components/Breadcrumbs';
+import { ProductRoadmap } from '../components/ProductRoadmap';
 
 interface ProductDetailViewProps {
   project: ProjectItem;
@@ -199,6 +200,9 @@ export function ProductDetailView({
         </h2>
         <DevicePreview project={project} lang={lang} />
       </section>
+
+      {/* Product Roadmap & Upcoming Features */}
+      <ProductRoadmap project={project} lang={lang} />
 
       {/* Related Products */}
       {related.length > 0 && (
