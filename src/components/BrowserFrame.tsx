@@ -9,6 +9,7 @@ export interface BrowserFrameProps {
   allowIframe?: boolean;
   allowScreenshotApi?: boolean;
   accent?: 'saas' | 'agency' | 'ai' | 'neutral';
+  previewImage?: string;
   fallbackContent: ReactNode;
   children?: ReactNode;
   className?: string;
@@ -24,6 +25,7 @@ export function BrowserFrame({
   allowIframe = false,
   allowScreenshotApi = true,
   accent = 'neutral',
+  previewImage,
   fallbackContent,
   children,
   className = '',
@@ -201,56 +203,66 @@ export function BrowserFrame({
           <div ref={stageRef} className="relative h-full w-full overflow-hidden">
             {viewportMode === 'desktop' ? (
               <>
-                {/* Crisp Miniature UI Fallback Always Available Underneath */}
-                <div className="absolute inset-0 z-0 h-full w-full">
-                  {fallbackContent}
-                </div>
-
-                {/* Obsidian/Surface Skeleton Overlay While Live Frame or Screenshot Loads */}
-                <div
-                  className={`pointer-events-none absolute inset-0 z-10 transition-opacity duration-400 ${
-                    showSkeleton ? 'opacity-100' : 'opacity-0'
-                  }`}
-                >
-                  <ThumbnailSkeletonOverlay accent={accent} />
-                </div>
-
-                {/* Sandboxed Real-Time Iframe Scaled Precisely via Container Width */}
-                {shouldUseIframe && (
-                  <iframe
-                    src={url}
-                    title={`Anteprima desktop ${title}`}
-                    sandbox="allow-scripts allow-same-origin allow-forms allow-popups"
-                    referrerPolicy="no-referrer-when-downgrade"
-                    loading="lazy"
-                    tabIndex={-1}
-                    onLoad={() => setIframeLoaded(true)}
-                    style={{
-                      width: `${DESKTOP_VIEWPORT_WIDTH}px`,
-                      height: `${desktopVirtualHeight}px`,
-                      transform: `scale(${desktopScale})`,
-                    }}
-                    className={`pointer-events-none absolute top-0 left-0 z-20 origin-top-left border-0 bg-white transition-opacity duration-500 ${
-                      iframeLoaded ? 'opacity-100' : 'opacity-0'
-                    }`}
-                  />
-                )}
-
-                {/* Dynamic URL Screenshot API Thumbnail for CSP-Restricted Sites */}
-                {shouldUseScreenshot && (
+                {previewImage ? (
                   <img
-                    src={screenshotApiUrl}
-                    alt={`Anteprima desktop della piattaforma ${title} (${domainLabel})`}
-                    width={1280}
-                    height={800}
+                    src={previewImage}
                     loading="lazy"
-                    decoding="async"
-                    onLoad={() => setScreenshotLoaded(true)}
-                    onError={() => setScreenshotError(true)}
-                    className={`pointer-events-none absolute inset-0 z-20 h-full w-full object-cover object-top transition-opacity duration-500 ${
-                      screenshotLoaded ? 'opacity-100' : 'opacity-0'
-                    }`}
+                    className="absolute inset-0 h-full w-full object-cover object-top"
                   />
+                ) : (
+                  <>
+                    {/* Crisp Miniature UI Fallback Always Available Underneath */}
+                    <div className="absolute inset-0 z-0 h-full w-full">
+                      {fallbackContent}
+                    </div>
+
+                    {/* Obsidian/Surface Skeleton Overlay While Live Frame or Screenshot Loads */}
+                    <div
+                      className={`pointer-events-none absolute inset-0 z-10 transition-opacity duration-400 ${
+                        showSkeleton ? 'opacity-100' : 'opacity-0'
+                      }`}
+                    >
+                      <ThumbnailSkeletonOverlay accent={accent} />
+                    </div>
+
+                    {/* Sandboxed Real-Time Iframe Scaled Precisely via Container Width */}
+                    {shouldUseIframe && (
+                      <iframe
+                        src={url}
+                        title={`Anteprima desktop ${title}`}
+                        sandbox="allow-scripts allow-same-origin allow-forms allow-popups"
+                        referrerPolicy="no-referrer-when-downgrade"
+                        loading="lazy"
+                        tabIndex={-1}
+                        onLoad={() => setIframeLoaded(true)}
+                        style={{
+                          width: `${DESKTOP_VIEWPORT_WIDTH}px`,
+                          height: `${desktopVirtualHeight}px`,
+                          transform: `scale(${desktopScale})`,
+                        }}
+                        className={`pointer-events-none absolute top-0 left-0 z-20 origin-top-left border-0 bg-white transition-opacity duration-500 ${
+                          iframeLoaded ? 'opacity-100' : 'opacity-0'
+                        }`}
+                      />
+                    )}
+
+                    {/* Dynamic URL Screenshot API Thumbnail for CSP-Restricted Sites */}
+                    {shouldUseScreenshot && (
+                      <img
+                        src={screenshotApiUrl}
+                        alt={`Anteprima desktop della piattaforma ${title} (${domainLabel})`}
+                        width={1280}
+                        height={800}
+                        loading="lazy"
+                        decoding="async"
+                        onLoad={() => setScreenshotLoaded(true)}
+                        onError={() => setScreenshotError(true)}
+                        className={`pointer-events-none absolute inset-0 z-20 h-full w-full object-cover object-top transition-opacity duration-500 ${
+                          screenshotLoaded ? 'opacity-100' : 'opacity-0'
+                        }`}
+                      />
+                    )}
+                  </>
                 )}
               </>
             ) : (

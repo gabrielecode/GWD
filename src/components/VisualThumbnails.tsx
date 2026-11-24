@@ -452,6 +452,8 @@ const IFRAME_ALLOWED_PROJECT_SLUGS = new Set([
   'il-vicolo-lugano',
   'dj-magix',
   'aurora-ai',
+  'auto-social-publisher',
+  'ata-school-scraper',
 ]);
 
 const SCREENSHOT_API_PROJECT_SLUGS = new Set([
@@ -499,6 +501,7 @@ export function ProjectThumbnail({
       title={project.name}
       allowIframe={canRenderIframe}
       allowScreenshotApi={canUseScreenshotApi}
+      previewImage={project.previewImage}
       accent={frameAccent}
       fallbackContent={fallbackUi}
     />
@@ -520,12 +523,12 @@ export function ServicePreviewThumbnail({
 
   const domain =
     kind === 'saas'
-      ? 'studio.kreativalabgroup.ch'
+      ? 'kreativalab.ch'
       : kind === 'siti-web'
       ? 'sititicino.ch'
       : kind === 'seo-locale'
-      ? 'geoboost.sititicino.ch'
-      : 'voice.auroraai.ch';
+      ? 'sititicino.ch'
+      : 'aurora-ai.studio';
 
   const backdrop = isBlue
     ? 'radial-gradient(circle at 80% 15%, rgba(96, 165, 250, 0.26), rgba(28, 25, 23, 0.96) 65%, rgba(12, 10, 9, 1) 100%)'

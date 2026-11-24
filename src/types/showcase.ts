@@ -41,6 +41,7 @@ export interface ProjectItem {
   status: StatusBadgeType;
   featured: boolean;
   activeUsersCount?: number;
+  previewImage?: string;
   category: LocalizedText;
   sector: LocalizedText;
   tagline: LocalizedText;
