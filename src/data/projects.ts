@@ -800,11 +800,11 @@ export const PROJECTS: ProjectItem[] = [
       en: ['Mobile-first Web App', 'Dynamic QR tags', 'Encrypted document vault'],
     },
     techStack: ['React PWA', 'Supabase', 'Edge Storage', 'QR Vector Engine'],
-    externalUrl: 'https://karepet.ch',
+    externalUrl: 'https://karepet.app/',
     relatedSlugs: ['auto-social-publisher', 'swiss-lead-finder', 'pixasolar'],
     previewTheme: {
       primaryHex: '#2DD4BF',
-      domainUrl: 'karepet.ch',
+      domainUrl: 'karepet.app',
       desktopHeadline: {
         it: 'Scheda Sanitaria · Leo (Golden Retriever)',
         de: 'Gesundheitskarte · Leo (Golden Retriever)',

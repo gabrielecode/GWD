@@ -201,7 +201,7 @@ export const LEGAL_CONTENT: Record<Language, LegalContentBundle> = {
         'Per comunicazioni istituzionali, richieste di preventivo, offerte o notifiche formali è attivo il modulo nella pagina Contatti (con riscontro entro 4 ore lavorative) oppure i canali diretti del gruppo indicati nel sito.',
       disclaimerTitle: 'Esclusione di responsabilità per contenuti e collegamenti esterni',
       disclaimerBody:
-        'I contenuti di questo sito sono stati redatti con la massima cura e vengono regolarmente verificati. Kreativalabnon assume tuttavia responsabilità per l’esattezza o la completezza dei contenuti di terze parti raggiungibili tramite collegamenti esterni (link contrassegnati con ↗ verso piattaforme collegate come sititicino.ch, swissleadfinder.ch, rankuplist.com, pratiko.ch, karepet.ch), la cui responsabilità ricade esclusivamente sui rispettivi gestori.',
+        'I contenuti di questo sito sono stati redatti con la massima cura e vengono regolarmente verificati. Kreativalabnon assume tuttavia responsabilità per l’esattezza o la completezza dei contenuti di terze parti raggiungibili tramite collegamenti esterni (link contrassegnati con ↗ verso piattaforme collegate come sititicino.ch, swissleadfinder.ch, rankuplist.com, pratiko.ch, karepet.app), la cui responsabilità ricade esclusivamente sui rispettivi gestori.',
       copyrightTitle: 'Proprietà intellettuale e diritti d’autore',
       copyrightBody:
         'Tutti i testi, l’architettura software, il codice sorgente, le grafiche, i loghi dei prodotti proprietari e il layout visivo presenti su questo sito sono protetti dal diritto d’autore svizzero e internazionale. Qualsiasi riproduzione, elaborazione o diffusione non autorizzata per iscritto è vietata.',
@@ -329,7 +329,7 @@ export const LEGAL_CONTENT: Record<Language, LegalContentBundle> = {
         'Für behördliche Mitteilungen, Offertanfragen und geschäftliche Anfragen steht unser Kontaktformular (Rückmeldung innerhalb von 4 Arbeitsstunden) sowie der direkte WhatsApp-Kanal zur Verfügung.',
       disclaimerTitle: 'Haftungsausschluss für Inhalte und externe Verweise',
       disclaimerBody:
-        'Die Inhalte dieses Webauftritts wurden mit größter Sorgfalt erstellt. Für externe Links zu verbundenen Gruppenplattformen (z. B. sititicino.ch, swissleadfinder.ch, rankuplist.com, pratiko.ch, karepet.ch) übernehmen wir keine Haftung; für deren Inhalte sind ausschließlich die jeweiligen Betreiber verantwortlich.',
+        'Die Inhalte dieses Webauftritts wurden mit größter Sorgfalt erstellt. Für externe Links zu verbundenen Gruppenplattformen (z. B. sititicino.ch, swissleadfinder.ch, rankuplist.com, pratiko.ch, karepet.app) übernehmen wir keine Haftung; für deren Inhalte sind ausschließlich die jeweiligen Betreiber verantwortlich.',
       copyrightTitle: 'Urheberrecht & geistiges Eigentum',
       copyrightBody:
         'Die auf dieser Website veröffentlichten Inhalte, Quellcodes, Texte, Marken und Designs unterliegen dem schweizerischen Urheberrecht. Jede Vervielfältigung, Bearbeitung oder Verbreitung bedarf der vorherigen schriftlichen Zustimmung der Kreativalab.',
@@ -585,7 +585,7 @@ export const LEGAL_CONTENT: Record<Language, LegalContentBundle> = {
         'For institutional inquiries, project briefs, or official communications, please utilize the Contact form (response within 4 business hours) or direct team channels on the site.',
       disclaimerTitle: 'Liability Disclaimer for Content & Links',
       disclaimerBody:
-        'All contents on this site have been prepared with the highest care. Kreativalabaccepts no liability for third-party links to affiliated group platforms (e.g., sititicino.ch, swissleadfinder.ch, rankuplist.com, pratiko.ch, karepet.ch), for which the respective operators remain solely responsible.',
+        'All contents on this site have been prepared with the highest care. Kreativalabaccepts no liability for third-party links to affiliated group platforms (e.g., sititicino.ch, swissleadfinder.ch, rankuplist.com, pratiko.ch, karepet.app), for which the respective operators remain solely responsible.',
       copyrightTitle: 'Intellectual Property & Copyright',
       copyrightBody:
         'All textual content, codebases, architectures, and brand assets on this web application are protected by Swiss and international copyright laws. Unauthorized reproduction is strictly prohibited.',

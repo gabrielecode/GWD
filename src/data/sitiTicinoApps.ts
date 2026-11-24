@@ -113,8 +113,8 @@ export const SITITICINO_APPS: SitiTicinoAppItem[] = [
       fr: 'WebApp & PWA',
       en: 'WebApp & PWA',
     },
-    url: 'https://karepet.ch',
-    domainLabel: 'karepet.ch',
+    url: 'https://karepet.app/',
+    domainLabel: 'karepet.app',
     description: {
       it: 'WebApp & PWA all-in-one per la cura degli animali domestici: cartella clinica veterinaria, calcolo diete BARF e gestione routine quotidiane.',
       de: 'All-in-One-WebApp & PWA für Haustierpflege: digitale Tierarztakte, BARF-Futterberechnung und Verwaltung täglicher Routinen.',

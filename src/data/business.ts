@@ -47,7 +47,7 @@ export const BUSINESS_INFO = {
     'https://swissleadfinder.ch',
     'https://rankuplist.com',
     'https://pratiko.ch',
-    'https://karepet.ch',
+    'https://karepet.app/',
   ],
   ogImagePath: '/assets/aistudio/AI_marketing_network_UI_illustra__8cfdf428_b55f773d.jpg',
   heroWebpPath: '/assets/aistudio/hero-ecosystem.webp',
