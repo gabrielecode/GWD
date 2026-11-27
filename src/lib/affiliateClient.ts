@@ -17,6 +17,7 @@ export interface AuthConfigStatus {
   storage_mode: 'supabase' | 'sqlite';
   supabase_configured: boolean;
   needs_admin_setup: boolean;
+  config_error?: string;
 }
 
 export interface SessionInfo {

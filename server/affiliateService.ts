@@ -166,6 +166,7 @@ export function getAuthConfigStatus(): {
   storage_mode: 'supabase' | 'sqlite';
   supabase_configured: boolean;
   needs_admin_setup: boolean;
+  config_error?: string;
 } {
   const supaCfg = getSupabaseConfig();
   if (supaCfg.enabled) {
@@ -175,23 +176,33 @@ export function getAuthConfigStatus(): {
       needs_admin_setup: false,
     };
   }
-  const envPass = process.env.ADMIN_PASSCODE?.trim();
-  if (envPass) {
+  try {
+    const db = getSqliteDb();
+    const envPass = process.env.ADMIN_PASSCODE?.trim();
+    if (envPass) {
+      return {
+        storage_mode: 'sqlite',
+        supabase_configured: false,
+        needs_admin_setup: false,
+      };
+    }
+    const row = db
+      .prepare('SELECT value FROM app_settings WHERE key = ?')
+      .get('admin_password_hash') as { value?: string } | undefined;
     return {
       storage_mode: 'sqlite',
       supabase_configured: false,
+      needs_admin_setup: !row?.value,
+    };
+  } catch {
+    return {
+      storage_mode: 'supabase',
+      supabase_configured: false,
       needs_admin_setup: false,
+      config_error:
+        'Database non configurato su Vercel: aggiungi SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, VITE_SUPABASE_URL e VITE_SUPABASE_ANON_KEY nelle Environment Variables di Vercel e riesegui il deploy.',
     };
   }
-  const db = getSqliteDb();
-  const row = db
-    .prepare('SELECT value FROM app_settings WHERE key = ?')
-    .get('admin_password_hash') as { value?: string } | undefined;
-  return {
-    storage_mode: 'sqlite',
-    supabase_configured: false,
-    needs_admin_setup: !row?.value,
-  };
 }
 
 export function setupInitialAdminPassword(password: string): { token: string; email: string } {

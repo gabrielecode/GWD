@@ -35,6 +35,9 @@ export function AdminAuthGate({
     try {
       const cfg = await affiliateApi.getAuthStatus();
       setStatus(cfg);
+      if (cfg.config_error) {
+        setError(cfg.config_error);
+      }
       try {
         const me = await affiliateApi.getSessionMe();
         if (me.role === 'admin') {

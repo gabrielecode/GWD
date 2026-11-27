@@ -361,5 +361,14 @@ export function createAffiliateRouter(): express.Router {
     })
   );
 
+  router.use((err: unknown, _req: Request, res: Response, _next: NextFunction) => {
+    if (err instanceof ServiceError) {
+      res.status(err.statusCode).json({ error: err.message });
+      return;
+    }
+    const message = err instanceof Error ? err.message : 'Errore interno del server.';
+    res.status(500).json({ error: message });
+  });
+
   return router;
 }

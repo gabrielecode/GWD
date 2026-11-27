@@ -2,11 +2,44 @@ import fs from 'node:fs';
 import { createRequire } from 'node:module';
 import path from 'node:path';
 import process from 'node:process';
-import type { DatabaseSync as DatabaseSyncType } from 'node:sqlite';
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
 
-let sqliteDb: DatabaseSyncType | null = null;
+export interface SqliteStatementLike {
+  get: (...params: unknown[]) => unknown;
+  all: (...params: unknown[]) => unknown[];
+  run: (...params: unknown[]) => unknown;
+}
+
+export interface SqliteDatabaseLike {
+  exec: (sql: string) => void;
+  prepare: (sql: string) => SqliteStatementLike;
+}
+
+type SqliteConstructor = new (path: string) => SqliteDatabaseLike;
+
+let sqliteDb: SqliteDatabaseLike | null = null;
 let supabaseAdminClient: SupabaseClient | null = null;
+
+function loadSqliteConstructor(): SqliteConstructor | null {
+  try {
+    const sqliteSpec = ['node', 'sqlite'].join(':');
+    let localRequire: ((id: string) => unknown) | null = null;
+    if (typeof require === 'function') {
+      localRequire = require;
+    } else if (typeof import.meta !== 'undefined' && import.meta.url) {
+      localRequire = createRequire(import.meta.url);
+    }
+    if (!localRequire) return null;
+    const mod = localRequire(sqliteSpec) as { DatabaseSync?: SqliteConstructor };
+    return mod?.DatabaseSync ?? null;
+  } catch {
+    return null;
+  }
+}
+
+export function isSqliteAvailable(): boolean {
+  return loadSqliteConstructor() !== null;
+}
 
 export function getSupabaseConfig(): {
   url: string;
@@ -36,11 +69,15 @@ export function getSupabaseAdmin(): SupabaseClient | null {
   return supabaseAdminClient;
 }
 
-export function getSqliteDb(): DatabaseSyncType {
+export function getSqliteDb(): SqliteDatabaseLike {
   if (sqliteDb) return sqliteDb;
 
-  const require = createRequire(import.meta.url);
-  const { DatabaseSync } = require('node:sqlite') as typeof import('node:sqlite');
+  const DatabaseSync = loadSqliteConstructor();
+  if (!DatabaseSync) {
+    throw new Error(
+      'SQLite non disponibile in questo runtime. Configura SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, VITE_SUPABASE_URL e VITE_SUPABASE_ANON_KEY nelle Environment Variables di Vercel.'
+    );
+  }
 
   const dataDir = process.env.VERCEL
     ? '/tmp/kreativalab-data'
