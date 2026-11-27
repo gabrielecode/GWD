@@ -547,7 +547,7 @@ export function ServicePreviewThumbnail({
           </div>
         </div>
 
-        <div className="relative w-full aspect-[16/10] overflow-hidden">
+        <div className="relative w-full aspect-video overflow-hidden bg-[#141210]">
           {kind === 'saas' && !saasImageFailed && (
             <img
               src="/assets/aistudio/SaaS_Venture_Engine_ecosystem_il__907e0ffe_2K_2f473bd2.jpg"
@@ -556,7 +556,7 @@ export function ServicePreviewThumbnail({
               decoding="async"
               referrerPolicy="no-referrer"
               onError={() => setSaasImageFailed(true)}
-              className="h-full w-full object-cover object-center"
+              className="h-full w-full object-contain object-center bg-[#F5F3EF]"
             />
           )}
 
@@ -591,7 +591,7 @@ export function ServicePreviewThumbnail({
               decoding="async"
               referrerPolicy="no-referrer"
               onError={() => setSitiWebImageFailed(true)}
-              className="h-full w-full object-cover object-center"
+              className="h-full w-full object-contain object-center bg-[#F8FAFC]"
             />
           )}
 
@@ -626,7 +626,7 @@ export function ServicePreviewThumbnail({
               decoding="async"
               referrerPolicy="no-referrer"
               onError={() => setSeoLocaleImageFailed(true)}
-              className="h-full w-full object-cover object-center"
+              className="h-full w-full object-contain object-center bg-white"
             />
           )}
 
@@ -657,7 +657,7 @@ export function ServicePreviewThumbnail({
               decoding="async"
               referrerPolicy="no-referrer"
               onError={() => setAgentiAiImageFailed(true)}
-              className="h-full w-full object-cover object-center"
+              className="h-full w-full object-contain object-center bg-[#F4F7FA]"
             />
           )}
 

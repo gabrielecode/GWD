@@ -174,9 +174,9 @@ export function BrowserFrame({
           target="_blank"
           rel="noopener noreferrer"
           aria-label={`Apri anteprima live di ${title} su ${domainLabel}`}
-          className="block relative w-full aspect-[16/10] overflow-hidden bg-[#0C0A09] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2DD4BF]"
+          className="block relative w-full aspect-video overflow-hidden bg-[#0C0A09] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2DD4BF]"
         >
-          <div ref={stageRef} className="relative h-full w-full overflow-hidden">
+          <div ref={stageRef} className="relative h-full w-full overflow-hidden flex items-center justify-center bg-[#0C0A09]">
             {viewportMode === 'desktop' ? (
               <>
                 {previewImage ? (
@@ -185,7 +185,7 @@ export function BrowserFrame({
                     alt={`Anteprima desktop della piattaforma ${title} (${domainLabel})`}
                     loading="lazy"
                     decoding="async"
-                    className="absolute inset-0 h-full w-full object-cover object-top"
+                    className="h-full w-full object-contain object-center"
                   />
                 ) : (
                   <>
@@ -214,7 +214,7 @@ export function BrowserFrame({
                         decoding="async"
                         onLoad={() => setScreenshotLoaded(true)}
                         onError={() => setScreenshotError(true)}
-                        className={`pointer-events-none absolute inset-0 z-20 h-full w-full object-cover object-top transition-opacity duration-500 ${
+                        className={`pointer-events-none absolute inset-0 z-20 h-full w-full object-contain object-center transition-opacity duration-500 ${
                           screenshotLoaded ? 'opacity-100' : 'opacity-0'
                         }`}
                       />
@@ -257,7 +257,7 @@ export function BrowserFrame({
                         decoding="async"
                         onLoad={() => setScreenshotLoaded(true)}
                         onError={() => setScreenshotError(true)}
-                        className={`pointer-events-none absolute inset-0 z-20 h-full w-full object-cover object-top transition-opacity duration-500 ${
+                        className={`pointer-events-none absolute inset-0 z-20 h-full w-full object-contain object-top transition-opacity duration-500 ${
                           screenshotLoaded ? 'opacity-100' : 'opacity-0'
                         }`}
                       />

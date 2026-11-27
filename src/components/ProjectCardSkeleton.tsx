@@ -75,8 +75,8 @@ export function ProjectCardSkeleton({
               <span className="w-4" />
             </div>
 
-            {/* 16:10 Viewport Skeleton */}
-            <div className="w-full aspect-[16/10] overflow-hidden">
+            {/* 16:9 Viewport Skeleton */}
+            <div className="w-full aspect-video overflow-hidden">
               <ThumbnailSkeletonOverlay accent={accent} />
             </div>
           </div>
