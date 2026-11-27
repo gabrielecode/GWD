@@ -2,8 +2,8 @@ import fs from 'node:fs';
 import path from 'node:path';
 import process from 'node:process';
 import express from 'express';
-import contactHandler from './api/contact';
-import { createAffiliateRouter } from './server/router';
+import contactHandler from './api/contact.js';
+import { createAffiliateRouter } from './server/router.js';
 
 async function startServer() {
   const app = express();

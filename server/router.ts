@@ -22,9 +22,9 @@ import {
   updateAffiliate,
   updateLeadStatus,
   updatePayoutStatus,
-} from './affiliateService';
-import { verifySessionToken } from './auth';
-import { getSupabaseAdmin } from './db';
+} from './affiliateService.js';
+import { verifySessionToken } from './auth.js';
+import { getSupabaseAdmin } from './db.js';
 
 interface AuthenticatedRequest extends Request {
   authRole?: 'admin' | 'affiliate';

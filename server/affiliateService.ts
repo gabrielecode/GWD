@@ -15,7 +15,7 @@ import {
   PayoutStatus,
   ReferralCustomer,
   ReferralSale,
-} from '../src/types/affiliate';
+} from '../src/types/affiliate.js';
 import {
   addDaysIsoDate,
   calculateCommissionBreakdown,
@@ -35,9 +35,9 @@ import {
   validatePhone,
   validatePostalCode,
   validateVatNumber,
-} from '../src/lib/affiliateRules';
-import { getSqliteDb, getSupabaseAdmin, getSupabaseConfig } from './db';
-import { hashPassword, signSessionToken, timingSafeEqualsText, verifyPassword } from './auth';
+} from '../src/lib/affiliateRules.js';
+import { getSqliteDb, getSupabaseAdmin, getSupabaseConfig } from './db.js';
+import { hashPassword, signSessionToken, timingSafeEqualsText, verifyPassword } from './auth.js';
 
 export class ServiceError extends Error {
   statusCode: number;

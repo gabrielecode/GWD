@@ -1,4 +1,4 @@
-import { SaleType } from '../types/affiliate';
+import { SaleType } from '../types/affiliate.js';
 
 export const DEFAULT_COMMISSION_RATE = 0.2;
 export const PAYOUT_MIN_THRESHOLD_CHF = 50.0;

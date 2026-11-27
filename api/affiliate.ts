@@ -1,6 +1,6 @@
 import type { IncomingMessage, ServerResponse } from 'node:http';
 import express from 'express';
-import { createAffiliateRouter } from '../server/router';
+import { createAffiliateRouter } from '../server/router.js';
 
 const app = express();
 app.use('/api/affiliate', createAffiliateRouter());

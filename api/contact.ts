@@ -1,5 +1,5 @@
 import process from 'node:process';
-import { BUSINESS_INFO } from '../src/data/business';
+import { BUSINESS_INFO } from '../src/data/business.js';
 
 interface ApiRequest {
   method?: string;
