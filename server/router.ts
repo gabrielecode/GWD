@@ -121,6 +121,22 @@ async function requireAffiliate(req: AuthenticatedRequest, res: Response, next: 
 
 export function createAffiliateRouter(): express.Router {
   const router = express.Router();
+  router.use((req, _res, next) => {
+    const bodyReq = req as Request & { _body?: boolean };
+    if (bodyReq.body !== undefined) {
+      if (typeof bodyReq.body === 'string') {
+        try {
+          bodyReq.body = JSON.parse(bodyReq.body);
+          bodyReq._body = true;
+        } catch {
+          // Let express.json() handle malformed payload or empty body
+        }
+      } else if (typeof bodyReq.body === 'object') {
+        bodyReq._body = true;
+      }
+    }
+    next();
+  });
   router.use(express.json({ limit: '1mb' }));
 
   // Public auth status & login routes

@@ -5,7 +5,21 @@ const EPHEMERAL_SESSION_SECRET = crypto.randomBytes(32).toString('hex');
 
 function getSessionSecret(): string {
   const configured = process.env.AUTH_SESSION_SECRET?.trim();
-  return configured && configured.length >= 16 ? configured : EPHEMERAL_SESSION_SECRET;
+  if (configured && configured.length >= 16) return configured;
+
+  const adminPass = process.env.ADMIN_PASSCODE?.trim();
+  if (adminPass) {
+    const scope =
+      process.env.VERCEL_PROJECT_PRODUCTION_URL ||
+      process.env.VERCEL_URL ||
+      'kreativalab-session';
+    return crypto
+      .createHmac('sha256', adminPass)
+      .update(`kreativalab-auth-session:${scope}`)
+      .digest('hex');
+  }
+
+  return EPHEMERAL_SESSION_SECRET;
 }
 
 export function hashPassword(password: string): string {

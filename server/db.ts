@@ -1,10 +1,11 @@
 import fs from 'node:fs';
+import { createRequire } from 'node:module';
 import path from 'node:path';
 import process from 'node:process';
-import { DatabaseSync } from 'node:sqlite';
+import type { DatabaseSync as DatabaseSyncType } from 'node:sqlite';
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
 
-let sqliteDb: DatabaseSync | null = null;
+let sqliteDb: DatabaseSyncType | null = null;
 let supabaseAdminClient: SupabaseClient | null = null;
 
 export function getSupabaseConfig(): {
@@ -35,10 +36,15 @@ export function getSupabaseAdmin(): SupabaseClient | null {
   return supabaseAdminClient;
 }
 
-export function getSqliteDb(): DatabaseSync {
+export function getSqliteDb(): DatabaseSyncType {
   if (sqliteDb) return sqliteDb;
 
-  const dataDir = path.resolve(process.cwd(), 'data');
+  const require = createRequire(import.meta.url);
+  const { DatabaseSync } = require('node:sqlite') as typeof import('node:sqlite');
+
+  const dataDir = process.env.VERCEL
+    ? '/tmp/kreativalab-data'
+    : path.resolve(process.cwd(), 'data');
   fs.mkdirSync(dataDir, { recursive: true });
   const dbPath = path.join(dataDir, 'kreativalab_affiliates.db');
   const db = new DatabaseSync(dbPath);
