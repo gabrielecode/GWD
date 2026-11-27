@@ -38,6 +38,7 @@ import {
 } from '../src/lib/affiliateRules.js';
 import { getSqliteDb, getSupabaseAdmin, getSupabaseConfig } from './db.js';
 import { hashPassword, signSessionToken, timingSafeEqualsText, verifyPassword } from './auth.js';
+import { sendAdminEmailNotification } from './emailService.js';
 
 export class ServiceError extends Error {
   statusCode: number;
@@ -700,6 +701,20 @@ export async function submitApplication(input: {
     record.created_at,
     record.updated_at
   );
+
+  void sendAdminEmailNotification(
+    `Nuova Candidatura Agente: ${record.name} (${record.canton_or_country})`,
+    `<div style="font-family:sans-serif;padding:20px;color:#141210;">
+       <h2>Nuova Candidatura Agente Commerciale (CO 418a)</h2>
+       <p><b>Nome:</b> ${record.name}</p>
+       <p><b>Email:</b> ${record.email}</p>
+       <p><b>Cantone / Paese:</b> ${record.canton_or_country}</p>
+       <p><b>Azienda:</b> ${record.company_name || 'N/D'}</p>
+       <p><b>Esperienza & Network:</b> ${record.experience_and_network}</p>
+       <p><a href="https://kreativalab.ch/admin/affiliates" style="background:#2DD4BF;color:#0C0A09;padding:10px 20px;text-decoration:none;border-radius:6px;font-weight:bold;">Accedi alla Console Admin</a></p>
+     </div>`
+  ).catch(() => {});
+
   return record;
 }
 
@@ -1907,6 +1922,18 @@ export async function generateMonthlyPayouts(periodMonth: string): Promise<{
       }
       created.push(payout);
     }
+  }
+
+  if (created.length > 0) {
+    const totalPayableSum = created.reduce((acc, p) => acc + p.net_payable, 0);
+    void sendAdminEmailNotification(
+      `Nuovo Payout Mensile Generato (${periodMonth}): ${created.length} estratti per CHF ${totalPayableSum.toFixed(2)}`,
+      `<div style="font-family:sans-serif;padding:20px;color:#141210;">
+         <h2>Generazione Payout Mensili (${periodMonth})</h2>
+         <p>Sono stati generati <b>${created.length}</b> estratti conto provvigionali per un totale di <b>CHF ${totalPayableSum.toFixed(2)}</b>.</p>
+         <p><a href="https://kreativalab.ch/admin/payouts" style="background:#FBBF24;color:#0C0A09;padding:10px 20px;text-decoration:none;border-radius:6px;font-weight:bold;">Visualizza Payouts & Estratti Conto</a></p>
+       </div>`
+    ).catch(() => {});
   }
 
   return { created, skipped_rollover: skippedRollover };
