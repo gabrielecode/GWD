@@ -95,6 +95,13 @@ export function getSqliteDb(): SqliteDatabaseLike {
       updated_at TEXT NOT NULL
     );
 
+    CREATE TABLE IF NOT EXISTS admin_users (
+      id TEXT PRIMARY KEY,
+      email TEXT NOT NULL UNIQUE,
+      password_hash TEXT NOT NULL,
+      created_at TEXT NOT NULL
+    );
+
     CREATE TABLE IF NOT EXISTS affiliates (
       id TEXT PRIMARY KEY,
       name TEXT NOT NULL,

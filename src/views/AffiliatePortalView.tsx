@@ -44,7 +44,7 @@ const PAYOUT_LABELS: Record<PayoutStatus, string> = {
 export function AffiliatePortalView({ onNavigate }: AffiliatePortalViewProps) {
   const [checking, setChecking] = useState(true);
   const [portalData, setPortalData] = useState<AffiliatePortalData | null>(null);
-  const [authTab, setAuthTab] = useState<'login' | 'apply'>('login');
+  const [authTab, setAuthTab] = useState<'login' | 'register' | 'apply'>('login');
   const [portalTab, setPortalTab] = useState<PortalTab>('sales');
 
   // Login form
@@ -53,6 +53,19 @@ export function AffiliatePortalView({ onNavigate }: AffiliatePortalViewProps) {
   const [authBusy, setAuthBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
+
+  // Direct account registration form
+  const [regForm, setRegForm] = useState({
+    name: '',
+    email: '',
+    password: '',
+    confirm_password: '',
+    phone: '',
+    company_name: '',
+    canton: 'TI',
+    accept_terms: false,
+  });
+  const [regSuccessEmail, setRegSuccessEmail] = useState<string | null>(null);
 
   // Public application form
   const [appForm, setAppForm] = useState({
@@ -159,10 +172,58 @@ export function AffiliatePortalView({ onNavigate }: AffiliatePortalViewProps) {
     setError(null);
     try {
       await affiliateApi.loginAffiliate(loginEmail, loginPassword);
+      const me = await affiliateApi.getSessionMe();
+      if (me.role !== 'affiliate') {
+        await affiliateApi.logout();
+        throw new Error('Account non associato a un profilo agente.');
+      }
       setLoginPassword('');
       await loadPortal();
     } catch (err) {
+      await affiliateApi.logout();
       setError(err instanceof Error ? err.message : 'Accesso non riuscito.');
+    } finally {
+      setAuthBusy(false);
+    }
+  };
+
+  const handleRegisterAccount = async (e: FormEvent) => {
+    e.preventDefault();
+    if (authBusy) return;
+    if (regForm.password.trim().length < 8) {
+      setError('La password deve contenere almeno 8 caratteri.');
+      return;
+    }
+    if (regForm.password !== regForm.confirm_password) {
+      setError('Le due password non coincidono.');
+      return;
+    }
+    setAuthBusy(true);
+    setError(null);
+    try {
+      const res = await affiliateApi.registerAffiliate({
+        name: regForm.name,
+        email: regForm.email,
+        password: regForm.password,
+        phone: regForm.phone || undefined,
+        company_name: regForm.company_name || undefined,
+        canton: regForm.canton,
+        accept_terms: regForm.accept_terms,
+      });
+      setRegSuccessEmail(res.affiliate.email);
+      setLoginEmail(res.affiliate.email);
+      setRegForm({
+        name: '',
+        email: '',
+        password: '',
+        confirm_password: '',
+        phone: '',
+        company_name: '',
+        canton: 'TI',
+        accept_terms: false,
+      });
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Registrazione account fallita.');
     } finally {
       setAuthBusy(false);
     }
@@ -323,21 +384,37 @@ export function AffiliatePortalView({ onNavigate }: AffiliatePortalViewProps) {
 
             {/* Right: Login / Application Tabs */}
             <div className="lg:col-span-7 rounded-xl border border-[#292524] bg-[#1C1917] p-6 sm:p-8 space-y-6">
-              <div className="flex items-center gap-1 rounded-lg bg-[#0C0A09] border border-[#292524] p-1">
+              <div className="grid grid-cols-3 gap-1 rounded-lg bg-[#0C0A09] border border-[#292524] p-1">
                 <button
                   type="button"
                   onClick={() => {
                     setAuthTab('login');
                     setError(null);
                   }}
-                  className={`flex-1 inline-flex items-center justify-center gap-1.5 rounded-md px-3 py-2 text-xs font-medium cursor-pointer ${
+                  className={`inline-flex items-center justify-center gap-1.5 rounded-md px-2.5 py-2 text-xs font-medium cursor-pointer ${
                     authTab === 'login'
                       ? 'bg-[#FAFAF9] text-[#0C0A09] font-semibold'
                       : 'text-[#A8A29E] hover:text-[#FAFAF9]'
                   }`}
                 >
-                  <KeyRound className="h-3.5 w-3.5" aria-hidden="true" />
-                  <span>Accedi Area Agenti</span>
+                  <KeyRound className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
+                  <span>Accedi</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setAuthTab('register');
+                    setRegSuccessEmail(null);
+                    setError(null);
+                  }}
+                  className={`inline-flex items-center justify-center gap-1.5 rounded-md px-2.5 py-2 text-xs font-medium cursor-pointer ${
+                    authTab === 'register'
+                      ? 'bg-[#FAFAF9] text-[#0C0A09] font-semibold'
+                      : 'text-[#A8A29E] hover:text-[#FAFAF9]'
+                  }`}
+                >
+                  <UserPlus className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
+                  <span>Crea Account</span>
                 </button>
                 <button
                   type="button"
@@ -345,14 +422,14 @@ export function AffiliatePortalView({ onNavigate }: AffiliatePortalViewProps) {
                     setAuthTab('apply');
                     setError(null);
                   }}
-                  className={`flex-1 inline-flex items-center justify-center gap-1.5 rounded-md px-3 py-2 text-xs font-medium cursor-pointer ${
+                  className={`inline-flex items-center justify-center gap-1.5 rounded-md px-2.5 py-2 text-xs font-medium cursor-pointer ${
                     authTab === 'apply'
                       ? 'bg-[#FAFAF9] text-[#0C0A09] font-semibold'
                       : 'text-[#A8A29E] hover:text-[#FAFAF9]'
                   }`}
                 >
-                  <UserPlus className="h-3.5 w-3.5" aria-hidden="true" />
-                  <span>Candidatura Nuovo Agente</span>
+                  <FileText className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
+                  <span>Candidatura</span>
                 </button>
               </div>
 
@@ -402,6 +479,149 @@ export function AffiliatePortalView({ onNavigate }: AffiliatePortalViewProps) {
                     <span>Entra nel Portale Agenti</span>
                   </button>
                 </form>
+              ) : authTab === 'register' ? (
+                regSuccessEmail ? (
+                  <div className="rounded-lg border border-[#22C55E]/40 bg-[#0C0A09] p-5 space-y-3">
+                    <div className="flex items-center gap-2 text-[#22C55E] font-semibold text-sm">
+                      <CheckCircle2 className="h-5 w-5" aria-hidden="true" />
+                      <span>Account agente creato ({regSuccessEmail})</span>
+                    </div>
+                    <p className="text-xs text-[#A8A29E] leading-relaxed">
+                      Il tuo profilo è stato creato con stato <strong className="text-[#FAFAF9]">In approvazione</strong>. Non appena un amministratore lo attiverà dalla Console Admin, potrai accedere subito con email e password.
+                    </p>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setRegSuccessEmail(null);
+                        setAuthTab('login');
+                      }}
+                      className="rounded-lg border border-[#292524] bg-[#1C1917] px-4 py-2 text-xs text-[#FAFAF9] cursor-pointer"
+                    >
+                      Vai al Login
+                    </button>
+                  </div>
+                ) : (
+                  <form onSubmit={handleRegisterAccount} className="space-y-3.5 text-xs">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      <div>
+                        <label htmlFor="aff-reg-name" className="block text-[#A8A29E] mb-1">
+                          Nome e Cognome *
+                        </label>
+                        <input
+                          id="aff-reg-name"
+                          required
+                          value={regForm.name}
+                          onChange={(e) => setRegForm((p) => ({ ...p, name: e.target.value }))}
+                          placeholder="Mario Rossi"
+                          className="w-full rounded-lg border border-[#292524] bg-[#0C0A09] px-3 py-2 text-[#FAFAF9] min-h-[40px]"
+                        />
+                      </div>
+                      <div>
+                        <label htmlFor="aff-reg-email" className="block text-[#A8A29E] mb-1">
+                          Email *
+                        </label>
+                        <input
+                          id="aff-reg-email"
+                          type="email"
+                          required
+                          value={regForm.email}
+                          onChange={(e) => setRegForm((p) => ({ ...p, email: e.target.value }))}
+                          placeholder="mario@azienda.ch"
+                          className="w-full rounded-lg border border-[#292524] bg-[#0C0A09] px-3 py-2 text-[#FAFAF9] min-h-[40px]"
+                        />
+                      </div>
+                      <div>
+                        <label htmlFor="aff-reg-password" className="block text-[#A8A29E] mb-1">
+                          Password (min. 8 caratteri) *
+                        </label>
+                        <input
+                          id="aff-reg-password"
+                          type="password"
+                          required
+                          minLength={8}
+                          value={regForm.password}
+                          onChange={(e) => setRegForm((p) => ({ ...p, password: e.target.value }))}
+                          placeholder="••••••••"
+                          className="w-full rounded-lg border border-[#292524] bg-[#0C0A09] px-3 py-2 text-[#FAFAF9] min-h-[40px]"
+                        />
+                      </div>
+                      <div>
+                        <label htmlFor="aff-reg-confirm" className="block text-[#A8A29E] mb-1">
+                          Conferma Password *
+                        </label>
+                        <input
+                          id="aff-reg-confirm"
+                          type="password"
+                          required
+                          minLength={8}
+                          value={regForm.confirm_password}
+                          onChange={(e) => setRegForm((p) => ({ ...p, confirm_password: e.target.value }))}
+                          placeholder="••••••••"
+                          className="w-full rounded-lg border border-[#292524] bg-[#0C0A09] px-3 py-2 text-[#FAFAF9] min-h-[40px]"
+                        />
+                      </div>
+                      <div>
+                        <label htmlFor="aff-reg-company" className="block text-[#A8A29E] mb-1">
+                          Ragione Sociale / Ditta
+                        </label>
+                        <input
+                          id="aff-reg-company"
+                          value={regForm.company_name}
+                          onChange={(e) => setRegForm((p) => ({ ...p, company_name: e.target.value }))}
+                          className="w-full rounded-lg border border-[#292524] bg-[#0C0A09] px-3 py-2 text-[#FAFAF9] min-h-[40px]"
+                        />
+                      </div>
+                      <div>
+                        <label htmlFor="aff-reg-phone" className="block text-[#A8A29E] mb-1">
+                          Telefono
+                        </label>
+                        <input
+                          id="aff-reg-phone"
+                          value={regForm.phone}
+                          onChange={(e) => setRegForm((p) => ({ ...p, phone: e.target.value }))}
+                          placeholder="+41 79 000 00 00"
+                          className="w-full rounded-lg border border-[#292524] bg-[#0C0A09] px-3 py-2 text-[#FAFAF9] min-h-[40px]"
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <label htmlFor="aff-reg-canton" className="block text-[#A8A29E] mb-1">
+                        Cantone / Sede *
+                      </label>
+                      <select
+                        id="aff-reg-canton"
+                        value={regForm.canton}
+                        onChange={(e) => setRegForm((p) => ({ ...p, canton: e.target.value }))}
+                        className="w-full rounded-lg border border-[#292524] bg-[#0C0A09] px-3 py-2 text-[#FAFAF9] min-h-[40px]"
+                      >
+                        {SWISS_CANTONS.map((c) => (
+                          <option key={c} value={c}>
+                            {c}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                    <label className="flex items-start gap-2.5 text-[#A8A29E] cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={regForm.accept_terms}
+                        onChange={(e) => setRegForm((p) => ({ ...p, accept_terms: e.target.checked }))}
+                        className="mt-0.5 accent-[#2DD4BF]"
+                      />
+                      <span>
+                        Accetto le condizioni di collaborazione commerciale ai sensi dell’art. 418a segg. CO (commissione sul netto incassato, esclusiva lead 90gg, soglia payout CHF 50.00).
+                      </span>
+                    </label>
+                    <button
+                      type="submit"
+                      disabled={authBusy}
+                      className="w-full inline-flex items-center justify-center gap-2 rounded-lg bg-[#2DD4BF] px-4 py-3 text-sm font-semibold text-[#0C0A09] cursor-pointer disabled:opacity-50 min-h-[44px]"
+                    >
+                      {authBusy && <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />}
+                      <span>Crea Account Agente</span>
+                    </button>
+                  </form>
+                )
               ) : appSuccess ? (
                 <div className="rounded-lg border border-[#22C55E]/40 bg-[#0C0A09] p-5 space-y-3">
                   <div className="flex items-center gap-2 text-[#22C55E] font-semibold text-sm">

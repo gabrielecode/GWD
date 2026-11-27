@@ -1,6 +1,7 @@
 import express, { NextFunction, Request, Response } from 'express';
 import process from 'node:process';
 import {
+  createAdminAccount,
   createAffiliate,
   createCustomer,
   createLead,
@@ -13,6 +14,7 @@ import {
   loginAdminLocal,
   loginAffiliateLocal,
   previewMonthlyPayouts,
+  registerAffiliateAccount,
   reverseSale,
   reviewApplication,
   ServiceError,
@@ -30,6 +32,7 @@ interface AuthenticatedRequest extends Request {
   authRole?: 'admin' | 'affiliate';
   authEmail?: string;
   affiliateId?: string;
+  affiliateStatus?: 'active' | 'disabled' | 'pending_approval';
 }
 
 function extractBearerToken(req: Request): string | null {
@@ -65,6 +68,7 @@ async function resolveAuth(req: AuthenticatedRequest): Promise<boolean> {
       req.authRole = 'affiliate';
       req.authEmail = aff.email;
       req.affiliateId = aff.id;
+      req.affiliateStatus = aff.status;
       return true;
     }
     return false;
@@ -116,6 +120,15 @@ async function requireAffiliate(req: AuthenticatedRequest, res: Response, next: 
     res.status(403).json({ error: 'Account non associato a un profilo agente.' });
     return;
   }
+  if (req.affiliateStatus && req.affiliateStatus !== 'active') {
+    res.status(403).json({
+      error:
+        req.affiliateStatus === 'pending_approval'
+          ? 'Account in attesa di approvazione da Kreativalab.'
+          : 'Account agente disabilitato. Contatta Kreativalab.',
+    });
+    return;
+  }
   next();
 }
 
@@ -140,9 +153,13 @@ export function createAffiliateRouter(): express.Router {
   router.use(express.json({ limit: '1mb' }));
 
   // Public auth status & login routes
-  router.get('/auth/status', (_req, res) => {
-    res.json(getAuthConfigStatus());
-  });
+  router.get(
+    '/auth/status',
+    asyncHandler(async (_req, res) => {
+      const status = await getAuthConfigStatus();
+      res.json(status);
+    })
+  );
 
   router.post(
     '/auth/setup-admin',
@@ -154,11 +171,42 @@ export function createAffiliateRouter(): express.Router {
   );
 
   router.post(
+    '/auth/create-admin',
+    asyncHandler(async (req, res) => {
+      const hasAuth = await resolveAuth(req).catch(() => false);
+      const result = await createAdminAccount({
+        email: typeof req.body?.email === 'string' ? req.body.email : '',
+        password: typeof req.body?.password === 'string' ? req.body.password : '',
+        master_passcode: typeof req.body?.master_passcode === 'string' ? req.body.master_passcode : undefined,
+        requester_is_admin: hasAuth && req.authRole === 'admin',
+      });
+      res.status(201).json(result);
+    })
+  );
+
+  router.post(
     '/auth/admin-login',
     asyncHandler(async (req, res) => {
       const passcode = typeof req.body?.passcode === 'string' ? req.body.passcode : '';
-      const result = loginAdminLocal(passcode);
+      const email = typeof req.body?.email === 'string' ? req.body.email : undefined;
+      const result = loginAdminLocal(passcode, email);
       res.json(result);
+    })
+  );
+
+  router.post(
+    '/auth/register',
+    asyncHandler(async (req, res) => {
+      const result = await registerAffiliateAccount({
+        name: typeof req.body?.name === 'string' ? req.body.name : '',
+        email: typeof req.body?.email === 'string' ? req.body.email : '',
+        password: typeof req.body?.password === 'string' ? req.body.password : '',
+        phone: typeof req.body?.phone === 'string' ? req.body.phone : undefined,
+        company_name: typeof req.body?.company_name === 'string' ? req.body.company_name : undefined,
+        canton: typeof req.body?.canton === 'string' ? req.body.canton : '',
+        accept_terms: Boolean(req.body?.accept_terms),
+      });
+      res.status(201).json(result);
     })
   );
 
@@ -178,6 +226,15 @@ export function createAffiliateRouter(): express.Router {
       const ok = await resolveAuth(req);
       if (!ok) {
         res.status(401).json({ error: 'Sessione non valida.' });
+        return;
+      }
+      if (req.authRole === 'affiliate' && req.affiliateStatus && req.affiliateStatus !== 'active') {
+        res.status(403).json({
+          error:
+            req.affiliateStatus === 'pending_approval'
+              ? 'Account in attesa di approvazione da Kreativalab.'
+              : 'Account agente disabilitato. Contatta Kreativalab.',
+        });
         return;
       }
       res.json({

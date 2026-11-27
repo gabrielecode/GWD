@@ -162,43 +162,61 @@ function mapSupabaseNumbers<T extends Record<string, unknown>>(row: T): T {
 
 // ---------- AUTH & BOOTSTRAP ----------
 
-export function getAuthConfigStatus(): {
+export async function getAuthConfigStatus(): Promise<{
   storage_mode: 'supabase' | 'sqlite';
   supabase_configured: boolean;
   needs_admin_setup: boolean;
+  has_master_passcode: boolean;
   config_error?: string;
-} {
+}> {
+  const hasMasterPasscode = Boolean(process.env.ADMIN_PASSCODE?.trim());
   const supaCfg = getSupabaseConfig();
   if (supaCfg.enabled) {
+    let hasAnyAdmin = false;
+    try {
+      const supabase = getSupabaseAdmin();
+      if (supabase) {
+        const adminEmail = process.env.ADMIN_EMAIL?.trim().toLowerCase();
+        const { data } = await supabase.auth.admin.listUsers({ page: 1, perPage: 200 });
+        const users = data?.users ?? [];
+        hasAnyAdmin = users.some((u) => {
+          const appRole =
+            (u.app_metadata?.role as string | undefined) ||
+            (u.user_metadata?.role as string | undefined);
+          return appRole === 'admin' || Boolean(adminEmail && u.email?.toLowerCase() === adminEmail);
+        });
+      }
+    } catch {
+      hasAnyAdmin = true;
+    }
     return {
       storage_mode: 'supabase',
       supabase_configured: true,
-      needs_admin_setup: false,
+      needs_admin_setup: !hasAnyAdmin,
+      has_master_passcode: hasMasterPasscode,
     };
   }
   try {
     const db = getSqliteDb();
-    const envPass = process.env.ADMIN_PASSCODE?.trim();
-    if (envPass) {
-      return {
-        storage_mode: 'sqlite',
-        supabase_configured: false,
-        needs_admin_setup: false,
-      };
-    }
     const row = db
       .prepare('SELECT value FROM app_settings WHERE key = ?')
       .get('admin_password_hash') as { value?: string } | undefined;
+    const adminCountRow = db
+      .prepare('SELECT COUNT(*) as cnt FROM admin_users')
+      .get() as { cnt?: number } | undefined;
+    const hasLocalAdmin = Boolean(row?.value) || Number(adminCountRow?.cnt ?? 0) > 0;
     return {
       storage_mode: 'sqlite',
       supabase_configured: false,
-      needs_admin_setup: !row?.value,
+      needs_admin_setup: !hasMasterPasscode && !hasLocalAdmin,
+      has_master_passcode: hasMasterPasscode,
     };
   } catch {
     return {
       storage_mode: 'supabase',
       supabase_configured: false,
       needs_admin_setup: false,
+      has_master_passcode: hasMasterPasscode,
       config_error:
         'Database non configurato su Vercel: aggiungi SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, VITE_SUPABASE_URL e VITE_SUPABASE_ANON_KEY nelle Environment Variables di Vercel e riesegui il deploy.',
     };
@@ -207,7 +225,7 @@ export function getAuthConfigStatus(): {
 
 export function setupInitialAdminPassword(password: string): { token: string; email: string } {
   if (getSupabaseConfig().enabled) {
-    throw new ServiceError(400, 'Con Supabase attivo, gestisci gli utenti Admin tramite Supabase Auth.');
+    throw new ServiceError(400, 'Con Supabase attivo, crea l’utente Admin dal tab "Crea Utente Admin".');
   }
   if (process.env.ADMIN_PASSCODE?.trim()) {
     throw new ServiceError(409, 'Passcode Admin già configurato tramite variabili ambiente.');
@@ -236,32 +254,206 @@ export function setupInitialAdminPassword(password: string): { token: string; em
   };
 }
 
-export function loginAdminLocal(passcode: string): { token: string; email: string } {
+export async function createAdminAccount(input: {
+  email: string;
+  password: string;
+  master_passcode?: string;
+  requester_is_admin?: boolean;
+}): Promise<{ email: string; token?: string }> {
+  const email = normalizeEmail(input.email);
+  if (!email || !validateEmail(email)) {
+    throw new ServiceError(400, 'Inserisci un indirizzo email Admin valido.');
+  }
+  const password = (input.password || '').trim();
+  if (password.length < 8) {
+    throw new ServiceError(400, 'La password Admin deve contenere almeno 8 caratteri.');
+  }
+
+  const status = await getAuthConfigStatus();
+  if (status.config_error) {
+    throw new ServiceError(503, status.config_error);
+  }
+
+  const envPass = process.env.ADMIN_PASSCODE?.trim();
+  const providedPasscode = (input.master_passcode || '').trim();
+
+  let authorized = Boolean(input.requester_is_admin);
+  if (!authorized) {
+    if (status.needs_admin_setup && !envPass) {
+      authorized = true;
+    } else if (envPass && providedPasscode && timingSafeEqualsText(providedPasscode, envPass)) {
+      authorized = true;
+    } else if (!status.supabase_configured && providedPasscode) {
+      const db = getSqliteDb();
+      const legacy = db
+        .prepare('SELECT value FROM app_settings WHERE key = ?')
+        .get('admin_password_hash') as { value?: string } | undefined;
+      if (legacy?.value && verifyPassword(providedPasscode, legacy.value)) {
+        authorized = true;
+      } else {
+        const admins = db.prepare('SELECT password_hash FROM admin_users').all() as Array<{
+          password_hash?: string;
+        }>;
+        if (admins.some((a) => a.password_hash && verifyPassword(providedPasscode, a.password_hash))) {
+          authorized = true;
+        }
+      }
+    }
+  }
+
+  if (!authorized) {
+    throw new ServiceError(
+      403,
+      envPass
+        ? 'Autorizzazione negata: inserisci il Passcode Master (ADMIN_PASSCODE) corretto.'
+        : 'Esiste già un amministratore: inserisci la password di un Admin esistente oppure accedi prima come Admin.'
+    );
+  }
+
+  const supabase = getSupabaseAdmin();
+  if (supabase) {
+    const { data, error } = await supabase.auth.admin.createUser({
+      email,
+      password,
+      email_confirm: true,
+      app_metadata: { role: 'admin' },
+    });
+    if (error || !data?.user) {
+      const msg = error?.message || 'Impossibile creare l’utente Admin su Supabase.';
+      if (/already/i.test(msg)) {
+        throw new ServiceError(409, 'Esiste già un utente Supabase registrato con questa email.');
+      }
+      throw new ServiceError(400, msg);
+    }
+    return { email: data.user.email || email };
+  }
+
+  const db = getSqliteDb();
+  const existingUser = db
+    .prepare('SELECT id FROM admin_users WHERE lower(email) = ?')
+    .get(email) as { id?: string } | undefined;
+  if (existingUser) {
+    throw new ServiceError(409, 'Esiste già un utente Admin con questa email.');
+  }
+
+  const id = crypto.randomUUID();
+  const hash = hashPassword(password);
+  db.prepare('INSERT INTO admin_users (id, email, password_hash, created_at) VALUES (?, ?, ?, ?)').run(
+    id,
+    email,
+    hash,
+    nowIso()
+  );
+
+  return {
+    email,
+    token: signSessionToken({ role: 'admin', email }),
+  };
+}
+
+export function loginAdminLocal(passcode: string, emailInput?: string): { token: string; email: string } {
   const clean = passcode.trim();
   if (!clean) {
     throw new ServiceError(400, 'Inserisci il passcode o la password Admin.');
   }
   const envPass = process.env.ADMIN_PASSCODE?.trim();
-  const email = process.env.ADMIN_EMAIL?.trim() || 'admin@kreativalab.ch';
+  const defaultEmail = process.env.ADMIN_EMAIL?.trim() || 'admin@kreativalab.ch';
+  const normEmail = normalizeEmail(emailInput);
 
-  if (envPass) {
-    if (!timingSafeEqualsText(clean, envPass)) {
-      throw new ServiceError(401, 'Credenziali Admin non valide.');
-    }
+  if (envPass && timingSafeEqualsText(clean, envPass)) {
+    const email = normEmail || defaultEmail;
     return { token: signSessionToken({ role: 'admin', email }), email };
   }
 
   const db = getSqliteDb();
+  if (normEmail) {
+    const adminRow = db
+      .prepare('SELECT email, password_hash FROM admin_users WHERE lower(email) = ?')
+      .get(normEmail) as { email?: string; password_hash?: string } | undefined;
+    if (adminRow?.password_hash && verifyPassword(clean, adminRow.password_hash)) {
+      const resolvedEmail = adminRow.email || normEmail;
+      return { token: signSessionToken({ role: 'admin', email: resolvedEmail }), email: resolvedEmail };
+    }
+  } else {
+    const admins = db
+      .prepare('SELECT email, password_hash FROM admin_users')
+      .all() as Array<{ email?: string; password_hash?: string }>;
+    const matched = admins.find((a) => a.password_hash && verifyPassword(clean, a.password_hash));
+    if (matched?.email) {
+      return { token: signSessionToken({ role: 'admin', email: matched.email }), email: matched.email };
+    }
+  }
+
   const row = db
     .prepare('SELECT value FROM app_settings WHERE key = ?')
     .get('admin_password_hash') as { value?: string } | undefined;
-  if (!row?.value) {
-    throw new ServiceError(412, 'Primo avvio: configura prima la password Admin.');
+
+  if (row?.value && verifyPassword(clean, row.value)) {
+    return { token: signSessionToken({ role: 'admin', email: normEmail || defaultEmail }), email: normEmail || defaultEmail };
   }
-  if (!verifyPassword(clean, row.value)) {
-    throw new ServiceError(401, 'Password Admin non valida.');
+
+  if (!envPass && !row?.value) {
+    const adminCountRow = db
+      .prepare('SELECT COUNT(*) as cnt FROM admin_users')
+      .get() as { cnt?: number } | undefined;
+    if (Number(adminCountRow?.cnt ?? 0) === 0) {
+      throw new ServiceError(412, 'Primo avvio: crea prima un utente Admin.');
+    }
   }
-  return { token: signSessionToken({ role: 'admin', email }), email };
+
+  throw new ServiceError(401, 'Credenziali Admin non valide.');
+}
+
+export async function registerAffiliateAccount(input: {
+  name: string;
+  email: string;
+  password: string;
+  phone?: string;
+  company_name?: string;
+  canton?: string;
+  accept_terms: boolean;
+}): Promise<{ affiliate: Affiliate; pending_approval: boolean }> {
+  const password = (input.password || '').trim();
+  if (password.length < 8) {
+    throw new ServiceError(400, 'La password deve contenere almeno 8 caratteri.');
+  }
+  if (!input.accept_terms) {
+    throw new ServiceError(400, 'Devi accettare le condizioni del mandato di agenzia (CO 418a segg.).');
+  }
+  const canton = (input.canton || '').trim();
+  if (canton.length < 2) {
+    throw new ServiceError(400, 'Indica Cantone o Paese.');
+  }
+
+  const email = normalizeEmail(input.email);
+  if (!email || !validateEmail(email)) {
+    throw new ServiceError(400, 'Indirizzo email non valido.');
+  }
+
+  const supabase = getSupabaseAdmin();
+  if (supabase) {
+    const { data: existingAff } = await supabase
+      .from('affiliates')
+      .select('id')
+      .ilike('email', email)
+      .maybeSingle();
+    if (existingAff) {
+      throw new ServiceError(409, 'Esiste già un account agente con questa email. Prova ad accedere.');
+    }
+  }
+
+  const affiliate = await createAffiliate({
+    name: input.name,
+    email,
+    phone: input.phone || null,
+    company_name: input.company_name || null,
+    canton,
+    status: 'pending_approval',
+    password,
+    notes: 'Registrazione self-service dal portale /affiliate.',
+  });
+
+  return { affiliate, pending_approval: true };
 }
 
 export async function loginAffiliateLocal(

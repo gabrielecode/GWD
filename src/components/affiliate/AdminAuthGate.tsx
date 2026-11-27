@@ -1,5 +1,5 @@
 import { FormEvent, ReactNode, useCallback, useEffect, useState } from 'react';
-import { AlertCircle, KeyRound, Loader2, ShieldCheck } from 'lucide-react';
+import { AlertCircle, KeyRound, Loader2, ShieldCheck, UserPlus } from 'lucide-react';
 import { affiliateApi, AuthConfigStatus } from '../../lib/affiliateClient';
 import { WorkspaceBar } from './WorkspaceBar';
 
@@ -23,11 +23,19 @@ export function AdminAuthGate({
   const [status, setStatus] = useState<AuthConfigStatus | null>(null);
   const [checking, setChecking] = useState(true);
   const [adminEmail, setAdminEmail] = useState<string | null>(null);
+  const [authTab, setAuthTab] = useState<'login' | 'create'>('login');
+
+  const [loginEmail, setLoginEmail] = useState('');
   const [passcode, setPasscode] = useState('');
-  const [supabaseEmail, setSupabaseEmail] = useState('');
-  const [confirmPasscode, setConfirmPasscode] = useState('');
+
+  const [newEmail, setNewEmail] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [masterPasscode, setMasterPasscode] = useState('');
+
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [notice, setNotice] = useState<string | null>(null);
 
   const checkSession = useCallback(async () => {
     setChecking(true);
@@ -37,6 +45,8 @@ export function AdminAuthGate({
       setStatus(cfg);
       if (cfg.config_error) {
         setError(cfg.config_error);
+      } else if (cfg.needs_admin_setup && !cfg.has_master_passcode) {
+        setAuthTab('create');
       }
       try {
         const me = await affiliateApi.getSessionMe();
@@ -59,26 +69,38 @@ export function AdminAuthGate({
     void checkSession();
   }, [checkSession]);
 
-  const handleSetupAdmin = async (e: FormEvent) => {
+  const handleCreateAdmin = async (e: FormEvent) => {
     e.preventDefault();
     if (submitting) return;
-    if (passcode.trim().length < 8) {
+    if (newPassword.trim().length < 8) {
       setError('La password deve avere almeno 8 caratteri.');
       return;
     }
-    if (passcode !== confirmPasscode) {
+    if (newPassword !== confirmPassword) {
       setError('Le due password non coincidono.');
       return;
     }
     setSubmitting(true);
     setError(null);
+    setNotice(null);
     try {
-      const res = await affiliateApi.setupAdmin(passcode);
-      setAdminEmail(res.email);
-      setPasscode('');
-      setConfirmPasscode('');
+      const res = await affiliateApi.createAdminAccount({
+        email: newEmail.trim(),
+        password: newPassword,
+        master_passcode: masterPasscode.trim() || undefined,
+      });
+      setNewPassword('');
+      setConfirmPassword('');
+      setMasterPasscode('');
+      if (res.token) {
+        setAdminEmail(res.email);
+      } else {
+        setLoginEmail(res.email);
+        setAuthTab('login');
+        setNotice(`Utente Admin ${res.email} creato! Ora puoi accedere.`);
+      }
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Configurazione Admin non riuscita.');
+      setError(err instanceof Error ? err.message : 'Creazione utente Admin non riuscita.');
     } finally {
       setSubmitting(false);
     }
@@ -89,10 +111,11 @@ export function AdminAuthGate({
     if (submitting) return;
     setSubmitting(true);
     setError(null);
+    setNotice(null);
     try {
       const res = await affiliateApi.loginAdmin(
         passcode,
-        status?.supabase_configured ? supabaseEmail : undefined
+        loginEmail.trim() || undefined
       );
       setAdminEmail(res.email);
       setPasscode('');
@@ -139,6 +162,9 @@ export function AdminAuthGate({
     );
   }
 
+  const requiresAuthorizationCode =
+    !status?.needs_admin_setup || Boolean(status?.has_master_passcode);
+
   return (
     <div className="min-h-[75vh] flex flex-col">
       <WorkspaceBar
@@ -156,17 +182,56 @@ export function AdminAuthGate({
               <span>Area Riservata Amministrazione</span>
             </div>
             <h1 className="font-display text-2xl font-bold text-[#FAFAF9]">
-              {status?.needs_admin_setup
-                ? 'Inizializza Password Admin'
+              {authTab === 'create'
+                ? status?.needs_admin_setup
+                  ? 'Crea Primo Utente Admin'
+                  : 'Nuovo Utente Admin'
                 : 'Accesso Console Admin'}
             </h1>
             <p className="text-sm text-[#A8A29E] leading-relaxed">
-              {status?.needs_admin_setup
-                ? 'Primo avvio locale: imposta la password amministratore per proteggere agenti, candidature e liquidazioni CHF.'
+              {authTab === 'create'
+                ? status?.needs_admin_setup && !status?.has_master_passcode
+                  ? 'Primo avvio: crea il tuo account amministratore con email e password per accedere alla console.'
+                  : 'Crea un nuovo account amministratore autorizzato con il Passcode Master o la password di un Admin.'
                 : status?.supabase_configured
                 ? 'Accedi con il tuo account amministratore Supabase Auth (claim role = admin).'
-                : 'Inserisci il passcode o la password amministratore configurata per accedere al pannello.'}
+                : 'Inserisci email e password oppure il passcode amministratore configurato.'}
             </p>
+          </div>
+
+          <div className="flex items-center gap-1 rounded-lg bg-[#0C0A09] border border-[#292524] p-1">
+            <button
+              type="button"
+              onClick={() => {
+                setAuthTab('login');
+                setError(null);
+                setNotice(null);
+              }}
+              className={`flex-1 inline-flex items-center justify-center gap-1.5 rounded-md px-3 py-2 text-xs font-medium cursor-pointer ${
+                authTab === 'login'
+                  ? 'bg-[#FAFAF9] text-[#0C0A09] font-semibold'
+                  : 'text-[#A8A29E] hover:text-[#FAFAF9]'
+              }`}
+            >
+              <KeyRound className="h-3.5 w-3.5" aria-hidden="true" />
+              <span>Accedi</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                setAuthTab('create');
+                setError(null);
+                setNotice(null);
+              }}
+              className={`flex-1 inline-flex items-center justify-center gap-1.5 rounded-md px-3 py-2 text-xs font-medium cursor-pointer ${
+                authTab === 'create'
+                  ? 'bg-[#FAFAF9] text-[#0C0A09] font-semibold'
+                  : 'text-[#A8A29E] hover:text-[#FAFAF9]'
+              }`}
+            >
+              <UserPlus className="h-3.5 w-3.5" aria-hidden="true" />
+              <span>Crea Utente Admin</span>
+            </button>
           </div>
 
           {error && (
@@ -179,74 +244,127 @@ export function AdminAuthGate({
             </div>
           )}
 
-          {status?.needs_admin_setup ? (
-            <form onSubmit={handleSetupAdmin} className="space-y-4">
+          {notice && (
+            <div
+              role="status"
+              className="rounded-lg border border-[#22C55E]/40 bg-[#0C0A09] p-3 text-xs text-[#22C55E]"
+            >
+              {notice}
+            </div>
+          )}
+
+          {authTab === 'create' ? (
+            <form onSubmit={handleCreateAdmin} className="space-y-4">
               <div>
                 <label
-                  htmlFor="setup-admin-password"
+                  htmlFor="create-admin-email"
                   className="block text-xs font-medium text-[#FAFAF9] mb-1.5"
                 >
-                  Nuova password Admin (min. 8 caratteri)
+                  Email Nuovo Admin
                 </label>
                 <input
-                  id="setup-admin-password"
+                  id="create-admin-email"
+                  type="email"
+                  required
+                  value={newEmail}
+                  onChange={(e) => setNewEmail(e.target.value)}
+                  placeholder="admin@kreativalab.ch"
+                  className="w-full rounded-lg border border-[#292524] bg-[#0C0A09] px-3.5 py-2.5 text-sm text-[#FAFAF9] focus:border-[#2DD4BF] focus:outline-none min-h-[42px]"
+                />
+              </div>
+
+              <div>
+                <label
+                  htmlFor="create-admin-password"
+                  className="block text-xs font-medium text-[#FAFAF9] mb-1.5"
+                >
+                  Password (min. 8 caratteri)
+                </label>
+                <input
+                  id="create-admin-password"
                   type="password"
                   required
                   minLength={8}
-                  value={passcode}
-                  onChange={(e) => setPasscode(e.target.value)}
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
                   placeholder="••••••••••••"
                   className="w-full rounded-lg border border-[#292524] bg-[#0C0A09] px-3.5 py-2.5 text-sm text-[#FAFAF9] focus:border-[#2DD4BF] focus:outline-none min-h-[42px]"
                 />
               </div>
+
               <div>
                 <label
-                  htmlFor="setup-admin-confirm"
+                  htmlFor="create-admin-confirm"
                   className="block text-xs font-medium text-[#FAFAF9] mb-1.5"
                 >
-                  Conferma password
+                  Conferma Password
                 </label>
                 <input
-                  id="setup-admin-confirm"
+                  id="create-admin-confirm"
                   type="password"
                   required
                   minLength={8}
-                  value={confirmPasscode}
-                  onChange={(e) => setConfirmPasscode(e.target.value)}
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
                   placeholder="••••••••••••"
                   className="w-full rounded-lg border border-[#292524] bg-[#0C0A09] px-3.5 py-2.5 text-sm text-[#FAFAF9] focus:border-[#2DD4BF] focus:outline-none min-h-[42px]"
                 />
               </div>
+
+              {requiresAuthorizationCode && (
+                <div>
+                  <label
+                    htmlFor="create-admin-master"
+                    className="block text-xs font-medium text-[#FAFAF9] mb-1.5"
+                  >
+                    {status?.has_master_passcode
+                      ? 'Passcode Master (ADMIN_PASSCODE)'
+                      : 'Password Admin esistente (autorizzazione)'}
+                  </label>
+                  <input
+                    id="create-admin-master"
+                    type="password"
+                    required
+                    value={masterPasscode}
+                    onChange={(e) => setMasterPasscode(e.target.value)}
+                    placeholder="••••••••••••"
+                    className="w-full rounded-lg border border-[#292524] bg-[#0C0A09] px-3.5 py-2.5 text-sm text-[#FAFAF9] focus:border-[#2DD4BF] focus:outline-none min-h-[42px]"
+                  />
+                </div>
+              )}
+
               <button
                 type="submit"
                 disabled={submitting}
                 className="w-full inline-flex items-center justify-center gap-2 rounded-lg bg-[#2DD4BF] px-4 py-2.5 text-sm font-semibold text-[#0C0A09] hover:opacity-90 transition-opacity cursor-pointer min-h-[42px] disabled:opacity-50"
               >
-                {submitting && <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />}
-                <span>Attiva Console Admin</span>
+                {submitting ? (
+                  <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
+                ) : (
+                  <UserPlus className="h-4 w-4" aria-hidden="true" />
+                )}
+                <span>Crea Utente Admin</span>
               </button>
             </form>
           ) : (
             <form onSubmit={handleLogin} className="space-y-4">
-              {status?.supabase_configured && (
-                <div>
-                  <label
-                    htmlFor="admin-supa-email"
-                    className="block text-xs font-medium text-[#FAFAF9] mb-1.5"
-                  >
-                    Email Admin
-                  </label>
-                  <input
-                    id="admin-supa-email"
-                    type="email"
-                    required
-                    value={supabaseEmail}
-                    onChange={(e) => setSupabaseEmail(e.target.value)}
-                    placeholder="admin@kreativalab.ch"
-                    className="w-full rounded-lg border border-[#292524] bg-[#0C0A09] px-3.5 py-2.5 text-sm text-[#FAFAF9] focus:border-[#2DD4BF] focus:outline-none min-h-[42px]"
-                  />
-                </div>
-              )}
+              <div>
+                <label
+                  htmlFor="admin-supa-email"
+                  className="block text-xs font-medium text-[#FAFAF9] mb-1.5"
+                >
+                  {status?.supabase_configured ? 'Email Admin' : 'Email Admin (opzionale con passcode)'}
+                </label>
+                <input
+                  id="admin-supa-email"
+                  type="email"
+                  required={Boolean(status?.supabase_configured)}
+                  value={loginEmail}
+                  onChange={(e) => setLoginEmail(e.target.value)}
+                  placeholder="admin@kreativalab.ch"
+                  className="w-full rounded-lg border border-[#292524] bg-[#0C0A09] px-3.5 py-2.5 text-sm text-[#FAFAF9] focus:border-[#2DD4BF] focus:outline-none min-h-[42px]"
+                />
+              </div>
 
               <div>
                 <label

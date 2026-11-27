@@ -17,6 +17,7 @@ export interface AuthConfigStatus {
   storage_mode: 'supabase' | 'sqlite';
   supabase_configured: boolean;
   needs_admin_setup: boolean;
+  has_master_passcode?: boolean;
   config_error?: string;
 }
 
@@ -76,26 +77,68 @@ export const affiliateApi = {
     return res;
   },
 
-  async loginAdmin(passcode: string, emailForSupabase?: string): Promise<{ token: string; email: string }> {
+  async createAdminAccount(body: {
+    email: string;
+    password: string;
+    master_passcode?: string;
+  }): Promise<{ email: string; token?: string }> {
+    const res = await apiFetch<{ email: string; token?: string }>('/auth/create-admin', {
+      method: 'POST',
+      body: JSON.stringify(body),
+    });
+    if (res.token) {
+      setMemoryToken(res.token);
+      return res;
+    }
     const supabase = getSupabaseBrowserClient();
-    if (supabase && emailForSupabase) {
+    if (supabase) {
       const { data, error } = await supabase.auth.signInWithPassword({
-        email: emailForSupabase,
+        email: body.email.trim(),
+        password: body.password.trim(),
+      });
+      if (!error && data.session?.access_token) {
+        setMemoryToken(data.session.access_token);
+        return { email: data.user.email || res.email, token: data.session.access_token };
+      }
+    }
+    return res;
+  },
+
+  async loginAdmin(passcode: string, email?: string): Promise<{ token: string; email: string }> {
+    const supabase = getSupabaseBrowserClient();
+    if (supabase && email) {
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
         password: passcode,
       });
       if (error || !data.session?.access_token) {
         throw new Error(error?.message || 'Accesso Supabase Admin non riuscito.');
       }
       setMemoryToken(data.session.access_token);
-      return { token: data.session.access_token, email: data.user.email || emailForSupabase };
+      return { token: data.session.access_token, email: data.user.email || email };
     }
 
     const res = await apiFetch<{ token: string; email: string }>('/auth/admin-login', {
       method: 'POST',
-      body: JSON.stringify({ passcode }),
+      body: JSON.stringify({ passcode, email }),
     });
     setMemoryToken(res.token);
     return res;
+  },
+
+  async registerAffiliate(body: {
+    name: string;
+    email: string;
+    password: string;
+    phone?: string;
+    company_name?: string;
+    canton: string;
+    accept_terms: boolean;
+  }): Promise<{ affiliate: Affiliate; pending_approval: boolean }> {
+    return apiFetch<{ affiliate: Affiliate; pending_approval: boolean }>('/auth/register', {
+      method: 'POST',
+      body: JSON.stringify(body),
+    });
   },
 
   async loginAffiliate(email: string, password: string): Promise<{ token: string; affiliate?: Affiliate }> {
