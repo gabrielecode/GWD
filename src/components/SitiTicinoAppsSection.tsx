@@ -185,21 +185,21 @@ export function SitiTicinoAppsSection({ lang }: SitiTicinoAppsSectionProps) {
     >
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
         <div className="max-w-2xl space-y-2">
-          <p className="text-xs font-medium uppercase tracking-wider text-[#2DD4BF]">
+          <p className="text-xs font-medium uppercase tracking-wider text-[#0F766E] dark:text-[#2DD4BF]">
             {t.serviceDetail.appsSectionTag}
           </p>
           <h2
             id="sititicino-apps-heading"
-            className="font-display text-2xl sm:text-3xl font-bold tracking-tight text-[#FAFAF9]"
+            className="font-display text-2xl sm:text-3xl font-bold tracking-tight text-[#141210] dark:text-[#FAFAF9]"
           >
             {t.serviceDetail.appsSectionTitle}
           </h2>
-          <p className="text-sm sm:text-base text-[#A8A29E] leading-relaxed">
+          <p className="text-sm sm:text-base text-[#57534E] dark:text-[#A8A29E] leading-relaxed">
             {t.serviceDetail.appsSectionSubtitle}
           </p>
         </div>
 
-        <span className="font-mono text-xs text-[#A8A29E] tabular-nums shrink-0">
+        <span className="font-mono text-xs text-[#57534E] dark:text-[#A8A29E] tabular-nums shrink-0">
           5 / 5 App · sititicino.ch
         </span>
       </div>
@@ -231,11 +231,25 @@ function SitiTicinoAppCard({
       ? 'agency'
       : 'saas';
 
+  const accentTextVar =
+    app.accentHex === '#60A5FA'
+      ? 'var(--kl-accent-ai)'
+      : app.accentHex === '#FBBF24'
+      ? 'var(--kl-accent-agency)'
+      : 'var(--kl-accent-saas)';
+
+  const pillBadgeClass =
+    app.accentHex === '#60A5FA'
+      ? 'border-[#1D4ED8]/30 bg-[#60A5FA]/12 text-[#1D4ED8] dark:border-[#60A5FA]/35 dark:bg-[#60A5FA]/15 dark:text-[#60A5FA]'
+      : app.accentHex === '#FBBF24'
+      ? 'border-[#B45309]/30 bg-[#FBBF24]/15 text-[#B45309] dark:border-[#FBBF24]/35 dark:bg-[#FBBF24]/15 dark:text-[#FBBF24]'
+      : 'border-[#0F766E]/30 bg-[#2DD4BF]/12 text-[#0F766E] dark:border-[#2DD4BF]/35 dark:bg-[#2DD4BF]/15 dark:text-[#2DD4BF]';
+
   const technicalTags = app.technicalTags[lang];
   const totalDetailsCount = app.techStack.length + technicalTags.length;
 
   return (
-    <article className="group rounded-2xl border border-[#292524] bg-[#1C1917] p-5 flex flex-col justify-between transition-all duration-300 ease-out hover:border-[#2DD4BF]/50 hover:-translate-y-1 hover:shadow-[0_20px_44px_-16px_rgba(0,0,0,0.75)]">
+    <article className="group rounded-2xl border border-[#E5E2DC] bg-white dark:border-[#292524] dark:bg-[#1C1917] p-5 flex flex-col justify-between transition-all duration-300 ease-out hover:border-[#0F766E]/50 dark:hover:border-[#2DD4BF]/50 hover:-translate-y-1 hover:shadow-[0_18px_36px_-16px_rgba(20,18,16,0.16)] dark:hover:shadow-[0_20px_44px_-16px_rgba(0,0,0,0.75)]">
       <div>
         {/* Unified Responsive BrowserFrame Wrapping Live App Link */}
         <BrowserFrame
@@ -251,25 +265,20 @@ function SitiTicinoAppCard({
 
         <div className="flex items-center justify-between gap-2 mb-2.5">
           <span
-            className="inline-flex items-center rounded-full border px-2.5 py-0.5 text-[11px] font-semibold"
-            style={{
-              borderColor: `${app.accentHex}4D`,
-              backgroundColor: `${app.accentHex}1A`,
-              color: app.accentHex,
-            }}
+            className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-[11px] font-semibold ${pillBadgeClass}`}
           >
             {app.category[lang]}
           </span>
-          <span className="font-mono text-[11px] text-[#A8A29E]">
+          <span className="font-mono text-[11px] text-[#57534E] dark:text-[#A8A29E]">
             {app.badgeText}
           </span>
         </div>
 
-        <h3 className="font-display text-xl font-bold text-[#FAFAF9] tracking-tight mb-2">
+        <h3 className="font-display text-xl font-bold text-[#141210] dark:text-[#FAFAF9] tracking-tight mb-2">
           {app.name}
         </h3>
 
-        <p className="text-sm text-[#A8A29E] leading-relaxed mb-4">
+        <p className="text-sm text-[#57534E] dark:text-[#A8A29E] leading-relaxed mb-4">
           {app.description[lang]}
         </p>
 
@@ -278,11 +287,11 @@ function SitiTicinoAppCard({
           {app.techStack.slice(0, 3).map((tech) => (
             <span
               key={tech}
-              className="inline-flex items-center gap-1.5 rounded-md border border-[#292524] bg-[#0C0A09] px-2 py-0.5 font-mono text-[11px] text-[#A8A29E]"
+              className="inline-flex items-center gap-1.5 rounded-md border border-[#E5E2DC] bg-[#F3F1EC] text-[#57534E] dark:border-[#292524] dark:bg-[#0C0A09] px-2 py-0.5 font-mono text-[11px] dark:text-[#A8A29E]"
             >
               <span
                 className="h-1.5 w-1.5 rounded-full shrink-0"
-                style={{ backgroundColor: app.accentHex }}
+                style={{ backgroundColor: accentTextVar }}
                 aria-hidden="true"
               />
               <span>{tech}</span>
@@ -297,12 +306,12 @@ function SitiTicinoAppCard({
             aria-expanded={isMobileStackOpen}
             aria-controls={stackPanelId}
             onClick={() => setIsMobileStackOpen((prev) => !prev)}
-            className="w-full flex items-center justify-between gap-2 rounded-xl border border-[#292524] bg-[#0C0A09]/80 px-3 py-2.5 text-left text-xs font-medium text-[#FAFAF9] active:scale-[0.99] transition-all cursor-pointer touch-manipulation min-h-[42px]"
+            className="w-full flex items-center justify-between gap-2 rounded-xl border border-[#E5E2DC] bg-[#F3F1EC]/80 text-[#141210] dark:border-[#292524] dark:bg-[#0C0A09]/80 px-3 py-2.5 text-left text-xs font-medium dark:text-[#FAFAF9] active:scale-[0.99] transition-all cursor-pointer touch-manipulation min-h-[42px]"
           >
             <span className="flex items-center gap-2 min-w-0">
               <Code2
                 className="h-3.5 w-3.5 shrink-0"
-                style={{ color: app.accentHex }}
+                style={{ color: accentTextVar }}
                 aria-hidden="true"
               />
               <span className="truncate">
@@ -318,8 +327,8 @@ function SitiTicinoAppCard({
               </span>
             </span>
             <ChevronDown
-              className={`h-4 w-4 text-[#A8A29E] shrink-0 transition-transform duration-200 ${
-                isMobileStackOpen ? 'rotate-180 text-[#FAFAF9]' : ''
+              className={`h-4 w-4 text-[#57534E] dark:text-[#A8A29E] shrink-0 transition-transform duration-200 ${
+                isMobileStackOpen ? 'rotate-180 text-[#141210] dark:text-[#FAFAF9]' : ''
               }`}
               aria-hidden="true"
             />
@@ -334,20 +343,20 @@ function SitiTicinoAppCard({
             }`}
           >
             <div className="overflow-hidden">
-              <div className="rounded-xl border border-[#292524] bg-[#0C0A09] p-3 space-y-3">
+              <div className="rounded-xl border border-[#E5E2DC] bg-[#F3F1EC] dark:border-[#292524] dark:bg-[#0C0A09] p-3 space-y-3">
                 <div>
-                  <div className="font-mono text-[10px] uppercase tracking-wider text-[#A8A29E] mb-1.5">
+                  <div className="font-mono text-[10px] uppercase tracking-wider text-[#57534E] dark:text-[#A8A29E] mb-1.5">
                     {t.filterSection.techStackHeading}
                   </div>
                   <div className="flex flex-wrap gap-1.5">
                     {app.techStack.map((tech) => (
                       <span
                         key={tech}
-                        className="inline-flex items-center gap-1.5 rounded-md border border-[#292524] bg-[#1C1917] px-2 py-1 font-mono text-[11px] text-[#FAFAF9]"
+                        className="inline-flex items-center gap-1.5 rounded-md border border-[#E5E2DC] bg-white text-[#141210] dark:border-[#292524] dark:bg-[#1C1917] px-2 py-1 font-mono text-[11px] dark:text-[#FAFAF9]"
                       >
                         <span
                           className="h-1.5 w-1.5 rounded-full shrink-0"
-                          style={{ backgroundColor: app.accentHex }}
+                          style={{ backgroundColor: accentTextVar }}
                           aria-hidden="true"
                         />
                         <span>{tech}</span>
@@ -356,15 +365,15 @@ function SitiTicinoAppCard({
                   </div>
                 </div>
 
-                <div className="pt-2 border-t border-[#292524]/80">
-                  <div className="font-mono text-[10px] uppercase tracking-wider text-[#A8A29E] mb-1.5">
+                <div className="pt-2 border-t border-[#E5E2DC] dark:border-[#292524]/80">
+                  <div className="font-mono text-[10px] uppercase tracking-wider text-[#57534E] dark:text-[#A8A29E] mb-1.5">
                     {t.filterSection.technicalTagsHeading}
                   </div>
                   <div className="flex flex-wrap gap-1.5">
                     {technicalTags.map((tag) => (
                       <span
                         key={tag}
-                        className="inline-flex items-center rounded-md border border-[#292524] bg-[#141210] px-2 py-1 text-[11px] text-[#A8A29E]"
+                        className="inline-flex items-center rounded-md border border-[#E5E2DC] bg-white text-[#57534E] dark:border-[#292524] dark:bg-[#141210] px-2 py-1 text-[11px] dark:text-[#A8A29E]"
                       >
                         {tag}
                       </span>
@@ -377,8 +386,8 @@ function SitiTicinoAppCard({
         </div>
       </div>
 
-      <div className="pt-4 border-t border-[#292524] flex items-center justify-between gap-3">
-        <span className="font-mono text-xs text-[#A8A29E] truncate">
+      <div className="pt-4 border-t border-[#E5E2DC] dark:border-[#292524] flex items-center justify-between gap-3">
+        <span className="font-mono text-xs text-[#57534E] dark:text-[#A8A29E] truncate">
           {app.domainLabel}
         </span>
         <a

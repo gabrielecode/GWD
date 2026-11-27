@@ -15,7 +15,7 @@ export function HeroAtmosphericArt({ lang = 'it' }: { lang?: Language }) {
   }, []);
 
   return (
-    <div className="relative h-full min-h-[260px] sm:min-h-[340px] lg:min-h-[400px] w-full overflow-hidden rounded-2xl border border-[#292524] bg-[#0C0A09] shadow-2xl">
+    <div className="relative h-full min-h-[260px] sm:min-h-[340px] lg:min-h-[400px] w-full overflow-hidden rounded-2xl border border-[#E5E2DC] dark:border-[#292524] bg-[#0C0A09] shadow-xl dark:shadow-2xl">
       {!heroLoaded && (
         <div
           className="skeleton-obsidian absolute inset-0 z-10 p-6 flex flex-col justify-between"
@@ -510,11 +510,11 @@ export function ServicePreviewThumbnail({
       ? 'sititicino.ch'
       : 'aurora-ai.studio';
 
-  const backdrop = isBlue
-    ? 'radial-gradient(circle at 80% 15%, rgba(96, 165, 250, 0.26), rgba(28, 25, 23, 0.96) 65%, rgba(12, 10, 9, 1) 100%)'
+  const backdropClass = isBlue
+    ? 'browser-backdrop-ai'
     : isTeal
-    ? 'radial-gradient(circle at 80% 15%, rgba(45, 212, 191, 0.24), rgba(28, 25, 23, 0.96) 65%, rgba(12, 10, 9, 1) 100%)'
-    : 'radial-gradient(circle at 80% 15%, rgba(251, 191, 36, 0.26), rgba(28, 25, 23, 0.96) 65%, rgba(12, 10, 9, 1) 100%)';
+    ? 'browser-backdrop-saas'
+    : 'browser-backdrop-agency';
 
   const sheen = isBlue
     ? 'rgba(96, 165, 250, 0.16)'
@@ -524,8 +524,7 @@ export function ServicePreviewThumbnail({
 
   return (
     <div
-      className="group/thumb relative mb-4 w-full overflow-hidden rounded-xl border border-[#292524] p-2.5 flex flex-col justify-end perspective-midrange transition-colors duration-300 group-hover:border-[#FAFAF9]/20"
-      style={{ background: backdrop }}
+      className={`group/thumb relative mb-4 w-full overflow-hidden rounded-xl border border-[#E5E2DC] dark:border-[#292524] p-2.5 flex flex-col justify-end perspective-midrange transition-colors duration-300 group-hover:border-[#141210]/20 dark:group-hover:border-[#FAFAF9]/20 ${backdropClass}`}
     >
       <div
         className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-60 group-hover/thumb:opacity-100"
@@ -535,19 +534,19 @@ export function ServicePreviewThumbnail({
         aria-hidden="true"
       />
 
-      <div className="relative z-10 w-full rounded-lg border border-[#292524] bg-[#141210] shadow-xl overflow-hidden transform-3d origin-center transition-all duration-300 ease-out will-change-transform group-hover:scale-[1.02] group-hover:rotate-x-2 group-hover:-rotate-y-1 group-hover/thumb:scale-[1.04] group-hover/thumb:rotate-x-6 group-hover/thumb:-rotate-y-3 group-hover/thumb:-translate-y-1 group-hover/thumb:border-[#FAFAF9]/25">
-        <div className="flex items-center justify-between gap-1.5 border-b border-[#292524] bg-[#1C1917] px-2 py-1">
+      <div className="relative z-10 w-full rounded-lg border border-[#E5E2DC] bg-white dark:border-[#292524] dark:bg-[#141210] shadow-xl overflow-hidden transform-3d origin-center transition-all duration-300 ease-out will-change-transform group-hover:scale-[1.02] group-hover:rotate-x-2 group-hover:-rotate-y-1 group-hover/thumb:scale-[1.04] group-hover/thumb:rotate-x-6 group-hover/thumb:-rotate-y-3 group-hover/thumb:-translate-y-1 group-hover/thumb:border-[#141210]/25 dark:group-hover/thumb:border-[#FAFAF9]/25">
+        <div className="flex items-center justify-between gap-1.5 border-b border-[#E5E2DC] bg-[#F8F7F4] dark:border-[#292524] dark:bg-[#1C1917] px-2 py-1">
           <div className="flex items-center gap-1" aria-hidden="true">
             <span className="h-1.5 w-1.5 rounded-full bg-[#FB923C]/80" />
             <span className="h-1.5 w-1.5 rounded-full bg-[#FBBF24]/80" />
             <span className="h-1.5 w-1.5 rounded-full bg-[#22C55E]/80" />
           </div>
-          <div className="flex-1 truncate rounded bg-[#0C0A09] px-1.5 py-0.5 text-center font-mono text-[8px] text-[#A8A29E]">
+          <div className="flex-1 truncate rounded bg-white border border-[#E5E2DC]/80 text-[#57534E] dark:border-transparent dark:bg-[#0C0A09] px-1.5 py-0.5 text-center font-mono text-[8px] dark:text-[#A8A29E]">
             https://{domain}
           </div>
         </div>
 
-        <div className="relative w-full aspect-video overflow-hidden bg-[#141210]">
+        <div className="relative w-full aspect-video overflow-hidden bg-white dark:bg-[#141210]">
           {kind === 'saas' && !saasImageFailed && (
             <img
               src="/assets/aistudio/SaaS_Venture_Engine_ecosystem_il__907e0ffe_2K_2f473bd2.jpg"

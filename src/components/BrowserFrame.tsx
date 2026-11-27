@@ -70,14 +70,14 @@ export function BrowserFrame({
     return () => window.clearTimeout(timer);
   }, [shouldUseScreenshot, isPreviewReady, viewportMode]);
 
-  const backdrop =
+  const backdropClass =
     accent === 'ai'
-      ? 'radial-gradient(circle at 80% 15%, rgba(96, 165, 250, 0.24), rgba(28, 25, 23, 0.96) 65%, rgba(12, 10, 9, 1) 100%)'
+      ? 'browser-backdrop-ai'
       : accent === 'saas'
-      ? 'radial-gradient(circle at 80% 15%, rgba(45, 212, 191, 0.22), rgba(28, 25, 23, 0.96) 65%, rgba(12, 10, 9, 1) 100%)'
+      ? 'browser-backdrop-saas'
       : accent === 'agency'
-      ? 'radial-gradient(circle at 80% 15%, rgba(251, 191, 36, 0.24), rgba(28, 25, 23, 0.96) 65%, rgba(12, 10, 9, 1) 100%)'
-      : 'radial-gradient(circle at 80% 15%, rgba(168, 162, 158, 0.16), rgba(28, 25, 23, 0.96) 65%, rgba(12, 10, 9, 1) 100%)';
+      ? 'browser-backdrop-agency'
+      : 'browser-backdrop-neutral';
 
   const sheenColor =
     accent === 'ai'
@@ -98,8 +98,7 @@ export function BrowserFrame({
 
   return (
     <div
-      className={`group/thumb relative w-full overflow-hidden rounded-xl border border-[#292524] p-2 sm:p-2.5 flex flex-col justify-end perspective-midrange transition-colors duration-300 group-hover:border-[#FAFAF9]/20 ${className}`}
-      style={{ background: backdrop }}
+      className={`group/thumb relative w-full overflow-hidden rounded-xl border border-[#E5E2DC] dark:border-[#292524] p-2 sm:p-2.5 flex flex-col justify-end perspective-midrange transition-colors duration-300 group-hover:border-[#141210]/20 dark:group-hover:border-[#FAFAF9]/20 ${backdropClass} ${className}`}
     >
       {/* Subtle diagonal glass sheen revealed on hover */}
       <div
@@ -114,9 +113,9 @@ export function BrowserFrame({
       {children}
 
       {/* Elevated 3D Tilt Browser Shell */}
-      <div className="relative z-10 w-full rounded-lg border border-[#292524] bg-[#141210] shadow-2xl overflow-hidden transform-3d origin-center transition-all duration-300 ease-out will-change-transform group-hover:scale-[1.015] group-hover:rotate-x-2 group-hover:-rotate-y-1 group-hover/thumb:scale-[1.03] group-hover/thumb:rotate-x-4 group-hover/thumb:-rotate-y-2 group-hover/thumb:-translate-y-0.5 group-hover/thumb:border-[#FAFAF9]/25 group-hover/thumb:shadow-[0_22px_40px_-12px_rgba(0,0,0,0.85)]">
+      <div className="relative z-10 w-full rounded-lg border border-[#E5E2DC] bg-white dark:border-[#292524] dark:bg-[#141210] shadow-xl dark:shadow-2xl overflow-hidden transform-3d origin-center transition-all duration-300 ease-out will-change-transform group-hover:scale-[1.015] group-hover:rotate-x-2 group-hover:-rotate-y-1 group-hover/thumb:scale-[1.03] group-hover/thumb:rotate-x-4 group-hover/thumb:-rotate-y-2 group-hover/thumb:-translate-y-0.5 group-hover/thumb:border-[#141210]/25 dark:group-hover/thumb:border-[#FAFAF9]/25 group-hover/thumb:shadow-[0_22px_40px_-12px_rgba(0,0,0,0.28)] dark:group-hover/thumb:shadow-[0_22px_40px_-12px_rgba(0,0,0,0.85)]">
         {/* Chrome Toolbar: Traffic Lights + Clickable Address Bar + Responsive Desktop/Mobile Toggle */}
-        <div className="flex items-center justify-between gap-1.5 border-b border-[#292524] bg-[#1C1917] px-2 sm:px-2.5 py-1.5">
+        <div className="flex items-center justify-between gap-1.5 border-b border-[#E5E2DC] bg-[#F8F7F4] dark:border-[#292524] dark:bg-[#1C1917] px-2 sm:px-2.5 py-1.5">
           <div className="hidden sm:flex items-center gap-1 shrink-0" aria-hidden="true">
             <span className="h-1.5 w-1.5 rounded-full bg-[#FB923C]/80" />
             <span className="h-1.5 w-1.5 rounded-full bg-[#FBBF24]/80" />
@@ -128,14 +127,14 @@ export function BrowserFrame({
             target="_blank"
             rel="noopener noreferrer"
             aria-label={`${title} — ${domainLabel}`}
-            className="flex-1 min-w-0 flex items-center justify-center gap-1 rounded bg-[#0C0A09] px-2 py-0.5 font-mono text-[9px] text-[#A8A29E] hover:text-[#FAFAF9] transition-colors"
+            className="flex-1 min-w-0 flex items-center justify-center gap-1 rounded bg-white border border-[#E5E2DC]/80 text-[#57534E] hover:text-[#141210] dark:border-transparent dark:bg-[#0C0A09] px-2 py-0.5 font-mono text-[9px] dark:text-[#A8A29E] dark:hover:text-[#FAFAF9] transition-colors"
           >
             <span className="truncate">https://{domainLabel}</span>
             <ArrowUpRight className="h-2.5 w-2.5 shrink-0 opacity-70" aria-hidden="true" />
           </a>
 
           <div
-            className="inline-flex items-center rounded-md border border-[#292524] bg-[#0C0A09] p-0.5 shrink-0"
+            className="inline-flex items-center rounded-md border border-[#E5E2DC] bg-white dark:border-[#292524] dark:bg-[#0C0A09] p-0.5 shrink-0"
             role="group"
             aria-label={`Viewport ${title}`}
           >
@@ -146,8 +145,8 @@ export function BrowserFrame({
               title="Vista Desktop"
               className={`flex h-7 w-7 sm:h-5 sm:w-5 items-center justify-center rounded transition-colors cursor-pointer touch-manipulation ${
                 viewportMode === 'desktop'
-                  ? 'bg-[#FAFAF9] text-[#0C0A09]'
-                  : 'text-[#A8A29E] hover:text-[#FAFAF9]'
+                  ? 'bg-[#141210] text-[#FAFAF9] dark:bg-[#FAFAF9] dark:text-[#0C0A09]'
+                  : 'text-[#57534E] hover:text-[#141210] dark:text-[#A8A29E] dark:hover:text-[#FAFAF9]'
               }`}
             >
               <Monitor className="h-3 w-3 sm:h-2.5 sm:w-2.5" aria-hidden="true" />
@@ -159,8 +158,8 @@ export function BrowserFrame({
               title="Vista Mobile"
               className={`flex h-7 w-7 sm:h-5 sm:w-5 items-center justify-center rounded transition-colors cursor-pointer touch-manipulation ${
                 viewportMode === 'mobile'
-                  ? 'bg-[#FAFAF9] text-[#0C0A09]'
-                  : 'text-[#A8A29E] hover:text-[#FAFAF9]'
+                  ? 'bg-[#141210] text-[#FAFAF9] dark:bg-[#FAFAF9] dark:text-[#0C0A09]'
+                  : 'text-[#57534E] hover:text-[#141210] dark:text-[#A8A29E] dark:hover:text-[#FAFAF9]'
               }`}
             >
               <Smartphone className="h-3 w-3 sm:h-2.5 sm:w-2.5" aria-hidden="true" />

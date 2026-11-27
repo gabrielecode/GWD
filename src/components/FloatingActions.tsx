@@ -33,9 +33,9 @@ export function FloatingActions({
           type="button"
           onClick={() => onNavigate('/contatti')}
           aria-label={t.nav.ctaHeader}
-          className="fixed bottom-4 right-4 z-40 inline-flex items-center gap-2 rounded-full border border-[#292524] bg-[#1C1917]/95 px-4 py-2.5 text-xs sm:text-sm font-semibold text-[#FAFAF9] shadow-2xl backdrop-blur-xl hover:border-[#2DD4BF] transition-colors cursor-pointer min-h-[44px]"
+          className="fixed bottom-4 right-4 z-40 inline-flex items-center gap-2 rounded-full border border-[#E5E2DC] bg-white/95 text-[#141210] shadow-xl hover:border-[#0F766E] dark:border-[#292524] dark:bg-[#1C1917]/95 dark:text-[#FAFAF9] dark:shadow-2xl dark:hover:border-[#2DD4BF] px-4 py-2.5 text-xs sm:text-sm font-semibold backdrop-blur-xl transition-colors cursor-pointer min-h-[44px]"
         >
-          <MessageCircle className="h-4 w-4 text-[#2DD4BF] shrink-0" aria-hidden="true" />
+          <MessageCircle className="h-4 w-4 text-[#0F766E] dark:text-[#2DD4BF] shrink-0" aria-hidden="true" />
           <span className="whitespace-nowrap">{t.nav.contact}</span>
         </button>
       )}
@@ -43,12 +43,12 @@ export function FloatingActions({
       {shouldShowBanner && (
         <aside
           aria-label={t.cookieBanner.title}
-          className="fixed bottom-4 left-4 right-4 sm:right-auto sm:max-w-md z-50 rounded-2xl border border-[#292524] bg-[#1C1917]/98 p-5 shadow-2xl backdrop-blur-xl"
+          className="fixed bottom-4 left-4 right-4 sm:right-auto sm:max-w-md z-50 rounded-2xl border border-[#E5E2DC] bg-white/98 dark:border-[#292524] dark:bg-[#1C1917]/98 p-5 shadow-2xl backdrop-blur-xl"
         >
           <div className="flex items-start justify-between gap-3 mb-2">
             <div className="flex items-center gap-2">
-              <ShieldCheck className="h-4 w-4 text-[#2DD4BF] shrink-0" aria-hidden="true" />
-              <h3 className="font-display text-sm font-semibold text-[#FAFAF9]">
+              <ShieldCheck className="h-4 w-4 text-[#0F766E] dark:text-[#2DD4BF] shrink-0" aria-hidden="true" />
+              <h3 className="font-display text-sm font-semibold text-[#141210] dark:text-[#FAFAF9]">
                 {t.cookieBanner.title}
               </h3>
             </div>
@@ -57,14 +57,14 @@ export function FloatingActions({
                 type="button"
                 onClick={onCloseCookieModal}
                 aria-label={t.nav.menuClose}
-                className="text-[#A8A29E] hover:text-[#FAFAF9] cursor-pointer"
+                className="text-[#57534E] hover:text-[#141210] dark:text-[#A8A29E] dark:hover:text-[#FAFAF9] cursor-pointer"
               >
                 <X className="h-4 w-4" aria-hidden="true" />
               </button>
             )}
           </div>
 
-          <p className="text-xs text-[#A8A29E] leading-relaxed mb-4">
+          <p className="text-xs text-[#57534E] dark:text-[#A8A29E] leading-relaxed mb-4">
             {t.cookieBanner.description}{' '}
             {onNavigate && (
               <button
@@ -73,7 +73,7 @@ export function FloatingActions({
                   onNavigate('/cookie');
                   onCloseCookieModal();
                 }}
-                className="text-[#FAFAF9] underline underline-offset-2 hover:text-[#2DD4BF] cursor-pointer ml-1"
+                className="text-[#141210] hover:text-[#0F766E] dark:text-[#FAFAF9] dark:hover:text-[#2DD4BF] underline underline-offset-2 cursor-pointer ml-1"
               >
                 {t.footer.cookieLink}
               </button>
@@ -81,23 +81,23 @@ export function FloatingActions({
           </p>
 
           {customizeOpen && (
-            <div className="mb-4 space-y-2.5 rounded-xl border border-[#292524] bg-[#0C0A09] p-3 text-xs">
-              <label className="flex items-center justify-between gap-3 text-[#A8A29E]">
+            <div className="mb-4 space-y-2.5 rounded-xl border border-[#E5E2DC] bg-[#F3F1EC] dark:border-[#292524] dark:bg-[#0C0A09] p-3 text-xs">
+              <label className="flex items-center justify-between gap-3 text-[#57534E] dark:text-[#A8A29E]">
                 <span>{t.cookieBanner.necessaryLabel}</span>
                 <input
                   type="checkbox"
                   checked
                   disabled
-                  className="h-4 w-4 accent-[#2DD4BF]"
+                  className="h-4 w-4 accent-[#0F766E] dark:accent-[#2DD4BF]"
                 />
               </label>
-              <label className="flex items-center justify-between gap-3 text-[#FAFAF9] cursor-pointer">
+              <label className="flex items-center justify-between gap-3 text-[#141210] dark:text-[#FAFAF9] cursor-pointer">
                 <span>{t.cookieBanner.analyticsLabel}</span>
                 <input
                   type="checkbox"
                   checked={analyticsEnabled}
                   onChange={(e) => setAnalyticsEnabled(e.target.checked)}
-                  className="h-4 w-4 accent-[#2DD4BF]"
+                  className="h-4 w-4 accent-[#0F766E] dark:accent-[#2DD4BF]"
                 />
               </label>
             </div>
@@ -129,7 +129,7 @@ export function FloatingActions({
                 });
                 onCloseCookieModal();
               }}
-              className="rounded-full border border-[#292524] bg-[#0C0A09] px-4 py-2 text-xs font-medium text-[#FAFAF9] hover:border-[#A8A29E] transition-colors cursor-pointer min-h-[38px]"
+              className="rounded-full border border-[#E5E2DC] bg-[#F3F1EC] text-[#141210] hover:border-[#57534E] dark:border-[#292524] dark:bg-[#0C0A09] dark:text-[#FAFAF9] dark:hover:border-[#A8A29E] px-4 py-2 text-xs font-medium transition-colors cursor-pointer min-h-[38px]"
             >
               {t.cookieBanner.onlyNecessary}
             </button>
@@ -138,7 +138,7 @@ export function FloatingActions({
               <button
                 type="button"
                 onClick={() => setCustomizeOpen(true)}
-                className="px-2.5 py-2 text-xs text-[#A8A29E] hover:text-[#FAFAF9] underline underline-offset-4 cursor-pointer min-h-[38px]"
+                className="px-2.5 py-2 text-xs text-[#57534E] hover:text-[#141210] dark:text-[#A8A29E] dark:hover:text-[#FAFAF9] underline underline-offset-4 cursor-pointer min-h-[38px]"
               >
                 {t.cookieBanner.customize}
               </button>
@@ -154,7 +154,7 @@ export function FloatingActions({
                   setCustomizeOpen(false);
                   onCloseCookieModal();
                 }}
-                className="rounded-full border border-[#2DD4BF]/50 px-4 py-2 text-xs font-medium text-[#2DD4BF] hover:bg-[#2DD4BF]/10 cursor-pointer min-h-[38px]"
+                className="rounded-full border border-[#0F766E]/40 text-[#0F766E] hover:bg-[#0F766E]/10 dark:border-[#2DD4BF]/50 px-4 py-2 text-xs font-medium dark:text-[#2DD4BF] dark:hover:bg-[#2DD4BF]/10 cursor-pointer min-h-[38px]"
               >
                 {t.cookieBanner.savePreferences}
               </button>

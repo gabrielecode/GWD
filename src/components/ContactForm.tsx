@@ -129,17 +129,17 @@ export function ContactForm({
 
   if (submittedRef) {
     return (
-      <div className="rounded-2xl border border-[#22C55E]/40 bg-[#1C1917] p-6 sm:p-8">
+      <div className="rounded-2xl border border-[#15803D]/35 bg-white dark:border-[#22C55E]/40 dark:bg-[#1C1917] p-6 sm:p-8 shadow-sm dark:shadow-none">
         <div className="flex items-start gap-3">
-          <CheckCircle2 className="h-6 w-6 text-[#22C55E] shrink-0 mt-0.5" aria-hidden="true" />
+          <CheckCircle2 className="h-6 w-6 text-[#15803D] dark:text-[#22C55E] shrink-0 mt-0.5" aria-hidden="true" />
           <div>
-            <h3 className="font-display text-xl font-semibold text-[#FAFAF9]">
+            <h3 className="font-display text-xl font-semibold text-[#141210] dark:text-[#FAFAF9]">
               {t.form.successTitle}
             </h3>
-            <p className="mt-2 text-sm text-[#A8A29E] leading-relaxed">
+            <p className="mt-2 text-sm text-[#57534E] dark:text-[#A8A29E] leading-relaxed">
               {t.form.successBody}
             </p>
-            <div className="mt-4 inline-flex items-center gap-3 font-mono text-xs text-[#A8A29E]">
+            <div className="mt-4 inline-flex items-center gap-3 font-mono text-xs text-[#57534E] dark:text-[#A8A29E]">
               <span>Ref: {submittedRef}</span>
               <span aria-hidden="true">·</span>
               <span className="truncate max-w-[220px]">{email}</span>
@@ -155,7 +155,7 @@ export function ContactForm({
                   setEmail('');
                   setConsent(false);
                 }}
-                className="rounded-full border border-[#292524] bg-[#0C0A09] px-5 py-2.5 text-sm font-medium text-[#FAFAF9] hover:border-[#2DD4BF] transition-colors cursor-pointer min-h-[44px]"
+                className="rounded-full border border-[#E5E2DC] bg-[#F3F1EC] text-[#141210] hover:border-[#0F766E] dark:border-[#292524] dark:bg-[#0C0A09] px-5 py-2.5 text-sm font-medium dark:text-[#FAFAF9] dark:hover:border-[#2DD4BF] transition-colors cursor-pointer min-h-[44px]"
               >
                 {t.form.reset}
               </button>
@@ -170,12 +170,12 @@ export function ContactForm({
     <form
       onSubmit={handleSubmit}
       noValidate
-      className="rounded-2xl border border-[#292524] bg-[#1C1917] p-6 sm:p-8 space-y-5"
+      className="rounded-2xl border border-[#E5E2DC] bg-white dark:border-[#292524] dark:bg-[#1C1917] p-6 sm:p-8 space-y-5 shadow-sm dark:shadow-none"
     >
       <div>
         <label
           htmlFor="contact-name"
-          className="block text-sm font-medium text-[#FAFAF9] mb-1.5"
+          className="block text-sm font-medium text-[#141210] dark:text-[#FAFAF9] mb-1.5"
         >
           {t.form.nameLabel}
         </label>
@@ -189,10 +189,10 @@ export function ContactForm({
           }}
           placeholder={t.form.namePlaceholder}
           disabled={isSubmitting}
-          className="w-full rounded-xl border border-[#292524] bg-[#0C0A09] px-4 py-3 text-base text-[#FAFAF9] placeholder:text-[#A8A29E]/60 focus:border-[#2DD4BF] focus:outline-none min-h-[44px] disabled:opacity-60"
+          className="w-full rounded-xl border border-[#E5E2DC] bg-[#F8F7F4] text-[#141210] placeholder:text-[#57534E]/60 focus:border-[#0F766E] dark:border-[#292524] dark:bg-[#0C0A09] px-4 py-3 text-base dark:text-[#FAFAF9] dark:placeholder:text-[#A8A29E]/60 dark:focus:border-[#2DD4BF] focus:outline-none min-h-[44px] disabled:opacity-60"
         />
         {errors.name && (
-          <p className="mt-1.5 flex items-center gap-1.5 text-xs text-[#FB923C]" role="alert">
+          <p className="mt-1.5 flex items-center gap-1.5 text-xs text-[#C2410C] dark:text-[#FB923C]" role="alert">
             <AlertCircle className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
             <span>{errors.name}</span>
           </p>
@@ -202,7 +202,7 @@ export function ContactForm({
       <div>
         <label
           htmlFor="contact-email"
-          className="block text-sm font-medium text-[#FAFAF9] mb-1.5"
+          className="block text-sm font-medium text-[#141210] dark:text-[#FAFAF9] mb-1.5"
         >
           {t.form.emailLabel}
         </label>
@@ -216,10 +216,10 @@ export function ContactForm({
           }}
           placeholder={t.form.emailPlaceholder}
           disabled={isSubmitting}
-          className="w-full rounded-xl border border-[#292524] bg-[#0C0A09] px-4 py-3 text-base text-[#FAFAF9] placeholder:text-[#A8A29E]/60 focus:border-[#2DD4BF] focus:outline-none min-h-[44px] disabled:opacity-60"
+          className="w-full rounded-xl border border-[#E5E2DC] bg-[#F8F7F4] text-[#141210] placeholder:text-[#57534E]/60 focus:border-[#0F766E] dark:border-[#292524] dark:bg-[#0C0A09] px-4 py-3 text-base dark:text-[#FAFAF9] dark:placeholder:text-[#A8A29E]/60 dark:focus:border-[#2DD4BF] focus:outline-none min-h-[44px] disabled:opacity-60"
         />
         {errors.email && (
-          <p className="mt-1.5 flex items-center gap-1.5 text-xs text-[#FB923C]" role="alert">
+          <p className="mt-1.5 flex items-center gap-1.5 text-xs text-[#C2410C] dark:text-[#FB923C]" role="alert">
             <AlertCircle className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
             <span>{errors.email}</span>
           </p>
@@ -229,7 +229,7 @@ export function ContactForm({
       <div>
         <label
           htmlFor="contact-need"
-          className="block text-sm font-medium text-[#FAFAF9] mb-1.5"
+          className="block text-sm font-medium text-[#141210] dark:text-[#FAFAF9] mb-1.5"
         >
           {t.form.needLabel}
         </label>
@@ -238,10 +238,10 @@ export function ContactForm({
           value={need}
           onChange={(e) => setNeed(e.target.value)}
           disabled={isSubmitting}
-          className="w-full rounded-xl border border-[#292524] bg-[#0C0A09] px-4 py-3 text-base text-[#FAFAF9] focus:border-[#2DD4BF] focus:outline-none min-h-[44px] disabled:opacity-60"
+          className="w-full rounded-xl border border-[#E5E2DC] bg-[#F8F7F4] text-[#141210] focus:border-[#0F766E] dark:border-[#292524] dark:bg-[#0C0A09] px-4 py-3 text-base dark:text-[#FAFAF9] dark:focus:border-[#2DD4BF] focus:outline-none min-h-[44px] disabled:opacity-60"
         >
           {needOptions.map((opt) => (
-            <option key={opt} value={opt} className="bg-[#1C1917] text-[#FAFAF9]">
+            <option key={opt} value={opt} className="bg-white text-[#141210] dark:bg-[#1C1917] dark:text-[#FAFAF9]">
               {opt}
             </option>
           ))}
@@ -259,15 +259,15 @@ export function ContactForm({
               if (errors.consent)
                 setErrors((prev) => ({ ...prev, consent: undefined }));
             }}
-            className="mt-1 h-4 w-4 rounded border-[#292524] bg-[#0C0A09] accent-[#2DD4BF] shrink-0"
+            className="mt-1 h-4 w-4 rounded border-[#E5E2DC] bg-[#F8F7F4] accent-[#0F766E] dark:border-[#292524] dark:bg-[#0C0A09] dark:accent-[#2DD4BF] shrink-0"
           />
-          <span className="text-xs text-[#A8A29E] leading-relaxed">
+          <span className="text-xs text-[#57534E] dark:text-[#A8A29E] leading-relaxed">
             {t.form.consentLabel}{' '}
             {onOpenPrivacy && (
               <button
                 type="button"
                 onClick={onOpenPrivacy}
-                className="text-[#FAFAF9] underline underline-offset-2 hover:text-[#2DD4BF] cursor-pointer"
+                className="text-[#141210] hover:text-[#0F766E] dark:text-[#FAFAF9] underline underline-offset-2 dark:hover:text-[#2DD4BF] cursor-pointer"
               >
                 nLPD / GDPR
               </button>
@@ -275,7 +275,7 @@ export function ContactForm({
           </span>
         </label>
         {errors.consent && (
-          <p className="mt-1.5 flex items-center gap-1.5 text-xs text-[#FB923C]" role="alert">
+          <p className="mt-1.5 flex items-center gap-1.5 text-xs text-[#C2410C] dark:text-[#FB923C]" role="alert">
             <AlertCircle className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
             <span>{errors.consent}</span>
           </p>
@@ -285,16 +285,16 @@ export function ContactForm({
       {submitError && (
         <div
           role="alert"
-          className="rounded-xl border border-[#FB923C]/40 bg-[#0C0A09] p-4 space-y-3"
+          className="rounded-xl border border-[#C2410C]/35 bg-[#F8F7F4] dark:border-[#FB923C]/40 dark:bg-[#0C0A09] p-4 space-y-3"
         >
-          <p className="flex items-start gap-2 text-xs text-[#FB923C] leading-relaxed">
+          <p className="flex items-start gap-2 text-xs text-[#C2410C] dark:text-[#FB923C] leading-relaxed">
             <AlertCircle className="h-4 w-4 shrink-0 mt-0.5" aria-hidden="true" />
             <span>{submitError}</span>
           </p>
           {fallbackMailto && (
             <a
               href={fallbackMailto}
-              className="inline-flex items-center gap-2 rounded-full border border-[#292524] bg-[#1C1917] px-4 py-2 text-xs font-semibold text-[#FAFAF9] hover:border-[#2DD4BF] hover:text-[#2DD4BF] transition-colors min-h-[38px]"
+              className="inline-flex items-center gap-2 rounded-full border border-[#E5E2DC] bg-white text-[#141210] hover:border-[#0F766E] hover:text-[#0F766E] dark:border-[#292524] dark:bg-[#1C1917] px-4 py-2 text-xs font-semibold dark:text-[#FAFAF9] dark:hover:border-[#2DD4BF] dark:hover:text-[#2DD4BF] transition-colors min-h-[38px]"
             >
               <Mail className="h-3.5 w-3.5" aria-hidden="true" />
               <span>

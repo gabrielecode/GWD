@@ -141,8 +141,8 @@ export function AdminAuthGate({
           onNavigate={onNavigate}
         />
         <div className="flex-1 flex items-center justify-center p-8">
-          <div className="inline-flex items-center gap-2 text-sm text-[#A8A29E]">
-            <Loader2 className="h-4 w-4 animate-spin text-[#2DD4BF]" aria-hidden="true" />
+          <div className="inline-flex items-center gap-2 text-sm text-[#57534E] dark:text-[#A8A29E]">
+            <Loader2 className="h-4 w-4 animate-spin text-[#0F766E] dark:text-[#2DD4BF]" aria-hidden="true" />
             <span>Verifica sessione amministratore...</span>
           </div>
         </div>
@@ -175,20 +175,20 @@ export function AdminAuthGate({
       />
 
       <div className="flex-1 flex items-center justify-center px-4 py-12">
-        <div className="w-full max-w-md rounded-xl border border-[#292524] bg-[#1C1917] p-6 sm:p-8 space-y-6">
+        <div className="w-full max-w-md rounded-xl border border-[#E5E2DC] bg-white dark:border-[#292524] dark:bg-[#1C1917] p-6 sm:p-8 space-y-6 shadow-sm dark:shadow-none">
           <div className="space-y-2">
-            <div className="inline-flex items-center gap-2 text-xs font-mono text-[#2DD4BF]">
+            <div className="inline-flex items-center gap-2 text-xs font-mono text-[#0F766E] dark:text-[#2DD4BF]">
               <ShieldCheck className="h-4 w-4" aria-hidden="true" />
               <span>Area Riservata Amministrazione</span>
             </div>
-            <h1 className="font-display text-2xl font-bold text-[#FAFAF9]">
+            <h1 className="font-display text-2xl font-bold text-[#141210] dark:text-[#FAFAF9]">
               {authTab === 'create'
                 ? status?.needs_admin_setup
                   ? 'Crea Primo Utente Admin'
                   : 'Nuovo Utente Admin'
                 : 'Accesso Console Admin'}
             </h1>
-            <p className="text-sm text-[#A8A29E] leading-relaxed">
+            <p className="text-sm text-[#57534E] dark:text-[#A8A29E] leading-relaxed">
               {authTab === 'create'
                 ? status?.needs_admin_setup && !status?.has_master_passcode
                   ? 'Primo avvio: crea il tuo account amministratore con email e password per accedere alla console.'
@@ -199,7 +199,7 @@ export function AdminAuthGate({
             </p>
           </div>
 
-          <div className="flex items-center gap-1 rounded-lg bg-[#0C0A09] border border-[#292524] p-1">
+          <div className="flex items-center gap-1 rounded-lg bg-[#F3F1EC] border border-[#E5E2DC] dark:bg-[#0C0A09] dark:border-[#292524] p-1">
             <button
               type="button"
               onClick={() => {
@@ -209,8 +209,8 @@ export function AdminAuthGate({
               }}
               className={`flex-1 inline-flex items-center justify-center gap-1.5 rounded-md px-3 py-2 text-xs font-medium cursor-pointer ${
                 authTab === 'login'
-                  ? 'bg-[#FAFAF9] text-[#0C0A09] font-semibold'
-                  : 'text-[#A8A29E] hover:text-[#FAFAF9]'
+                  ? 'bg-[#141210] text-[#FAFAF9] dark:bg-[#FAFAF9] dark:text-[#0C0A09] font-semibold'
+                  : 'text-[#57534E] hover:text-[#141210] dark:text-[#A8A29E] dark:hover:text-[#FAFAF9]'
               }`}
             >
               <KeyRound className="h-3.5 w-3.5" aria-hidden="true" />
@@ -225,8 +225,8 @@ export function AdminAuthGate({
               }}
               className={`flex-1 inline-flex items-center justify-center gap-1.5 rounded-md px-3 py-2 text-xs font-medium cursor-pointer ${
                 authTab === 'create'
-                  ? 'bg-[#FAFAF9] text-[#0C0A09] font-semibold'
-                  : 'text-[#A8A29E] hover:text-[#FAFAF9]'
+                  ? 'bg-[#141210] text-[#FAFAF9] dark:bg-[#FAFAF9] dark:text-[#0C0A09] font-semibold'
+                  : 'text-[#57534E] hover:text-[#141210] dark:text-[#A8A29E] dark:hover:text-[#FAFAF9]'
               }`}
             >
               <UserPlus className="h-3.5 w-3.5" aria-hidden="true" />
@@ -237,7 +237,7 @@ export function AdminAuthGate({
           {error && (
             <div
               role="alert"
-              className="rounded-lg border border-[#FB923C]/40 bg-[#0C0A09] p-3 text-xs text-[#FB923C] flex items-start gap-2"
+              className="rounded-lg border border-[#C2410C]/40 bg-[#F8F7F4] text-[#C2410C] dark:border-[#FB923C]/40 dark:bg-[#0C0A09] p-3 text-xs dark:text-[#FB923C] flex items-start gap-2"
             >
               <AlertCircle className="h-4 w-4 shrink-0 mt-0.5" aria-hidden="true" />
               <span>{error}</span>
@@ -247,7 +247,7 @@ export function AdminAuthGate({
           {notice && (
             <div
               role="status"
-              className="rounded-lg border border-[#22C55E]/40 bg-[#0C0A09] p-3 text-xs text-[#22C55E]"
+              className="rounded-lg border border-[#15803D]/40 bg-[#F8F7F4] text-[#15803D] dark:border-[#22C55E]/40 dark:bg-[#0C0A09] p-3 text-xs dark:text-[#22C55E]"
             >
               {notice}
             </div>
@@ -258,7 +258,7 @@ export function AdminAuthGate({
               <div>
                 <label
                   htmlFor="create-admin-email"
-                  className="block text-xs font-medium text-[#FAFAF9] mb-1.5"
+                  className="block text-xs font-medium text-[#141210] dark:text-[#FAFAF9] mb-1.5"
                 >
                   Email Nuovo Admin
                 </label>
@@ -269,14 +269,14 @@ export function AdminAuthGate({
                   value={newEmail}
                   onChange={(e) => setNewEmail(e.target.value)}
                   placeholder="admin@kreativalab.ch"
-                  className="w-full rounded-lg border border-[#292524] bg-[#0C0A09] px-3.5 py-2.5 text-sm text-[#FAFAF9] focus:border-[#2DD4BF] focus:outline-none min-h-[42px]"
+                  className="w-full rounded-lg border border-[#E5E2DC] bg-[#F8F7F4] text-[#141210] focus:border-[#0F766E] dark:border-[#292524] dark:bg-[#0C0A09] px-3.5 py-2.5 text-sm dark:text-[#FAFAF9] dark:focus:border-[#2DD4BF] focus:outline-none min-h-[42px]"
                 />
               </div>
 
               <div>
                 <label
                   htmlFor="create-admin-password"
-                  className="block text-xs font-medium text-[#FAFAF9] mb-1.5"
+                  className="block text-xs font-medium text-[#141210] dark:text-[#FAFAF9] mb-1.5"
                 >
                   Password (min. 8 caratteri)
                 </label>
@@ -288,14 +288,14 @@ export function AdminAuthGate({
                   value={newPassword}
                   onChange={(e) => setNewPassword(e.target.value)}
                   placeholder="••••••••••••"
-                  className="w-full rounded-lg border border-[#292524] bg-[#0C0A09] px-3.5 py-2.5 text-sm text-[#FAFAF9] focus:border-[#2DD4BF] focus:outline-none min-h-[42px]"
+                  className="w-full rounded-lg border border-[#E5E2DC] bg-[#F8F7F4] text-[#141210] focus:border-[#0F766E] dark:border-[#292524] dark:bg-[#0C0A09] px-3.5 py-2.5 text-sm dark:text-[#FAFAF9] dark:focus:border-[#2DD4BF] focus:outline-none min-h-[42px]"
                 />
               </div>
 
               <div>
                 <label
                   htmlFor="create-admin-confirm"
-                  className="block text-xs font-medium text-[#FAFAF9] mb-1.5"
+                  className="block text-xs font-medium text-[#141210] dark:text-[#FAFAF9] mb-1.5"
                 >
                   Conferma Password
                 </label>
@@ -307,7 +307,7 @@ export function AdminAuthGate({
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   placeholder="••••••••••••"
-                  className="w-full rounded-lg border border-[#292524] bg-[#0C0A09] px-3.5 py-2.5 text-sm text-[#FAFAF9] focus:border-[#2DD4BF] focus:outline-none min-h-[42px]"
+                  className="w-full rounded-lg border border-[#E5E2DC] bg-[#F8F7F4] text-[#141210] focus:border-[#0F766E] dark:border-[#292524] dark:bg-[#0C0A09] px-3.5 py-2.5 text-sm dark:text-[#FAFAF9] dark:focus:border-[#2DD4BF] focus:outline-none min-h-[42px]"
                 />
               </div>
 
@@ -315,7 +315,7 @@ export function AdminAuthGate({
                 <div>
                   <label
                     htmlFor="create-admin-master"
-                    className="block text-xs font-medium text-[#FAFAF9] mb-1.5"
+                    className="block text-xs font-medium text-[#141210] dark:text-[#FAFAF9] mb-1.5"
                   >
                     {status?.has_master_passcode
                       ? 'Passcode Master (ADMIN_PASSCODE)'
@@ -328,7 +328,7 @@ export function AdminAuthGate({
                     value={masterPasscode}
                     onChange={(e) => setMasterPasscode(e.target.value)}
                     placeholder="••••••••••••"
-                    className="w-full rounded-lg border border-[#292524] bg-[#0C0A09] px-3.5 py-2.5 text-sm text-[#FAFAF9] focus:border-[#2DD4BF] focus:outline-none min-h-[42px]"
+                    className="w-full rounded-lg border border-[#E5E2DC] bg-[#F8F7F4] text-[#141210] focus:border-[#0F766E] dark:border-[#292524] dark:bg-[#0C0A09] px-3.5 py-2.5 text-sm dark:text-[#FAFAF9] dark:focus:border-[#2DD4BF] focus:outline-none min-h-[42px]"
                   />
                 </div>
               )}
@@ -351,7 +351,7 @@ export function AdminAuthGate({
               <div>
                 <label
                   htmlFor="admin-supa-email"
-                  className="block text-xs font-medium text-[#FAFAF9] mb-1.5"
+                  className="block text-xs font-medium text-[#141210] dark:text-[#FAFAF9] mb-1.5"
                 >
                   {status?.supabase_configured ? 'Email Admin' : 'Email Admin (opzionale con passcode)'}
                 </label>
@@ -362,14 +362,14 @@ export function AdminAuthGate({
                   value={loginEmail}
                   onChange={(e) => setLoginEmail(e.target.value)}
                   placeholder="admin@kreativalab.ch"
-                  className="w-full rounded-lg border border-[#292524] bg-[#0C0A09] px-3.5 py-2.5 text-sm text-[#FAFAF9] focus:border-[#2DD4BF] focus:outline-none min-h-[42px]"
+                  className="w-full rounded-lg border border-[#E5E2DC] bg-[#F8F7F4] text-[#141210] focus:border-[#0F766E] dark:border-[#292524] dark:bg-[#0C0A09] px-3.5 py-2.5 text-sm dark:text-[#FAFAF9] dark:focus:border-[#2DD4BF] focus:outline-none min-h-[42px]"
                 />
               </div>
 
               <div>
                 <label
                   htmlFor="admin-passcode"
-                  className="block text-xs font-medium text-[#FAFAF9] mb-1.5"
+                  className="block text-xs font-medium text-[#141210] dark:text-[#FAFAF9] mb-1.5"
                 >
                   {status?.supabase_configured ? 'Password' : 'Password / Passcode Admin'}
                 </label>
@@ -380,7 +380,7 @@ export function AdminAuthGate({
                   value={passcode}
                   onChange={(e) => setPasscode(e.target.value)}
                   placeholder="••••••••••••"
-                  className="w-full rounded-lg border border-[#292524] bg-[#0C0A09] px-3.5 py-2.5 text-sm text-[#FAFAF9] focus:border-[#2DD4BF] focus:outline-none min-h-[42px]"
+                  className="w-full rounded-lg border border-[#E5E2DC] bg-[#F8F7F4] text-[#141210] focus:border-[#0F766E] dark:border-[#292524] dark:bg-[#0C0A09] px-3.5 py-2.5 text-sm dark:text-[#FAFAF9] dark:focus:border-[#2DD4BF] focus:outline-none min-h-[42px]"
                 />
               </div>
 

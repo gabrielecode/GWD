@@ -49,7 +49,7 @@ export function ProductDetailView({
         <button
           type="button"
           onClick={() => onNavigate('/prodotti')}
-          className="inline-flex items-center gap-2 text-sm text-[#A8A29E] hover:text-[#FAFAF9] transition-colors cursor-pointer min-h-[40px]"
+          className="inline-flex items-center gap-2 text-sm text-[#57534E] hover:text-[#141210] dark:text-[#A8A29E] dark:hover:text-[#FAFAF9] transition-colors cursor-pointer min-h-[40px]"
         >
           <ArrowLeft className="h-4 w-4" aria-hidden="true" />
           <span>{t.productDetail.backToHub}</span>
@@ -61,13 +61,13 @@ export function ProductDetailView({
         <div className="lg:col-span-8 space-y-4">
           <div className="flex flex-wrap items-center gap-3">
             <StatusBadge status={project.status} lang={lang} />
-            <span className="text-sm text-[#A8A29E]">{project.sector[lang]}</span>
+            <span className="text-sm text-[#57534E] dark:text-[#A8A29E]">{project.sector[lang]}</span>
           </div>
 
-          <h1 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-[#FAFAF9]">
+          <h1 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-[#141210] dark:text-[#FAFAF9]">
             {project.name}
           </h1>
-          <p className="text-lg text-[#A8A29E] leading-relaxed max-w-2xl">
+          <p className="text-lg text-[#57534E] dark:text-[#A8A29E] leading-relaxed max-w-2xl">
             {project.tagline[lang]}
           </p>
 
@@ -83,7 +83,7 @@ export function ProductDetailView({
             <button
               type="button"
               onClick={() => onNavigate('/contatti')}
-              className="inline-flex items-center gap-2 rounded-full border border-[#292524] bg-[#1C1917] px-5 py-3 text-sm font-medium text-[#FAFAF9] hover:border-[#2DD4BF] transition-colors cursor-pointer min-h-[44px]"
+              className="inline-flex items-center gap-2 rounded-full border border-[#E5E2DC] dark:border-[#292524] bg-white dark:bg-[#1C1917] px-5 py-3 text-sm font-medium text-[#141210] dark:text-[#FAFAF9] hover:border-[#0F766E] dark:hover:border-[#2DD4BF] transition-colors cursor-pointer min-h-[44px]"
             >
               <span>{t.productDetail.nextActionCta}</span>
             </button>
@@ -91,23 +91,23 @@ export function ProductDetailView({
         </div>
 
         {/* Verified Metrics Column */}
-        <div className="lg:col-span-4 rounded-2xl border border-[#292524] bg-[#1C1917] p-6 space-y-4">
+        <div className="lg:col-span-4 rounded-2xl border border-[#E5E2DC] dark:border-[#292524] bg-white dark:bg-[#1C1917] p-6 space-y-4 shadow-sm dark:shadow-none">
           <div>
-            <div className="font-mono text-3xl font-bold tabular-nums text-[#2DD4BF]">
+            <div className="font-mono text-3xl font-bold tabular-nums text-[#0F766E] dark:text-[#2DD4BF]">
               {project.heroMetric.value}
             </div>
-            <div className="text-sm text-[#FAFAF9] mt-1">
+            <div className="text-sm text-[#141210] dark:text-[#FAFAF9] mt-1">
               {project.heroMetric.label[lang]}
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-4 pt-4 border-t border-[#292524]">
+          <div className="grid grid-cols-2 gap-4 pt-4 border-t border-[#E5E2DC] dark:border-[#292524]">
             {project.secondaryMetrics.map((m) => (
               <div key={m.value}>
-                <div className="font-mono text-xl font-semibold tabular-nums text-[#FAFAF9]">
+                <div className="font-mono text-xl font-semibold tabular-nums text-[#141210] dark:text-[#FAFAF9]">
                   {m.value}
                 </div>
-                <div className="text-xs text-[#A8A29E] mt-0.5">
+                <div className="text-xs text-[#57534E] dark:text-[#A8A29E] mt-0.5">
                   {m.label[lang]}
                 </div>
               </div>
@@ -118,37 +118,37 @@ export function ProductDetailView({
 
       {/* Problem Solved + Target Audience */}
       <section className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-        <div className="lg:col-span-7 rounded-2xl border border-[#292524] bg-[#1C1917] p-6 sm:p-8 space-y-3">
-          <h2 className="font-display text-xl font-semibold text-[#FAFAF9]">
+        <div className="lg:col-span-7 rounded-2xl border border-[#E5E2DC] dark:border-[#292524] bg-white dark:bg-[#1C1917] p-6 sm:p-8 space-y-3 shadow-sm dark:shadow-none">
+          <h2 className="font-display text-xl font-semibold text-[#141210] dark:text-[#FAFAF9]">
             {t.productDetail.problemSolved}
           </h2>
-          <p className="text-base text-[#FAFAF9] leading-relaxed">
+          <p className="text-base text-[#141210] dark:text-[#FAFAF9] leading-relaxed">
             {project.problemOrChallenge[lang]}
           </p>
-          <p className="text-sm text-[#A8A29E] leading-relaxed pt-2 border-t border-[#292524]">
+          <p className="text-sm text-[#57534E] dark:text-[#A8A29E] leading-relaxed pt-2 border-t border-[#E5E2DC] dark:border-[#292524]">
             {project.solution[lang]}
           </p>
         </div>
 
-        <div className="lg:col-span-5 rounded-2xl border border-[#292524] bg-[#1C1917] p-6 sm:p-8 flex flex-col justify-between space-y-4">
+        <div className="lg:col-span-5 rounded-2xl border border-[#E5E2DC] dark:border-[#292524] bg-white dark:bg-[#1C1917] p-6 sm:p-8 flex flex-col justify-between space-y-4 shadow-sm dark:shadow-none">
           <div>
-            <div className="flex items-center gap-2 text-[#2DD4BF] mb-3">
+            <div className="flex items-center gap-2 text-[#0F766E] dark:text-[#2DD4BF] mb-3">
               <Users className="h-5 w-5" aria-hidden="true" />
-              <h2 className="font-display text-xl font-semibold text-[#FAFAF9]">
+              <h2 className="font-display text-xl font-semibold text-[#141210] dark:text-[#FAFAF9]">
                 {t.productDetail.targetAudience}
               </h2>
             </div>
-            <p className="text-base text-[#FAFAF9] leading-relaxed">
+            <p className="text-base text-[#141210] dark:text-[#FAFAF9] leading-relaxed">
               {project.targetAudience[lang]}
             </p>
           </div>
-          <div className="pt-4 border-t border-[#292524] space-y-2.5 text-xs text-[#A8A29E]">
+          <div className="pt-4 border-t border-[#E5E2DC] dark:border-[#292524] space-y-2.5 text-xs text-[#57534E] dark:text-[#A8A29E]">
             <p>{project.results[lang]}</p>
             <div className="flex flex-wrap items-center justify-between gap-2 pt-2">
               <button
                 type="button"
                 onClick={() => onNavigate(`/servizi/${relatedService.slug}`)}
-                className="inline-flex items-center gap-1 text-[#2DD4BF] hover:underline font-medium cursor-pointer"
+                className="inline-flex items-center gap-1 text-[#0F766E] dark:text-[#2DD4BF] hover:underline font-medium cursor-pointer"
               >
                 <span>{t.seoUi.relatedServiceLabel}: {relatedService.shortTitle[lang]}</span>
                 <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
@@ -157,7 +157,7 @@ export function ProductDetailView({
                 href="https://sititicino.ch"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-1 text-[#A8A29E] hover:text-[#FAFAF9]"
+                className="inline-flex items-center gap-1 text-[#57534E] hover:text-[#141210] dark:text-[#A8A29E] dark:hover:text-[#FAFAF9]"
               >
                 <span>SitiTicino.ch</span>
                 <ArrowUpRight className="h-3 w-3" aria-hidden="true" />
@@ -169,23 +169,23 @@ export function ProductDetailView({
 
       {/* 3 Key Features */}
       <section className="space-y-6">
-        <h2 className="font-display text-2xl font-bold text-[#FAFAF9]">
+        <h2 className="font-display text-2xl font-bold text-[#141210] dark:text-[#FAFAF9]">
           {t.productDetail.keyFeatures}
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {project.keyFeatures.map((feat, idx) => (
             <div
               key={feat.title[lang]}
-              className="rounded-2xl border border-[#292524] bg-[#1C1917] p-6 space-y-3"
+              className="rounded-2xl border border-[#E5E2DC] dark:border-[#292524] bg-white dark:bg-[#1C1917] p-6 space-y-3 shadow-sm dark:shadow-none"
             >
-              <div className="flex items-center gap-2 font-mono text-xs text-[#2DD4BF]">
+              <div className="flex items-center gap-2 font-mono text-xs text-[#0F766E] dark:text-[#2DD4BF]">
                 <CheckCircle2 className="h-4 w-4" aria-hidden="true" />
                 <span>0{idx + 1}</span>
               </div>
-              <h3 className="font-display text-lg font-semibold text-[#FAFAF9]">
+              <h3 className="font-display text-lg font-semibold text-[#141210] dark:text-[#FAFAF9]">
                 {feat.title[lang]}
               </h3>
-              <p className="text-sm text-[#A8A29E] leading-relaxed">
+              <p className="text-sm text-[#57534E] dark:text-[#A8A29E] leading-relaxed">
                 {feat.description[lang]}
               </p>
             </div>
@@ -195,7 +195,7 @@ export function ProductDetailView({
 
       {/* Interactive Screenshot / Platform Preview */}
       <section className="space-y-5">
-        <h2 className="font-display text-2xl font-bold text-[#FAFAF9]">
+        <h2 className="font-display text-2xl font-bold text-[#141210] dark:text-[#FAFAF9]">
           {t.productDetail.interactivePreview}
         </h2>
         <DevicePreview project={project} lang={lang} />
@@ -206,8 +206,8 @@ export function ProductDetailView({
 
       {/* Related Products */}
       {related.length > 0 && (
-        <section className="space-y-6 pt-6 border-t border-[#292524]">
-          <h2 className="font-display text-2xl font-bold text-[#FAFAF9]">
+        <section className="space-y-6 pt-6 border-t border-[#E5E2DC] dark:border-[#292524]">
+          <h2 className="font-display text-2xl font-bold text-[#141210] dark:text-[#FAFAF9]">
             {t.productDetail.relatedProducts}
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -224,12 +224,12 @@ export function ProductDetailView({
       )}
 
       {/* Guided Next Step CTA */}
-      <section className="rounded-2xl border border-[#2DD4BF]/35 bg-[#1C1917] p-6 sm:p-8 flex flex-col sm:flex-row sm:items-center justify-between gap-6">
+      <section className="rounded-2xl border border-[#0F766E]/30 dark:border-[#2DD4BF]/35 bg-white dark:bg-[#1C1917] p-6 sm:p-8 flex flex-col sm:flex-row sm:items-center justify-between gap-6 shadow-sm dark:shadow-none">
         <div>
-          <h2 className="font-display text-xl sm:text-2xl font-bold text-[#FAFAF9]">
+          <h2 className="font-display text-xl sm:text-2xl font-bold text-[#141210] dark:text-[#FAFAF9]">
             {t.productDetail.nextActionTitle}
           </h2>
-          <p className="mt-1 text-sm text-[#A8A29E]">
+          <p className="mt-1 text-sm text-[#57534E] dark:text-[#A8A29E]">
             {project.name} · {project.previewTheme.domainUrl}
           </p>
         </div>
@@ -245,7 +245,7 @@ export function ProductDetailView({
           <button
             type="button"
             onClick={() => onNavigate('/contatti')}
-            className="inline-flex items-center gap-2 rounded-full border border-[#292524] bg-[#0C0A09] px-5 py-3 text-sm font-medium text-[#FAFAF9] hover:border-[#2DD4BF] cursor-pointer min-h-[44px]"
+            className="inline-flex items-center gap-2 rounded-full border border-[#E5E2DC] dark:border-[#292524] bg-[#F3F1EC] dark:bg-[#0C0A09] px-5 py-3 text-sm font-medium text-[#141210] dark:text-[#FAFAF9] hover:border-[#0F766E] dark:hover:border-[#2DD4BF] cursor-pointer min-h-[44px]"
           >
             <span>{t.productDetail.nextActionCta}</span>
             <ArrowRight className="h-4 w-4" aria-hidden="true" />

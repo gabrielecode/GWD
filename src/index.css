@@ -10,6 +10,8 @@
 @import "@fontsource/jetbrains-mono/600.css";
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
   --font-display: "Outfit", ui-sans-serif, system-ui, sans-serif;
   --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
@@ -27,12 +29,42 @@
   --color-badge-ai: #60A5FA;
 }
 
+:root {
+  color-scheme: light;
+  --kl-bg: #F8F7F4;
+  --kl-surface: #FFFFFF;
+  --kl-surface-alt: #F3F1EC;
+  --kl-border: #E5E2DC;
+  --kl-text: #141210;
+  --kl-text-muted: #57534E;
+  --kl-accent-saas: #0F766E;
+  --kl-accent-agency: #B45309;
+  --kl-accent-ai: #1D4ED8;
+  --kl-accent-live: #15803D;
+  --kl-accent-client: #C2410C;
+}
+
+html.dark {
+  color-scheme: dark;
+  --kl-bg: #0C0A09;
+  --kl-surface: #1C1917;
+  --kl-surface-alt: #141210;
+  --kl-border: #292524;
+  --kl-text: #FAFAF9;
+  --kl-text-muted: #A8A29E;
+  --kl-accent-saas: #2DD4BF;
+  --kl-accent-agency: #FBBF24;
+  --kl-accent-ai: #60A5FA;
+  --kl-accent-live: #22C55E;
+  --kl-accent-client: #FB923C;
+}
+
 @layer base {
   html {
     font-family: var(--font-sans);
     font-size: 16px;
-    background-color: #0C0A09;
-    color: #FAFAF9;
+    background-color: var(--kl-bg);
+    color: var(--kl-text);
     scroll-behavior: smooth;
   }
 
@@ -44,17 +76,24 @@
   body {
     overflow-x: hidden;
     line-height: 1.6;
-    background-color: #0C0A09;
-    color: #FAFAF9;
+    background-color: var(--kl-bg);
+    color: var(--kl-text);
+    background-image:
+      radial-gradient(ellipse 75% 45% at 75% -5%, rgba(13, 148, 136, 0.08), transparent 60%),
+      radial-gradient(ellipse 65% 45% at 15% 25%, rgba(217, 119, 6, 0.06), transparent 55%),
+      radial-gradient(ellipse 70% 50% at 85% 80%, rgba(37, 99, 235, 0.05), transparent 60%);
+    background-attachment: fixed;
+  }
+
+  html.dark body {
     background-image:
       radial-gradient(ellipse 75% 45% at 75% -5%, rgba(45, 212, 191, 0.12), transparent 60%),
       radial-gradient(ellipse 65% 45% at 15% 25%, rgba(251, 191, 36, 0.08), transparent 55%),
       radial-gradient(ellipse 70% 50% at 85% 80%, rgba(96, 165, 250, 0.08), transparent 60%);
-    background-attachment: fixed;
   }
 
   :focus-visible {
-    outline: 2px solid #2DD4BF;
+    outline: 2px solid var(--kl-accent-saas);
     outline-offset: 2px;
   }
 }
@@ -64,17 +103,59 @@
 }
 
 .glass-panel {
-  background-color: rgba(28, 25, 23, 0.92);
+  background-color: rgba(255, 255, 255, 0.92);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
+  border: 1px solid #E5E2DC;
+  box-shadow: 0 8px 24px -12px rgba(20, 18, 16, 0.08);
+}
+
+html.dark .glass-panel {
+  background-color: rgba(28, 25, 23, 0.92);
   border: 1px solid #292524;
+  box-shadow: none;
 }
 
 .glass-panel-warm {
-  background: linear-gradient(135deg, rgba(45, 212, 191, 0.08) 0%, rgba(28, 25, 23, 0.96) 50%, rgba(251, 191, 36, 0.08) 100%);
+  background: linear-gradient(135deg, rgba(13, 148, 136, 0.06) 0%, rgba(255, 255, 255, 0.96) 50%, rgba(217, 119, 6, 0.06) 100%);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
+  border: 1px solid #E5E2DC;
+  box-shadow: 0 12px 32px -14px rgba(20, 18, 16, 0.09);
+}
+
+html.dark .glass-panel-warm {
+  background: linear-gradient(135deg, rgba(45, 212, 191, 0.08) 0%, rgba(28, 25, 23, 0.96) 50%, rgba(251, 191, 36, 0.08) 100%);
   border: 1px solid #292524;
+  box-shadow: none;
+}
+
+.browser-backdrop-ai {
+  background: radial-gradient(circle at 80% 15%, rgba(37, 99, 235, 0.14), rgba(243, 241, 236, 0.96) 65%, rgba(235, 232, 225, 1) 100%);
+}
+html.dark .browser-backdrop-ai {
+  background: radial-gradient(circle at 80% 15%, rgba(96, 165, 250, 0.24), rgba(28, 25, 23, 0.96) 65%, rgba(12, 10, 9, 1) 100%);
+}
+
+.browser-backdrop-saas {
+  background: radial-gradient(circle at 80% 15%, rgba(13, 148, 136, 0.14), rgba(243, 241, 236, 0.96) 65%, rgba(235, 232, 225, 1) 100%);
+}
+html.dark .browser-backdrop-saas {
+  background: radial-gradient(circle at 80% 15%, rgba(45, 212, 191, 0.22), rgba(28, 25, 23, 0.96) 65%, rgba(12, 10, 9, 1) 100%);
+}
+
+.browser-backdrop-agency {
+  background: radial-gradient(circle at 80% 15%, rgba(217, 119, 6, 0.14), rgba(243, 241, 236, 0.96) 65%, rgba(235, 232, 225, 1) 100%);
+}
+html.dark .browser-backdrop-agency {
+  background: radial-gradient(circle at 80% 15%, rgba(251, 191, 36, 0.24), rgba(28, 25, 23, 0.96) 65%, rgba(12, 10, 9, 1) 100%);
+}
+
+.browser-backdrop-neutral {
+  background: radial-gradient(circle at 80% 15%, rgba(87, 83, 78, 0.1), rgba(243, 241, 236, 0.96) 65%, rgba(235, 232, 225, 1) 100%);
+}
+html.dark .browser-backdrop-neutral {
+  background: radial-gradient(circle at 80% 15%, rgba(168, 162, 158, 0.16), rgba(28, 25, 23, 0.96) 65%, rgba(12, 10, 9, 1) 100%);
 }
 
 @keyframes obsidian-shimmer {
@@ -87,6 +168,20 @@
 }
 
 .skeleton-obsidian {
+  background-color: #EFECE6;
+  background-image: linear-gradient(
+    110deg,
+    #EFECE6 20%,
+    #F8F7F4 42%,
+    #E5E2DC 50%,
+    #F8F7F4 58%,
+    #EFECE6 80%
+  );
+  background-size: 220% 100%;
+  animation: obsidian-shimmer 1.65s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+html.dark .skeleton-obsidian {
   background-color: #0C0A09;
   background-image: linear-gradient(
     110deg,
@@ -96,11 +191,23 @@
     #1C1917 58%,
     #0C0A09 80%
   );
+}
+
+.skeleton-surface {
+  background-color: #E7E4DE;
+  background-image: linear-gradient(
+    110deg,
+    #E7E4DE 20%,
+    #F3F1EC 44%,
+    #DDD9D0 50%,
+    #F3F1EC 56%,
+    #E7E4DE 80%
+  );
   background-size: 220% 100%;
   animation: obsidian-shimmer 1.65s cubic-bezier(0.4, 0, 0.2, 1) infinite;
 }
 
-.skeleton-surface {
+html.dark .skeleton-surface {
   background-color: #1C1917;
   background-image: linear-gradient(
     110deg,
@@ -110,8 +217,6 @@
     #292524 56%,
     #1C1917 80%
   );
-  background-size: 220% 100%;
-  animation: obsidian-shimmer 1.65s cubic-bezier(0.4, 0, 0.2, 1) infinite;
 }
 
 @media (prefers-reduced-motion: reduce) {

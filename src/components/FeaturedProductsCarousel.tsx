@@ -180,26 +180,26 @@ export function FeaturedProductsCarousel({
       {/* Header & Controls */}
       <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-5">
         <div className="max-w-xl">
-          <h2 className="font-display text-2xl sm:text-3xl font-bold tracking-tight text-[#FAFAF9]">
+          <h2 className="font-display text-2xl sm:text-3xl font-bold tracking-tight text-[#141210] dark:text-[#FAFAF9]">
             {t.featuredSaas.sectionTitle}
           </h2>
-          <p className="mt-2 text-sm sm:text-base text-[#A8A29E]">
+          <p className="mt-2 text-sm sm:text-base text-[#57534E] dark:text-[#A8A29E]">
             {t.featuredSaas.sectionSubtitle}
           </p>
         </div>
 
         <div className="flex flex-wrap items-center gap-2.5">
-          <div className="inline-flex items-center gap-1.5 rounded-full border border-[#292524] bg-[#1C1917] p-1">
+          <div className="inline-flex items-center gap-1.5 rounded-full border border-[#E5E2DC] bg-white dark:border-[#292524] dark:bg-[#1C1917] p-1">
             <button
               type="button"
               onClick={handlePrev}
               aria-label={t.featuredSaas.prevSlide}
-              className="flex h-9 w-9 items-center justify-center rounded-full text-[#FAFAF9] hover:bg-[#292524] transition-colors cursor-pointer"
+              className="flex h-9 w-9 items-center justify-center rounded-full text-[#141210] hover:bg-[#F3F1EC] dark:text-[#FAFAF9] dark:hover:bg-[#292524] transition-colors cursor-pointer"
             >
               <ChevronLeft className="h-4 w-4" aria-hidden="true" />
             </button>
 
-            <span className="px-2 font-mono text-xs tabular-nums text-[#A8A29E] select-none">
+            <span className="px-2 font-mono text-xs tabular-nums text-[#57534E] dark:text-[#A8A29E] select-none">
               {String(activeDotIndex + 1).padStart(2, '0')} /{' '}
               {String(total).padStart(2, '0')}
             </span>
@@ -208,7 +208,7 @@ export function FeaturedProductsCarousel({
               type="button"
               onClick={handleNext}
               aria-label={t.featuredSaas.nextSlide}
-              className="flex h-9 w-9 items-center justify-center rounded-full text-[#FAFAF9] hover:bg-[#292524] transition-colors cursor-pointer"
+              className="flex h-9 w-9 items-center justify-center rounded-full text-[#141210] hover:bg-[#F3F1EC] dark:text-[#FAFAF9] dark:hover:bg-[#292524] transition-colors cursor-pointer"
             >
               <ChevronRight className="h-4 w-4" aria-hidden="true" />
             </button>
@@ -219,9 +219,9 @@ export function FeaturedProductsCarousel({
             onClick={handleShuffle}
             aria-label={t.featuredSaas.shuffleCards}
             title={t.featuredSaas.shuffleCards}
-            className="inline-flex items-center gap-1.5 rounded-full border border-[#292524] bg-[#1C1917] px-3.5 py-2 text-xs font-medium text-[#FAFAF9] hover:border-[#2DD4BF] transition-colors cursor-pointer min-h-[40px] whitespace-nowrap"
+            className="inline-flex items-center gap-1.5 rounded-full border border-[#E5E2DC] bg-white text-[#141210] hover:border-[#0F766E] dark:border-[#292524] dark:bg-[#1C1917] px-3.5 py-2 text-xs font-medium dark:text-[#FAFAF9] dark:hover:border-[#2DD4BF] transition-colors cursor-pointer min-h-[40px] whitespace-nowrap"
           >
-            <Shuffle className="h-3.5 w-3.5 text-[#2DD4BF]" aria-hidden="true" />
+            <Shuffle className="h-3.5 w-3.5 text-[#0F766E] dark:text-[#2DD4BF]" aria-hidden="true" />
             <span>{t.featuredSaas.shuffleCards}</span>
           </button>
 
@@ -238,7 +238,7 @@ export function FeaturedProductsCarousel({
                 ? t.featuredSaas.playAutoplay
                 : t.featuredSaas.pauseAutoplay
             }
-            className="flex h-10 w-10 items-center justify-center rounded-full border border-[#292524] bg-[#1C1917] text-[#A8A29E] hover:text-[#FAFAF9] hover:border-[#FAFAF9]/30 transition-colors cursor-pointer shrink-0"
+            className="flex h-10 w-10 items-center justify-center rounded-full border border-[#E5E2DC] bg-white text-[#57534E] hover:text-[#141210] hover:border-[#141210]/30 dark:border-[#292524] dark:bg-[#1C1917] dark:text-[#A8A29E] dark:hover:text-[#FAFAF9] dark:hover:border-[#FAFAF9]/30 transition-colors cursor-pointer shrink-0"
           >
             {isUserPaused ? (
               <Play className="h-3.5 w-3.5 fill-current" aria-hidden="true" />
@@ -250,7 +250,7 @@ export function FeaturedProductsCarousel({
           <button
             type="button"
             onClick={() => onNavigate('/prodotti')}
-            className="inline-flex items-center gap-1.5 rounded-full border border-[#292524] bg-[#1C1917] px-4 py-2 text-xs font-semibold text-[#2DD4BF] hover:border-[#2DD4BF] whitespace-nowrap cursor-pointer min-h-[40px]"
+            className="inline-flex items-center gap-1.5 rounded-full border border-[#E5E2DC] bg-white text-[#0F766E] hover:border-[#0F766E] dark:border-[#292524] dark:bg-[#1C1917] px-4 py-2 text-xs font-semibold dark:text-[#2DD4BF] dark:hover:border-[#2DD4BF] whitespace-nowrap cursor-pointer min-h-[40px]"
           >
             <span>{t.featuredSaas.viewAll}</span>
             <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
@@ -303,11 +303,16 @@ export function FeaturedProductsCarousel({
                 : isSaas
                 ? '#2DD4BF'
                 : '#FBBF24';
-              const hoverBorderClass = isAi
-                ? 'hover:border-[#60A5FA]/50'
+              const accentTextVar = isAi
+                ? 'var(--kl-accent-ai)'
                 : isSaas
-                ? 'hover:border-[#2DD4BF]/50'
-                : 'hover:border-[#FBBF24]/50';
+                ? 'var(--kl-accent-saas)'
+                : 'var(--kl-accent-agency)';
+              const hoverBorderClass = isAi
+                ? 'hover:border-[#1D4ED8]/50 dark:hover:border-[#60A5FA]/50'
+                : isSaas
+                ? 'hover:border-[#0F766E]/50 dark:hover:border-[#2DD4BF]/50'
+                : 'hover:border-[#B45309]/50 dark:hover:border-[#FBBF24]/50';
               const detailPath = isSaas
                 ? `/prodotti/${item.slug}`
                 : `/lavori/${item.slug}`;
@@ -320,7 +325,7 @@ export function FeaturedProductsCarousel({
                   className="w-full sm:w-1/2 lg:w-1/3 shrink-0 px-3 flex"
                 >
                   <article
-                    className={`group w-full rounded-2xl border border-[#292524] bg-[#1C1917] p-6 flex flex-col justify-between transition-all duration-300 ease-out ${hoverBorderClass} hover:-translate-y-1 hover:shadow-[0_20px_44px_-16px_rgba(0,0,0,0.75)]`}
+                    className={`group w-full rounded-2xl border border-[#E5E2DC] bg-white dark:border-[#292524] dark:bg-[#1C1917] p-6 flex flex-col justify-between transition-all duration-300 ease-out ${hoverBorderClass} hover:-translate-y-1 hover:shadow-[0_18px_36px_-16px_rgba(20,18,16,0.16)] dark:hover:shadow-[0_20px_44px_-16px_rgba(0,0,0,0.75)]`}
                   >
                     <div>
                       <div className="mb-4">
@@ -328,12 +333,12 @@ export function FeaturedProductsCarousel({
                       </div>
                       <div className="flex items-center justify-between gap-3 mb-4">
                         <StatusBadge status={item.status} lang={lang} />
-                        <span className="font-mono text-xs text-[#A8A29E] truncate">
+                        <span className="font-mono text-xs text-[#57534E] dark:text-[#A8A29E] truncate">
                           {item.previewTheme.domainUrl}
                         </span>
                       </div>
 
-                      <h3 className="font-display text-2xl font-bold text-[#FAFAF9] tracking-tight">
+                      <h3 className="font-display text-2xl font-bold text-[#141210] dark:text-[#FAFAF9] tracking-tight">
                         <button
                           type="button"
                           tabIndex={isClone ? -1 : undefined}
@@ -343,24 +348,24 @@ export function FeaturedProductsCarousel({
                           {item.name}
                         </button>
                       </h3>
-                      <p className="mt-2 text-sm text-[#A8A29E] leading-relaxed line-clamp-3">
+                      <p className="mt-2 text-sm text-[#57534E] dark:text-[#A8A29E] leading-relaxed line-clamp-3">
                         {item.tagline[lang]}
                       </p>
 
-                      <div className="my-6 rounded-xl border border-[#292524] bg-[#0C0A09] p-4 flex items-baseline justify-between gap-3">
+                      <div className="my-6 rounded-xl border border-[#E5E2DC] bg-[#F3F1EC] dark:border-[#292524] dark:bg-[#0C0A09] p-4 flex items-baseline justify-between gap-3">
                         <span
                           className="font-mono text-2xl sm:text-3xl font-semibold tabular-nums shrink-0"
-                          style={{ color: accentHex }}
+                          style={{ color: accentTextVar }}
                         >
                           {item.heroMetric.value}
                         </span>
-                        <span className="text-xs text-[#A8A29E] text-right">
+                        <span className="text-xs text-[#57534E] dark:text-[#A8A29E] text-right">
                           {item.heroMetric.label[lang]}
                         </span>
                       </div>
                     </div>
 
-                    <div className="flex flex-wrap items-center justify-between gap-3 pt-4 border-t border-[#292524]">
+                    <div className="flex flex-wrap items-center justify-between gap-3 pt-4 border-t border-[#E5E2DC] dark:border-[#292524]">
                       <a
                         href={item.externalUrl}
                         target="_blank"
@@ -379,7 +384,7 @@ export function FeaturedProductsCarousel({
                         type="button"
                         tabIndex={isClone ? -1 : undefined}
                         onClick={() => onNavigate(detailPath)}
-                        className="inline-flex items-center gap-1.5 text-sm font-medium text-[#FAFAF9] hover:underline underline-offset-4 cursor-pointer min-h-[40px] whitespace-nowrap"
+                        className="inline-flex items-center gap-1.5 text-sm font-medium text-[#141210] dark:text-[#FAFAF9] hover:underline underline-offset-4 cursor-pointer min-h-[40px] whitespace-nowrap"
                       >
                         <span>
                           {isSaas
@@ -418,8 +423,8 @@ export function FeaturedProductsCarousel({
               }}
               className={`h-1.5 rounded-full transition-all duration-300 cursor-pointer ${
                 isActive
-                  ? 'w-7 bg-[#2DD4BF]'
-                  : 'w-2 bg-[#292524] hover:bg-[#A8A29E]/60'
+                  ? 'w-7 bg-[#0F766E] dark:bg-[#2DD4BF]'
+                  : 'w-2 bg-[#D6D3CD] hover:bg-[#57534E]/60 dark:bg-[#292524] dark:hover:bg-[#A8A29E]/60'
               }`}
             />
           );

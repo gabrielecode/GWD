@@ -4,6 +4,24 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#0C0A09" />
+    <script>
+      (function () {
+        try {
+          var saved = localStorage.getItem('kreativalab_theme_v1');
+          var isLight = saved === 'light';
+          var root = document.documentElement;
+          if (isLight) {
+            root.classList.remove('dark');
+            root.style.colorScheme = 'light';
+          } else {
+            root.classList.add('dark');
+            root.style.colorScheme = 'dark';
+          }
+          var meta = document.querySelector('meta[name="theme-color"]');
+          if (meta) meta.setAttribute('content', isLight ? '#F8F7F4' : '#0C0A09');
+        } catch (e) {}
+      })();
+    </script>
     <!-- TODO: verificare/sostituire con favicon dedicata in public/ (es. favicon.ico / icon.png) -->
     <link rel="icon" type="image/jpeg" href="/logo.jpg" />
     <title>Kreativalab — Digital Venture Studio &amp; Agency | Lugano</title>
@@ -142,7 +160,7 @@
       }
     </script>
   </head>
-  <body class="bg-[#0C0A09] text-[#FAFAF9] antialiased selection:bg-[#2DD4BF]/30 selection:text-white">
+  <body class="bg-[#F8F7F4] text-[#141210] dark:bg-[#0C0A09] dark:text-[#FAFAF9] antialiased selection:bg-[#2DD4BF]/30 selection:text-[#141210] dark:selection:text-white transition-colors duration-200">
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

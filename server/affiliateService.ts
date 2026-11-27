@@ -173,22 +173,56 @@ export async function getAuthConfigStatus(): Promise<{
   const supaCfg = getSupabaseConfig();
   if (supaCfg.enabled) {
     let hasAnyAdmin = false;
+    let supaError: string | null = null;
     try {
       const supabase = getSupabaseAdmin();
       if (supabase) {
         const adminEmail = process.env.ADMIN_EMAIL?.trim().toLowerCase();
-        const { data } = await supabase.auth.admin.listUsers({ page: 1, perPage: 200 });
-        const users = data?.users ?? [];
-        hasAnyAdmin = users.some((u) => {
-          const appRole =
-            (u.app_metadata?.role as string | undefined) ||
-            (u.user_metadata?.role as string | undefined);
-          return appRole === 'admin' || Boolean(adminEmail && u.email?.toLowerCase() === adminEmail);
-        });
+        const { data, error } = await supabase.auth.admin.listUsers({ page: 1, perPage: 200 });
+        if (error) {
+          supaError = error.message;
+        } else {
+          const users = data?.users ?? [];
+          hasAnyAdmin = users.some((u) => {
+            const appRole =
+              (u.app_metadata?.role as string | undefined) ||
+              (u.user_metadata?.role as string | undefined);
+            return appRole === 'admin' || Boolean(adminEmail && u.email?.toLowerCase() === adminEmail);
+          });
+        }
       }
-    } catch {
-      hasAnyAdmin = true;
+    } catch (err) {
+      supaError = err instanceof Error ? err.message : 'Errore Supabase';
     }
+
+    if (supaError && /bearer|token|apikey|unauthorized|invalid/i.test(supaError)) {
+      try {
+        const db = getSqliteDb();
+        const row = db
+          .prepare('SELECT value FROM app_settings WHERE key = ?')
+          .get('admin_password_hash') as { value?: string } | undefined;
+        const adminCountRow = db
+          .prepare('SELECT COUNT(*) as cnt FROM admin_users')
+          .get() as { cnt?: number } | undefined;
+        const hasLocalAdmin = Boolean(row?.value) || Number(adminCountRow?.cnt ?? 0) > 0;
+        return {
+          storage_mode: 'sqlite',
+          supabase_configured: false,
+          needs_admin_setup: !hasMasterPasscode && !hasLocalAdmin,
+          has_master_passcode: hasMasterPasscode,
+          config_error: 'Attenzione: la chiave SUPABASE_SERVICE_ROLE_KEY su Vercel non è valida o è una chiave anon anziché service_role. Il sistema sta operando in modalità SQLite locale. Correggi la chiave su Vercel o rimuovi le variabili Supabase.',
+        };
+      } catch {
+        return {
+          storage_mode: 'supabase',
+          supabase_configured: true,
+          needs_admin_setup: false,
+          has_master_passcode: hasMasterPasscode,
+          config_error: `Errore Supabase Auth (${supaError}): controlla che SUPABASE_SERVICE_ROLE_KEY sia la service_role secret key corretta.`,
+        };
+      }
+    }
+
     return {
       storage_mode: 'supabase',
       supabase_configured: true,
@@ -270,7 +304,7 @@ export async function createAdminAccount(input: {
   }
 
   const status = await getAuthConfigStatus();
-  if (status.config_error) {
+  if (status.config_error && status.storage_mode === 'supabase' && status.supabase_configured) {
     throw new ServiceError(503, status.config_error);
   }
 
@@ -310,7 +344,7 @@ export async function createAdminAccount(input: {
     );
   }
 
-  const supabase = getSupabaseAdmin();
+  const supabase = status.storage_mode === 'supabase' ? getSupabaseAdmin() : null;
   if (supabase) {
     const { data, error } = await supabase.auth.admin.createUser({
       email,
@@ -322,6 +356,12 @@ export async function createAdminAccount(input: {
       const msg = error?.message || 'Impossibile creare l’utente Admin su Supabase.';
       if (/already/i.test(msg)) {
         throw new ServiceError(409, 'Esiste già un utente Supabase registrato con questa email.');
+      }
+      if (/bearer|token|apikey|unauthorized|invalid/i.test(msg)) {
+        throw new ServiceError(
+          400,
+          'Errore Supabase Auth: la chiave SUPABASE_SERVICE_ROLE_KEY su Vercel non è valida o è una chiave anon anziché service_role. Correggi la chiave nelle impostazioni di Vercel oppure rimuovi le variabili d’ambiente Supabase per usare SQLite.'
+        );
       }
       throw new ServiceError(400, msg);
     }

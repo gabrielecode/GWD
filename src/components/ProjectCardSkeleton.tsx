@@ -10,15 +10,15 @@ export function ThumbnailSkeletonOverlay({
       ? 'bg-[#FBBF24]/20 border-[#FBBF24]/25'
       : accent === 'ai'
       ? 'bg-[#60A5FA]/20 border-[#60A5FA]/25'
-      : 'bg-[#292524]/70 border-[#292524]';
+      : 'bg-[#E5E2DC] border-[#E5E2DC] dark:bg-[#292524]/70 dark:border-[#292524]';
 
   return (
     <div
-      className="h-full w-full bg-[#0C0A09] p-3 flex flex-col justify-between"
+      className="h-full w-full bg-[#F8F7F4] dark:bg-[#0C0A09] p-3 flex flex-col justify-between"
       aria-hidden="true"
     >
       {/* Skeleton Navbar inside miniature browser */}
-      <div className="flex items-center justify-between border-b border-[#292524] pb-2">
+      <div className="flex items-center justify-between border-b border-[#E5E2DC] dark:border-[#292524] pb-2">
         <div className="skeleton-surface h-2.5 w-20 rounded-md" />
         <div className="flex items-center gap-1.5">
           <div className="skeleton-surface h-2 w-8 rounded" />
@@ -33,7 +33,7 @@ export function ThumbnailSkeletonOverlay({
           <div className="skeleton-surface h-2.5 w-3/4 rounded-md" />
           <div className="skeleton-surface h-2 w-1/2 rounded-md opacity-75" />
         </div>
-        <div className="col-span-5 rounded-lg border border-[#292524] bg-[#1C1917] p-2 space-y-1.5">
+        <div className="col-span-5 rounded-lg border border-[#E5E2DC] bg-white dark:border-[#292524] dark:bg-[#1C1917] p-2 space-y-1.5">
           <div className="skeleton-obsidian h-2 w-10 rounded" />
           <div className="skeleton-surface h-3.5 w-14 rounded-md" />
           <div className="skeleton-obsidian h-2 w-full rounded" />
@@ -42,9 +42,9 @@ export function ThumbnailSkeletonOverlay({
 
       {/* Skeleton bottom metrics strip */}
       <div className="grid grid-cols-3 gap-1.5 pt-1">
-        <div className="skeleton-surface h-5 rounded-md border border-[#292524]" />
-        <div className="skeleton-surface h-5 rounded-md border border-[#292524]" />
-        <div className="skeleton-surface h-5 rounded-md border border-[#292524]" />
+        <div className="skeleton-surface h-5 rounded-md border border-[#E5E2DC] dark:border-[#292524]" />
+        <div className="skeleton-surface h-5 rounded-md border border-[#E5E2DC] dark:border-[#292524]" />
+        <div className="skeleton-surface h-5 rounded-md border border-[#E5E2DC] dark:border-[#292524]" />
       </div>
     </div>
   );
@@ -57,19 +57,19 @@ export function ProjectCardSkeleton({
 }) {
   return (
     <div
-      className="rounded-2xl border border-[#292524] bg-[#1C1917] p-4 sm:p-5 flex flex-col justify-between"
+      className="rounded-2xl border border-[#E5E2DC] bg-white dark:border-[#292524] dark:bg-[#1C1917] p-4 sm:p-5 flex flex-col justify-between"
       aria-hidden="true"
     >
       <div>
         {/* Browser Frame Thumbnail Skeleton */}
-        <div className="mb-4 w-full overflow-hidden rounded-xl border border-[#292524] bg-[#0C0A09] p-2.5">
-          <div className="w-full rounded-lg border border-[#292524] bg-[#141210] overflow-hidden">
+        <div className="mb-4 w-full overflow-hidden rounded-xl border border-[#E5E2DC] bg-[#F3F1EC] dark:border-[#292524] dark:bg-[#0C0A09] p-2.5">
+          <div className="w-full rounded-lg border border-[#E5E2DC] bg-white dark:border-[#292524] dark:bg-[#141210] overflow-hidden">
             {/* Window Top Bar */}
-            <div className="flex items-center justify-between gap-2 border-b border-[#292524] bg-[#1C1917] px-2.5 py-1.5">
+            <div className="flex items-center justify-between gap-2 border-b border-[#E5E2DC] bg-[#F8F7F4] dark:border-[#292524] dark:bg-[#1C1917] px-2.5 py-1.5">
               <div className="flex items-center gap-1">
-                <span className="h-1.5 w-1.5 rounded-full bg-[#292524]" />
-                <span className="h-1.5 w-1.5 rounded-full bg-[#292524]" />
-                <span className="h-1.5 w-1.5 rounded-full bg-[#292524]" />
+                <span className="h-1.5 w-1.5 rounded-full bg-[#D6D3CD] dark:bg-[#292524]" />
+                <span className="h-1.5 w-1.5 rounded-full bg-[#D6D3CD] dark:bg-[#292524]" />
+                <span className="h-1.5 w-1.5 rounded-full bg-[#D6D3CD] dark:bg-[#292524]" />
               </div>
               <div className="skeleton-obsidian h-3 flex-1 max-w-[160px] rounded" />
               <span className="w-4" />
@@ -85,7 +85,7 @@ export function ProjectCardSkeleton({
         {/* Category · Sector line */}
         <div className="flex items-center gap-2 mb-2.5">
           <div className="skeleton-obsidian h-3 w-24 rounded-full" />
-          <span className="h-1 w-1 rounded-full bg-[#292524]" />
+          <span className="h-1 w-1 rounded-full bg-[#D6D3CD] dark:bg-[#292524]" />
           <div className="skeleton-obsidian h-3 w-32 rounded-full" />
         </div>
 
@@ -101,9 +101,9 @@ export function ProjectCardSkeleton({
       </div>
 
       {/* Footer Divider + Badge + Action Pill Skeleton */}
-      <div className="flex items-center justify-between gap-3 pt-4 border-t border-[#292524]">
-        <div className="skeleton-obsidian h-6 w-24 rounded-full border border-[#292524]" />
-        <div className="skeleton-surface h-9 w-28 rounded-full border border-[#292524]" />
+      <div className="flex items-center justify-between gap-3 pt-4 border-t border-[#E5E2DC] dark:border-[#292524]">
+        <div className="skeleton-obsidian h-6 w-24 rounded-full border border-[#E5E2DC] dark:border-[#292524]" />
+        <div className="skeleton-surface h-9 w-28 rounded-full border border-[#E5E2DC] dark:border-[#292524]" />
       </div>
     </div>
   );

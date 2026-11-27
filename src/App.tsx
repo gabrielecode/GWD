@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState, lazy, Suspense } from 'react';
 import {
   CookiePreferences,
   Language,
@@ -7,6 +7,7 @@ import {
 } from './types/showcase';
 import { getProjectBySlug } from './data/projects';
 import { TICINO_CITIES } from './data/services';
+import { BUSINESS_INFO } from './data/business';
 import { Header } from './components/Header';
 import { Footer } from './components/Footer';
 import { FloatingActions } from './components/FloatingActions';
@@ -19,12 +20,16 @@ import { WorkDetailView } from './views/WorkDetailView';
 import { ServicesView } from './views/ServicesView';
 import { AboutView } from './views/AboutView';
 import { ContactView } from './views/ContactView';
-import { LegalView } from './views/LegalView';
-import { AdminAffiliatesView } from './views/AdminAffiliatesView';
-import { AdminPayoutsView } from './views/AdminPayoutsView';
-import { AffiliatePortalView } from './views/AffiliatePortalView';
 
-const COOKIE_STORAGE_KEY = 'kreativalab_group_cookie_prefs_v1';
+const LegalView = lazy(() => import('./views/LegalView').then((m) => ({ default: m.LegalView })));
+const AdminAffiliatesView = lazy(() => import('./views/AdminAffiliatesView').then((m) => ({ default: m.AdminAffiliatesView })));
+const AdminPayoutsView = lazy(() => import('./views/AdminPayoutsView').then((m) => ({ default: m.AdminPayoutsView })));
+const AffiliatePortalView = lazy(() => import('./views/AffiliatePortalView').then((m) => ({ default: m.AffiliatePortalView })));
+
+const COOKIE_STORAGE_KEY = BUSINESS_INFO.cookieStorageKey;
+const THEME_STORAGE_KEY = 'kreativalab_theme_v1';
+
+type ThemeMode = 'light' | 'dark';
 
 function parseUrlState(): {
   path: string;
@@ -97,6 +102,36 @@ export default function App() {
   const [filter, setFilter] = useState<ProjectFilter>(initial.filter);
   const [city, setCity] = useState<TicinoCitySlug>(initial.city);
   const [showCookieModal, setShowCookieModal] = useState(false);
+  const [theme, setTheme] = useState<ThemeMode>(() => {
+    if (typeof document !== 'undefined') {
+      return document.documentElement.classList.contains('dark') ? 'dark' : 'light';
+    }
+    return 'dark';
+  });
+
+  useEffect(() => {
+    const root = document.documentElement;
+    if (theme === 'dark') {
+      root.classList.add('dark');
+      root.style.colorScheme = 'dark';
+    } else {
+      root.classList.remove('dark');
+      root.style.colorScheme = 'light';
+    }
+    const metaTheme = document.querySelector('meta[name="theme-color"]');
+    if (metaTheme) {
+      metaTheme.setAttribute('content', theme === 'dark' ? '#0C0A09' : '#F8F7F4');
+    }
+    try {
+      localStorage.setItem(THEME_STORAGE_KEY, theme);
+    } catch {
+      // ignore storage access issues
+    }
+  }, [theme]);
+
+  const handleToggleTheme = useCallback(() => {
+    setTheme((prev) => (prev === 'dark' ? 'light' : 'dark'));
+  }, []);
 
   const [cookiePrefs, setCookiePrefs] = useState<CookiePreferences>(() => {
     try {
@@ -323,10 +358,10 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#0C0A09] text-[#FAFAF9] overflow-x-clip">
+    <div className="min-h-screen flex flex-col bg-[#F8F7F4] text-[#141210] dark:bg-[#0C0A09] dark:text-[#FAFAF9] overflow-x-clip transition-colors duration-200">
       <a
         href="#main"
-        className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2.5 focus:bg-[#2DD4BF] focus:text-[#0C0A09] focus:font-semibold focus:rounded-lg focus:shadow-xl focus:outline-none focus:ring-2 focus:ring-[#FAFAF9]"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2.5 focus:bg-[#2DD4BF] focus:text-[#0C0A09] focus:font-semibold focus:rounded-lg focus:shadow-xl focus:outline-none focus:ring-2 focus:ring-[#141210] dark:focus:ring-[#FAFAF9]"
       >
         Vai al contenuto
       </a>
@@ -334,16 +369,31 @@ export default function App() {
       <Header
         currentPath={currentPath}
         lang={lang}
+        theme={theme}
+        onToggleTheme={handleToggleTheme}
         onNavigate={navigate}
         onChangeLang={handleChangeLang}
       />
 
       <main id="main" className="flex-1 pt-14 lg:pt-16">
-        {renderRoute()}
+        <Suspense
+          fallback={
+            <div className="min-h-[60vh] flex items-center justify-center bg-[#F8F7F4] text-[#141210] dark:bg-[#0C0A09] dark:text-[#FAFAF9]">
+              <div className="animate-pulse flex flex-col items-center gap-4">
+                <div className="w-12 h-12 rounded-full border-2 border-[#2DD4BF] border-t-transparent animate-spin"></div>
+                <p className="text-sm font-medium tracking-wide">Caricamento in corso...</p>
+              </div>
+            </div>
+          }
+        >
+          {renderRoute()}
+        </Suspense>
       </main>
 
       <Footer
         lang={lang}
+        theme={theme}
+        onToggleTheme={handleToggleTheme}
         onNavigate={navigate}
         onChangeLang={handleChangeLang}
         onOpenCookieSettings={() => setShowCookieModal(true)}

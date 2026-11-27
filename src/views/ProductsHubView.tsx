@@ -43,26 +43,26 @@ export function ProductsHubView({ lang, onNavigate }: ProductsHubViewProps) {
       />
 
       <header className="glass-panel rounded-3xl p-6 sm:p-10 max-w-4xl space-y-4">
-        <p className="text-xs font-medium uppercase tracking-wider text-[#2DD4BF]">
+        <p className="text-xs font-medium uppercase tracking-wider text-[#0F766E] dark:text-[#2DD4BF]">
           {t.dualEngine.saasTag} · kreativalab
         </p>
-        <h1 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-[#FAFAF9]">
+        <h1 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-[#141210] dark:text-[#FAFAF9]">
           {t.dualEngine.saasTitle}
         </h1>
-        <p className="text-base sm:text-lg text-[#A8A29E] leading-relaxed">
+        <p className="text-base sm:text-lg text-[#57534E] dark:text-[#A8A29E] leading-relaxed">
           {t.dualEngine.saasDescription}
         </p>
       </header>
 
-      <div className="flex flex-wrap items-center justify-between gap-4 pb-6 border-b border-[#292524]">
-        <div className="inline-flex items-center rounded-full border border-[#292524] bg-[#1C1917] p-1">
+      <div className="flex flex-wrap items-center justify-between gap-4 pb-6 border-b border-[#E5E2DC] dark:border-[#292524]">
+        <div className="inline-flex items-center rounded-full border border-[#E5E2DC] dark:border-[#292524] bg-white dark:bg-[#1C1917] p-1">
           <button
             type="button"
             onClick={() => setStatusFilter('all')}
             className={`rounded-full px-4 py-2 text-xs sm:text-sm font-medium transition-colors cursor-pointer ${
               statusFilter === 'all'
                 ? 'bg-[#2DD4BF] text-[#0C0A09] font-semibold'
-                : 'text-[#A8A29E] hover:text-[#FAFAF9]'
+                : 'text-[#57534E] hover:text-[#141210] dark:text-[#A8A29E] dark:hover:text-[#FAFAF9]'
             }`}
           >
             {t.filterSection.all} ({saasProjects.length})
@@ -73,7 +73,7 @@ export function ProductsHubView({ lang, onNavigate }: ProductsHubViewProps) {
             className={`rounded-full px-4 py-2 text-xs sm:text-sm font-medium transition-colors cursor-pointer ${
               statusFilter === 'live-saas'
                 ? 'bg-[#22C55E] text-[#0C0A09] font-semibold'
-                : 'text-[#A8A29E] hover:text-[#FAFAF9]'
+                : 'text-[#57534E] hover:text-[#141210] dark:text-[#A8A29E] dark:hover:text-[#FAFAF9]'
             }`}
           >
             {t.badges['live-saas']}
@@ -84,7 +84,7 @@ export function ProductsHubView({ lang, onNavigate }: ProductsHubViewProps) {
             className={`rounded-full px-4 py-2 text-xs sm:text-sm font-medium transition-colors cursor-pointer ${
               statusFilter === 'ai-division'
                 ? 'bg-[#60A5FA] text-[#0C0A09] font-semibold'
-                : 'text-[#A8A29E] hover:text-[#FAFAF9]'
+                : 'text-[#57534E] hover:text-[#141210] dark:text-[#A8A29E] dark:hover:text-[#FAFAF9]'
             }`}
           >
             {t.badges['ai-division']}
@@ -94,7 +94,7 @@ export function ProductsHubView({ lang, onNavigate }: ProductsHubViewProps) {
         <button
           type="button"
           onClick={() => onNavigate('/lavori')}
-          className="inline-flex items-center gap-1.5 rounded-full border border-[#292524] bg-[#1C1917] px-4 py-2 text-xs font-semibold text-[#FBBF24] hover:border-[#FBBF24] cursor-pointer"
+          className="inline-flex items-center gap-1.5 rounded-full border border-[#E5E2DC] dark:border-[#292524] bg-white dark:bg-[#1C1917] px-4 py-2 text-xs font-semibold text-[#B45309] dark:text-[#FBBF24] hover:border-[#B45309] dark:hover:border-[#FBBF24] cursor-pointer"
         >
           <span>{t.dualEngine.agencyCta}</span>
           <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />

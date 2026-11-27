@@ -10,6 +10,8 @@ export interface UiStrings {
     ctaHeader: string;
     menuOpen: string;
     menuClose: string;
+    themeLight: string;
+    themeDark: string;
   };
   badges: Record<StatusBadgeType, string>;
   hero: {
@@ -266,6 +268,8 @@ export const TRANSLATIONS: Record<Language, UiStrings> = {
       ctaHeader: 'Prenota una call gratuita di 20 minuti',
       menuOpen: 'Apri menu',
       menuClose: 'Chiudi menu',
+      themeLight: 'Attiva tema chiaro',
+      themeDark: 'Attiva tema scuro',
     },
     badges: {
       'live-saas': 'Live SaaS',
@@ -273,7 +277,7 @@ export const TRANSLATIONS: Record<Language, UiStrings> = {
       'ai-division': 'Divisione AI',
     },
     hero: {
-      eyebrow: 'Kreativalab· Lugano, Svizzera',
+      eyebrow: 'Kreativalab · Lugano, Svizzera',
       title: 'Digital Venture Studio & Agency',
       subtitle:
         'Un solo gruppo con due motori operativi: progettiamo piattaforme SaaS proprietarie per il mercato B2B e realizziamo siti web, SEO locale e agenti AI vocali per le imprese del Ticino.',
@@ -481,7 +485,7 @@ export const TRANSLATIONS: Record<Language, UiStrings> = {
         'Uniamo la disciplina ingegneristica di un Venture Studio SaaS alla concretezza operativa di un’agenzia digitale radicata a Lugano.',
       groupStoryTitle: 'Un modello integrato, zero intermediari',
       groupStoryBody:
-        'Kreativalabnasce per superare il divario tra agenzie creative lente e software house distanti dal business locale. Da una parte sviluppiamo e gestiamo asset SaaS proprietari in produzione; dall’altra trasferiamo quella stessa solidità tecnica ai siti web, alle campagne e agli agenti AI delle PMI ticinesi.',
+        'Kreativalab nasce per superare il divario tra agenzie creative lente e software house distanti dal business locale. Da una parte sviluppiamo e gestiamo asset SaaS proprietari in produzione; dall’altra trasferiamo quella stessa solidità tecnica ai siti web, alle campagne e agli agenti AI delle PMI ticinesi.',
       brandsTitle: 'Architettura dei brand del gruppo',
       kreativalabTitle: 'kreativalab · Digital Venture Studio',
       kreativalabDesc:
@@ -500,7 +504,7 @@ export const TRANSLATIONS: Record<Language, UiStrings> = {
       ctaButton: 'Parla del tuo progetto',
     },
     contactPage: {
-      title: 'Contatti · KreativalabLugano',
+      title: 'Contatti · Kreativalab Lugano',
       subtitle:
         'Raccontaci cosa vuoi costruire o ottimizzare. Rispondiamo in giornata con una valutazione tecnica chiara.',
       directChannels: 'Canali diretti svizzeri',
@@ -528,7 +532,7 @@ export const TRANSLATIONS: Record<Language, UiStrings> = {
     },
     whatsapp: {
       label: 'WhatsApp',
-      ariaLabel: 'Contatta Kreativalabsu WhatsApp',
+      ariaLabel: 'Contatta Kreativalab su WhatsApp',
     },
     cookieBanner: {
       title: 'Rispetto della tua privacy (nLPD / GDPR)',
@@ -543,7 +547,7 @@ export const TRANSLATIONS: Record<Language, UiStrings> = {
     },
     seoUi: {
       homeLabel: 'Home',
-      heroImageAlt: 'Ecosistema digitale Kreativalaba Lugano: piattaforme SaaS, sviluppo web, SEO locale Ticino e agenti AI',
+      heroImageAlt: 'Ecosistema digitale Kreativalab a Lugano: piattaforme SaaS, sviluppo web, SEO locale Ticino e agenti AI',
       districtsLabel: 'Comuni e quartieri serviti',
       industriesLabel: 'Settori chiave locali',
       serviceAngleLabel: 'Approccio su misura per il territorio',
@@ -562,6 +566,8 @@ export const TRANSLATIONS: Record<Language, UiStrings> = {
       ctaHeader: 'Kostenloses 20-Min.-Gespräch buchen',
       menuOpen: 'Menü öffnen',
       menuClose: 'Menü schließen',
+      themeLight: 'Hellen Modus aktivieren',
+      themeDark: 'Dunklen Modus aktivieren',
     },
     badges: {
       'live-saas': 'Live SaaS',
@@ -569,7 +575,7 @@ export const TRANSLATIONS: Record<Language, UiStrings> = {
       'ai-division': 'KI-Division',
     },
     hero: {
-      eyebrow: 'Kreativalab· Lugano, Schweiz',
+      eyebrow: 'Kreativalab · Lugano, Schweiz',
       title: 'Digital Venture Studio & Agency',
       subtitle:
         'Eine Gruppe mit zwei operativen Motoren: Wir entwickeln eigene B2B-SaaS-Plattformen und realisieren schnelle Websites, lokale SEO und KI-Sprachagenten für Unternehmen im Tessin.',
@@ -777,7 +783,7 @@ export const TRANSLATIONS: Record<Language, UiStrings> = {
         'Wir verbinden die Produkt-DNA eines SaaS Venture Studios mit der lokalen Schlagkraft einer Tessiner Digitalagentur in Lugano.',
       groupStoryTitle: 'Ein integriertes Modell ohne Reibungsverluste',
       groupStoryBody:
-        'Kreativalabschließt die Lücke zwischen langsamen Kreativagenturen und rein abstrakten Softwarehäusern. Unsere eigenen produktiven SaaS-Systeme setzen den technischen Maßstab für jedes Kundenprojekt in der Schweiz.',
+        'Kreativalab schließt die Lücke zwischen langsamen Kreativagenturen und rein abstrakten Softwarehäusern. Unsere eigenen produktiven SaaS-Systeme setzen den technischen Maßstab für jedes Kundenprojekt in der Schweiz.',
       brandsTitle: 'Markenarchitektur der Gruppe',
       kreativalabTitle: 'kreativalab · Digital Venture Studio',
       kreativalabDesc:
@@ -796,7 +802,7 @@ export const TRANSLATIONS: Record<Language, UiStrings> = {
       ctaButton: 'Projekt besprechen',
     },
     contactPage: {
-      title: 'Kontakt · KreativalabLugano',
+      title: 'Kontakt · Kreativalab Lugano',
       subtitle:
         'Schildern Sie uns Ihr Vorhaben. Sie erhalten noch am selben Arbeitstag eine fundierte technische Einschätzung.',
       directChannels: 'Direkte Schweizer Kontaktkanäle',
@@ -824,7 +830,7 @@ export const TRANSLATIONS: Record<Language, UiStrings> = {
     },
     whatsapp: {
       label: 'WhatsApp',
-      ariaLabel: 'Kreativalabauf WhatsApp kontaktieren',
+      ariaLabel: 'Kreativalab auf WhatsApp kontaktieren',
     },
     cookieBanner: {
       title: 'Schutz Ihrer Privatsphäre (nDSG / DSGVO)',
@@ -839,7 +845,7 @@ export const TRANSLATIONS: Record<Language, UiStrings> = {
     },
     seoUi: {
       homeLabel: 'Startseite',
-      heroImageAlt: 'Digitales Ökosystem der Kreativalabin Lugano: SaaS-Plattformen, Webentwicklung, lokale SEO Tessin und KI-Agenten',
+      heroImageAlt: 'Digitales Ökosystem der Kreativalab in Lugano: SaaS-Plattformen, Webentwicklung, lokale SEO Tessin und KI-Agenten',
       districtsLabel: 'Abgedeckte Gemeinden & Quartiere',
       industriesLabel: 'Lokale Schlüsselbranchen',
       serviceAngleLabel: 'Spezifischer Ansatz vor Ort',
@@ -858,6 +864,8 @@ export const TRANSLATIONS: Record<Language, UiStrings> = {
       ctaHeader: 'Réserver un appel gratuit de 20 min',
       menuOpen: 'Ouvrir le menu',
       menuClose: 'Fermer le menu',
+      themeLight: 'Activer le mode clair',
+      themeDark: 'Activer le mode sombre',
     },
     badges: {
       'live-saas': 'Live SaaS',
@@ -865,7 +873,7 @@ export const TRANSLATIONS: Record<Language, UiStrings> = {
       'ai-division': 'Division IA',
     },
     hero: {
-      eyebrow: 'Kreativalab· Lugano, Suisse',
+      eyebrow: 'Kreativalab · Lugano, Suisse',
       title: 'Digital Venture Studio & Agency',
       subtitle:
         'Un groupe à double moteur : nous créons des plateformes SaaS B2B propriétaires et concevons des sites rapides, du SEO local et des agents vocaux IA pour les entreprises du Tessin.',
@@ -1073,7 +1081,7 @@ export const TRANSLATIONS: Record<Language, UiStrings> = {
         'Nous unissons la rigueur d’un Venture Studio SaaS et l’efficacité terrain d’une agence digitale ancrée à Lugano.',
       groupStoryTitle: 'Un modèle intégré, sans intermédiaires',
       groupStoryBody:
-        'Kreativalabcomble le fossé entre les agences traditionnelles lentes et les éditeurs logiciels éloignés des PME locales. Nos propres SaaS imposent un niveau d’exigence technique appliqué à chaque projet client au Tessin.',
+        'Kreativalab comble le fossé entre les agences traditionnelles lentes et les éditeurs logiciels éloignés des PME locales. Nos propres SaaS imposent un niveau d’exigence technique appliqué à chaque projet client au Tessin.',
       brandsTitle: 'Architecture des marques du groupe',
       kreativalabTitle: 'kreativalab · Digital Venture Studio',
       kreativalabDesc:
@@ -1092,7 +1100,7 @@ export const TRANSLATIONS: Record<Language, UiStrings> = {
       ctaButton: 'Parler de votre projet',
     },
     contactPage: {
-      title: 'Contact · KreativalabLugano',
+      title: 'Contact · Kreativalab Lugano',
       subtitle:
         'Présentez-nous votre objectif. Nous revenons vers vous le jour même avec une analyse claire.',
       directChannels: 'Canaux directs en Suisse',
@@ -1120,7 +1128,7 @@ export const TRANSLATIONS: Record<Language, UiStrings> = {
     },
     whatsapp: {
       label: 'WhatsApp',
-      ariaLabel: 'Contacter Kreativalabsur WhatsApp',
+      ariaLabel: 'Contacter Kreativalab sur WhatsApp',
     },
     cookieBanner: {
       title: 'Respect de votre vie privée (nLPD / RGPD)',
@@ -1135,7 +1143,7 @@ export const TRANSLATIONS: Record<Language, UiStrings> = {
     },
     seoUi: {
       homeLabel: 'Accueil',
-      heroImageAlt: 'Écosystème digital Kreativalabà Lugano : plateformes SaaS, développement web, SEO local Tessin et agents IA',
+      heroImageAlt: 'Écosystème digital Kreativalab à Lugano : plateformes SaaS, développement web, SEO local Tessin et agents IA',
       districtsLabel: 'Communes et quartiers couverts',
       industriesLabel: 'Secteurs clés locaux',
       serviceAngleLabel: 'Approche dédiée au territoire',
@@ -1154,6 +1162,8 @@ export const TRANSLATIONS: Record<Language, UiStrings> = {
       ctaHeader: 'Book a free 20-min call',
       menuOpen: 'Open menu',
       menuClose: 'Close menu',
+      themeLight: 'Switch to light mode',
+      themeDark: 'Switch to dark mode',
     },
     badges: {
       'live-saas': 'Live SaaS',
@@ -1161,7 +1171,7 @@ export const TRANSLATIONS: Record<Language, UiStrings> = {
       'ai-division': 'AI Division',
     },
     hero: {
-      eyebrow: 'Kreativalab· Lugano, Switzerland',
+      eyebrow: 'Kreativalab · Lugano, Switzerland',
       title: 'Digital Venture Studio & Agency',
       subtitle:
         'One group powered by two engines: we build proprietary B2B SaaS platforms while delivering high-speed websites, local SEO, and AI voice agents for businesses across Ticino.',
@@ -1369,7 +1379,7 @@ export const TRANSLATIONS: Record<Language, UiStrings> = {
         'Combining the product discipline of a SaaS Venture Studio with the execution speed of a Lugano-rooted digital agency.',
       groupStoryTitle: 'An integrated model with zero handoff friction',
       groupStoryBody:
-        'Kreativalabbridges the gap between slow traditional agencies and remote software vendors. Our live SaaS platforms set the engineering bar applied directly to every client build across Ticino and Switzerland.',
+        'Kreativalab bridges the gap between slow traditional agencies and remote software vendors. Our live SaaS platforms set the engineering bar applied directly to every client build across Ticino and Switzerland.',
       brandsTitle: 'Group brand architecture',
       kreativalabTitle: 'kreativalab · Digital Venture Studio',
       kreativalabDesc:
@@ -1388,7 +1398,7 @@ export const TRANSLATIONS: Record<Language, UiStrings> = {
       ctaButton: 'Discuss your project',
     },
     contactPage: {
-      title: 'Contact · KreativalabLugano',
+      title: 'Contact · Kreativalab Lugano',
       subtitle:
         'Tell us what you want to launch or optimize. We reply the same business day with a clear technical assessment.',
       directChannels: 'Direct Swiss channels',
@@ -1416,7 +1426,7 @@ export const TRANSLATIONS: Record<Language, UiStrings> = {
     },
     whatsapp: {
       label: 'WhatsApp',
-      ariaLabel: 'Contact Kreativalabon WhatsApp',
+      ariaLabel: 'Contact Kreativalab on WhatsApp',
     },
     cookieBanner: {
       title: 'Your privacy matters (Swiss FADP / GDPR)',
@@ -1431,7 +1441,7 @@ export const TRANSLATIONS: Record<Language, UiStrings> = {
     },
     seoUi: {
       homeLabel: 'Home',
-      heroImageAlt: 'Kreativalabdigital ecosystem in Lugano: proprietary SaaS platforms, web development, Ticino local SEO, and AI agents',
+      heroImageAlt: 'Kreativalab digital ecosystem in Lugano: proprietary SaaS platforms, web development, Ticino local SEO, and AI agents',
       districtsLabel: 'Districts & municipalities served',
       industriesLabel: 'Key local industries',
       serviceAngleLabel: 'Tailored regional strategy',

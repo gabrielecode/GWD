@@ -12,11 +12,11 @@ export function StatusBadge({ status, lang }: StatusBadgeProps) {
 
   const styles: Record<StatusBadgeType, string> = {
     'live-saas':
-      'bg-[#22C55E]/15 text-[#22C55E] border-[#22C55E]/35',
+      'bg-[#22C55E]/12 text-[#15803D] border-[#22C55E]/35 dark:bg-[#22C55E]/15 dark:text-[#22C55E] dark:border-[#22C55E]/35',
     'client-work':
-      'bg-[#FB923C]/15 text-[#FB923C] border-[#FB923C]/35',
+      'bg-[#FB923C]/12 text-[#C2410C] border-[#FB923C]/35 dark:bg-[#FB923C]/15 dark:text-[#FB923C] dark:border-[#FB923C]/35',
     'ai-division':
-      'bg-[#60A5FA]/15 text-[#60A5FA] border-[#60A5FA]/35',
+      'bg-[#60A5FA]/12 text-[#1D4ED8] border-[#60A5FA]/35 dark:bg-[#60A5FA]/15 dark:text-[#60A5FA] dark:border-[#60A5FA]/35',
   };
 
   const Icon =

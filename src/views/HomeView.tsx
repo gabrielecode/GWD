@@ -134,23 +134,23 @@ export function HomeView({
       {/* BLOCK 1: ATMOSPHERIC HERO + FLOATING SEARCH/FILTER BAR */}
       <section className="pt-8 lg:pt-12">
         <div className="mx-auto max-w-[1280px] px-4 sm:px-6 lg:px-8">
-          <div className="relative rounded-3xl border border-[#292524] bg-gradient-to-br from-[#1C1917] via-[#121110] to-[#0C0A09] p-6 sm:p-8 lg:p-10 shadow-2xl">
+          <div className="relative rounded-3xl border border-[#E5E2DC] dark:border-[#292524] bg-gradient-to-br from-white via-[#FBFBF9] to-[#F3F1EC] dark:from-[#1C1917] dark:via-[#121110] dark:to-[#0C0A09] p-6 sm:p-8 lg:p-10 shadow-xl dark:shadow-2xl">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
               <div className="lg:col-span-5 flex flex-col justify-center">
-                <div className="inline-flex w-fit items-center rounded-full border border-[#292524] bg-[#0C0A09] px-3.5 py-1.5 text-xs font-medium text-[#2DD4BF] mb-5">
+                <div className="inline-flex w-fit items-center rounded-full border border-[#E5E2DC] dark:border-[#292524] bg-[#F3F1EC] dark:bg-[#0C0A09] px-3.5 py-1.5 text-xs font-medium text-[#0F766E] dark:text-[#2DD4BF] mb-5">
                   {t.hero.eyebrow}
                 </div>
 
-                <h1 className="font-display text-4xl sm:text-5xl lg:text-[50px] font-bold tracking-tight text-[#FAFAF9] leading-[1.06]">
+                <h1 className="font-display text-4xl sm:text-5xl lg:text-[50px] font-bold tracking-tight text-[#141210] dark:text-[#FAFAF9] leading-[1.06]">
                   <span>{heroTitleStart} </span>
                   {heroTitleAccent && (
-                    <span className="bg-gradient-to-r from-[#2DD4BF] to-[#FBBF24] bg-clip-text text-transparent">
+                    <span className="bg-gradient-to-r from-[#0F766E] to-[#D97706] dark:from-[#2DD4BF] dark:to-[#FBBF24] bg-clip-text text-transparent">
                       {heroTitleAccent}
                     </span>
                   )}
                 </h1>
 
-                <p className="mt-5 text-base sm:text-lg text-[#A8A29E] leading-relaxed max-w-xl">
+                <p className="mt-5 text-base sm:text-lg text-[#57534E] dark:text-[#A8A29E] leading-relaxed max-w-xl">
                   {t.hero.subtitle}
                 </p>
 
@@ -180,9 +180,9 @@ export function HomeView({
                       e.preventDefault();
                       onNavigate('/contatti');
                     }}
-                    className="inline-flex items-center gap-2.5 rounded-full border border-[#292524] bg-[#0C0A09] pr-5 pl-2.5 py-2 text-sm font-medium text-[#FAFAF9] hover:border-[#FBBF24] transition-colors cursor-pointer min-h-[44px] whitespace-nowrap"
+                    className="inline-flex items-center gap-2.5 rounded-full border border-[#E5E2DC] dark:border-[#292524] bg-white dark:bg-[#0C0A09] pr-5 pl-2.5 py-2 text-sm font-medium text-[#141210] dark:text-[#FAFAF9] hover:border-[#D97706] dark:hover:border-[#FBBF24] transition-colors cursor-pointer min-h-[44px] whitespace-nowrap"
                   >
-                    <span className="flex h-7 w-7 items-center justify-center rounded-full bg-[#FBBF24]/15 text-[#FBBF24]">
+                    <span className="flex h-7 w-7 items-center justify-center rounded-full bg-[#FBBF24]/20 dark:bg-[#FBBF24]/15 text-[#B45309] dark:text-[#FBBF24]">
                       <Play className="h-3.5 w-3.5 fill-current" aria-hidden="true" />
                     </span>
                     <span>{t.hero.ctaSecondary}</span>
@@ -191,7 +191,7 @@ export function HomeView({
               </div>
 
               <div className="lg:col-span-7">
-                <div className="relative h-full min-h-[260px] sm:min-h-[340px] lg:min-h-[400px] w-full overflow-hidden rounded-2xl border border-[#292524] bg-[#0C0A09] shadow-2xl">
+                <div className="relative h-full min-h-[260px] sm:min-h-[340px] lg:min-h-[400px] w-full overflow-hidden rounded-2xl border border-[#E5E2DC] dark:border-[#292524] bg-[#0C0A09] shadow-2xl">
                   <picture>
                     <source srcSet="/assets/aistudio/hero-ecosystem.webp" type="image/webp" />
                     <img
@@ -232,22 +232,22 @@ export function HomeView({
             {/* Data-Driven Hero Credibility Stats Bar */}
             <div
               aria-label="kreativalab Metrics"
-              className="mt-7 pt-6 border-t border-[#292524]/80 grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4"
+              className="mt-7 pt-6 border-t border-[#E5E2DC] dark:border-[#292524]/80 grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4"
             >
-              <div className="rounded-2xl border border-[#292524] bg-[#0C0A09]/75 px-4 py-3.5 flex items-center gap-3.5 transition-colors hover:border-[#2DD4BF]/40">
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-[#2DD4BF]/25 bg-[#2DD4BF]/10 text-[#2DD4BF] shrink-0">
+              <div className="rounded-2xl border border-[#E5E2DC] dark:border-[#292524] bg-white/90 dark:bg-[#0C0A09]/75 px-4 py-3.5 flex items-center gap-3.5 transition-colors hover:border-[#0F766E]/40 dark:hover:border-[#2DD4BF]/40">
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-[#0F766E]/25 dark:border-[#2DD4BF]/25 bg-[#0F766E]/10 dark:bg-[#2DD4BF]/10 text-[#0F766E] dark:text-[#2DD4BF] shrink-0">
                   <Users className="h-5 w-5" aria-hidden="true" />
                 </div>
                 <div className="min-w-0">
                   <div className="flex items-baseline gap-2">
-                    <span className="font-mono text-2xl sm:text-[26px] font-bold tabular-nums text-[#FAFAF9] leading-none">
+                    <span className="font-mono text-2xl sm:text-[26px] font-bold tabular-nums text-[#141210] dark:text-[#FAFAF9] leading-none">
                       {heroStats.activeSaasUsersFormatted}
                     </span>
-                    <span className="text-xs font-semibold text-[#2DD4BF] truncate">
+                    <span className="text-xs font-semibold text-[#0F766E] dark:text-[#2DD4BF] truncate">
                       {t.hero.statsBar.activeUsersLabel}
                     </span>
                   </div>
-                  <p className="mt-1 text-xs text-[#A8A29E] truncate">
+                  <p className="mt-1 text-xs text-[#57534E] dark:text-[#A8A29E] truncate">
                     {t.hero.statsBar.activeUsersSub.replace(
                       '{count}',
                       String(heroStats.activeSaasPlatformsCount)
@@ -256,39 +256,39 @@ export function HomeView({
                 </div>
               </div>
 
-              <div className="rounded-2xl border border-[#292524] bg-[#0C0A09]/75 px-4 py-3.5 flex items-center gap-3.5 transition-colors hover:border-[#FBBF24]/40">
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-[#FBBF24]/25 bg-[#FBBF24]/10 text-[#FBBF24] shrink-0">
+              <div className="rounded-2xl border border-[#E5E2DC] dark:border-[#292524] bg-white/90 dark:bg-[#0C0A09]/75 px-4 py-3.5 flex items-center gap-3.5 transition-colors hover:border-[#B45309]/40 dark:hover:border-[#FBBF24]/40">
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-[#B45309]/25 dark:border-[#FBBF24]/25 bg-[#FBBF24]/15 dark:bg-[#FBBF24]/10 text-[#B45309] dark:text-[#FBBF24] shrink-0">
                   <Briefcase className="h-5 w-5" aria-hidden="true" />
                 </div>
                 <div className="min-w-0">
                   <div className="flex items-baseline gap-2">
-                    <span className="font-mono text-2xl sm:text-[26px] font-bold tabular-nums text-[#FAFAF9] leading-none">
+                    <span className="font-mono text-2xl sm:text-[26px] font-bold tabular-nums text-[#141210] dark:text-[#FAFAF9] leading-none">
                       {heroStats.projectsDeliveredFormatted}
                     </span>
-                    <span className="text-xs font-semibold text-[#FBBF24] truncate">
+                    <span className="text-xs font-semibold text-[#B45309] dark:text-[#FBBF24] truncate">
                       {t.hero.statsBar.projectsDeliveredLabel}
                     </span>
                   </div>
-                  <p className="mt-1 text-xs text-[#A8A29E] truncate">
+                  <p className="mt-1 text-xs text-[#57534E] dark:text-[#A8A29E] truncate">
                     {t.hero.statsBar.projectsDeliveredSub}
                   </p>
                 </div>
               </div>
 
-              <div className="rounded-2xl border border-[#292524] bg-[#0C0A09]/75 px-4 py-3.5 flex items-center gap-3.5 transition-colors hover:border-[#60A5FA]/40">
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-[#60A5FA]/25 bg-[#60A5FA]/10 text-[#60A5FA] shrink-0">
+              <div className="rounded-2xl border border-[#E5E2DC] dark:border-[#292524] bg-white/90 dark:bg-[#0C0A09]/75 px-4 py-3.5 flex items-center gap-3.5 transition-colors hover:border-[#1D4ED8]/40 dark:hover:border-[#60A5FA]/40">
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-[#1D4ED8]/25 dark:border-[#60A5FA]/25 bg-[#60A5FA]/15 dark:bg-[#60A5FA]/10 text-[#1D4ED8] dark:text-[#60A5FA] shrink-0">
                   <Award className="h-5 w-5" aria-hidden="true" />
                 </div>
                 <div className="min-w-0">
                   <div className="flex items-baseline gap-2">
-                    <span className="font-mono text-2xl sm:text-[26px] font-bold tabular-nums text-[#FAFAF9] leading-none">
+                    <span className="font-mono text-2xl sm:text-[26px] font-bold tabular-nums text-[#141210] dark:text-[#FAFAF9] leading-none">
                       {heroStats.yearsOfExperienceFormatted}
                     </span>
-                    <span className="text-xs font-semibold text-[#60A5FA] truncate">
+                    <span className="text-xs font-semibold text-[#1D4ED8] dark:text-[#60A5FA] truncate">
                       {t.hero.statsBar.yearsExperienceLabel}
                     </span>
                   </div>
-                  <p className="mt-1 text-xs text-[#A8A29E] truncate">
+                  <p className="mt-1 text-xs text-[#57534E] dark:text-[#A8A29E] truncate">
                     {t.hero.statsBar.yearsExperienceSub}
                   </p>
                 </div>
@@ -297,7 +297,7 @@ export function HomeView({
 
             {/* Bridging Floating Search & Instant Filter Bar */}
             <div className="mt-8 lg:-mb-18 relative z-20 mx-auto max-w-3xl">
-              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 rounded-2xl sm:rounded-full bg-[#FAFAF9] p-2 shadow-[0_20px_50px_rgba(0,0,0,0.65)]">
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 rounded-2xl sm:rounded-full border border-[#E5E2DC] dark:border-transparent bg-white dark:bg-[#FAFAF9] p-2 shadow-[0_18px_40px_rgba(20,18,16,0.12)] dark:shadow-[0_20px_50px_rgba(0,0,0,0.65)]">
                 <div className="flex flex-1 items-center gap-2.5 px-3">
                   <Search className="h-4 w-4 text-stone-500 shrink-0" aria-hidden="true" />
                   <input
@@ -312,11 +312,11 @@ export function HomeView({
                     }}
                     placeholder="Swiss Lead Finder, SpeedyJob, PixaSolar, AI..."
                     aria-label={t.filterSection.sectionTitle}
-                    className="w-full bg-transparent py-2 text-sm text-[#0C0A09] placeholder:text-stone-500 focus:outline-none"
+                    className="w-full bg-transparent py-2 text-sm text-[#141210] dark:text-[#0C0A09] placeholder:text-stone-500 focus:outline-none"
                   />
                 </div>
 
-                <div className="flex w-full sm:w-auto items-center gap-1 rounded-xl sm:rounded-full bg-[#1C1917] p-1 overflow-x-auto">
+                <div className="flex w-full sm:w-auto items-center gap-1 rounded-xl sm:rounded-full bg-[#F3F1EC] dark:bg-[#1C1917] p-1 overflow-x-auto">
                   {(
                     [
                       { key: 'all', label: t.filterSection.all },
@@ -339,7 +339,7 @@ export function HomeView({
                             ? item.key === 'agency'
                               ? 'bg-[#FBBF24] text-[#0C0A09]'
                               : 'bg-[#2DD4BF] text-[#0C0A09]'
-                            : 'text-[#A8A29E] hover:text-[#FAFAF9]'
+                            : 'text-[#57534E] hover:text-[#141210] dark:text-[#A8A29E] dark:hover:text-[#FAFAF9]'
                         }`}
                       >
                         {item.label}
@@ -358,22 +358,22 @@ export function HomeView({
         <div className="mx-auto max-w-[1280px] px-4 sm:px-6 lg:px-8 space-y-10">
           <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6">
             <div>
-              <p className="text-xs font-medium tracking-wider text-[#2DD4BF] uppercase mb-2">
+              <p className="text-xs font-medium tracking-wider text-[#0F766E] dark:text-[#2DD4BF] uppercase mb-2">
                 {t.dualEngine.saasTag} &amp; {t.dualEngine.agencyTag}
               </p>
-              <h2 className="font-display text-3xl sm:text-4xl font-bold tracking-tight text-[#FAFAF9]">
+              <h2 className="font-display text-3xl sm:text-4xl font-bold tracking-tight text-[#141210] dark:text-[#FAFAF9]">
                 {t.dualEngine.sectionTitle}
               </h2>
             </div>
 
             <div className="flex flex-col sm:flex-row sm:items-center gap-4 max-w-xl">
-              <p className="text-sm text-[#A8A29E] leading-relaxed">
+              <p className="text-sm text-[#57534E] dark:text-[#A8A29E] leading-relaxed">
                 {t.dualEngine.sectionSubtitle}
               </p>
               <button
                 type="button"
                 onClick={() => onNavigate('/servizi')}
-                className="inline-flex items-center gap-1.5 rounded-full border border-[#292524] bg-[#1C1917] px-4 py-2 text-xs font-semibold text-[#FAFAF9] hover:border-[#FBBF24] whitespace-nowrap shrink-0 cursor-pointer min-h-[38px]"
+                className="inline-flex items-center gap-1.5 rounded-full border border-[#E5E2DC] dark:border-[#292524] bg-white dark:bg-[#1C1917] px-4 py-2 text-xs font-semibold text-[#141210] dark:text-[#FAFAF9] hover:border-[#D97706] dark:hover:border-[#FBBF24] whitespace-nowrap shrink-0 cursor-pointer min-h-[38px]"
               >
                 <span>{t.nav.services}</span>
                 <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
@@ -388,20 +388,20 @@ export function HomeView({
                 key={card.title}
                 type="button"
                 onClick={() => onNavigate(card.path)}
-                className="group glass-panel rounded-2xl p-5 text-left flex flex-col justify-between hover:border-[#2DD4BF]/50 transition-all duration-300 hover:-translate-y-1 cursor-pointer"
+                className="group glass-panel rounded-2xl p-5 text-left flex flex-col justify-between hover:border-[#0F766E]/50 dark:hover:border-[#2DD4BF]/50 transition-all duration-300 hover:-translate-y-1 cursor-pointer"
               >
                 <div className="w-full">
                   <ServicePreviewThumbnail kind={card.kind} title={card.title} />
-                  <h3 className="font-display text-lg font-semibold text-[#FAFAF9] mb-2">
+                  <h3 className="font-display text-lg font-semibold text-[#141210] dark:text-[#FAFAF9] mb-2">
                     {card.title}
                   </h3>
-                  <p className="text-xs sm:text-sm text-[#A8A29E] leading-relaxed line-clamp-3">
+                  <p className="text-xs sm:text-sm text-[#57534E] dark:text-[#A8A29E] leading-relaxed line-clamp-3">
                     {card.desc}
                   </p>
                 </div>
 
                 <div className="mt-5 flex justify-end">
-                  <span className="flex h-8 w-8 items-center justify-center rounded-full border border-[#292524] bg-[#0C0A09] text-[#FAFAF9] group-hover:bg-[#FAFAF9] group-hover:text-[#0C0A09] transition-colors">
+                  <span className="flex h-8 w-8 items-center justify-center rounded-full border border-[#E5E2DC] dark:border-[#292524] bg-[#F3F1EC] dark:bg-[#0C0A09] text-[#141210] dark:text-[#FAFAF9] group-hover:bg-[#141210] group-hover:text-[#FAFAF9] dark:group-hover:bg-[#FAFAF9] dark:group-hover:text-[#0C0A09] transition-colors">
                     <ArrowRight className="h-4 w-4" aria-hidden="true" />
                   </span>
                 </div>
@@ -411,22 +411,22 @@ export function HomeView({
 
           {/* Dual-Engine Split (SaaS Teal vs Agency Gold) */}
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
-            <div className="lg:col-span-6 rounded-2xl border border-[#2DD4BF]/30 bg-[#1C1917] p-6 sm:p-8 flex flex-col justify-between">
+            <div className="lg:col-span-6 rounded-2xl border border-[#0F766E]/30 dark:border-[#2DD4BF]/30 bg-white dark:bg-[#1C1917] p-6 sm:p-8 flex flex-col justify-between shadow-sm dark:shadow-none">
               <div>
-                <div className="flex items-center gap-2 text-xs font-semibold text-[#2DD4BF] mb-2">
+                <div className="flex items-center gap-2 text-xs font-semibold text-[#0F766E] dark:text-[#2DD4BF] mb-2">
                   <Layers className="h-4 w-4" aria-hidden="true" />
                   <span>{t.dualEngine.saasTag}</span>
                 </div>
-                <h3 className="font-display text-xl font-semibold text-[#FAFAF9] mb-2">
+                <h3 className="font-display text-xl font-semibold text-[#141210] dark:text-[#FAFAF9] mb-2">
                   {t.dualEngine.saasTitle}
                 </h3>
-                <p className="text-sm text-[#A8A29E] leading-relaxed mb-5">
+                <p className="text-sm text-[#57534E] dark:text-[#A8A29E] leading-relaxed mb-5">
                   {t.dualEngine.saasDescription}
                 </p>
                 <ul className="space-y-2.5 mb-6">
                   {t.dualEngine.saasPoints.map((pt) => (
-                    <li key={pt} className="flex items-start gap-2 text-xs sm:text-sm text-[#FAFAF9]">
-                      <Check className="h-4 w-4 text-[#2DD4BF] mt-0.5 shrink-0" aria-hidden="true" />
+                    <li key={pt} className="flex items-start gap-2 text-xs sm:text-sm text-[#141210] dark:text-[#FAFAF9]">
+                      <Check className="h-4 w-4 text-[#0F766E] dark:text-[#2DD4BF] mt-0.5 shrink-0" aria-hidden="true" />
                       <span>{pt}</span>
                     </li>
                   ))}
@@ -435,29 +435,29 @@ export function HomeView({
               <button
                 type="button"
                 onClick={() => onNavigate('/prodotti')}
-                className="inline-flex w-fit items-center gap-2 rounded-full border border-[#2DD4BF]/50 bg-[#2DD4BF]/10 px-5 py-2.5 text-xs sm:text-sm font-semibold text-[#2DD4BF] hover:bg-[#2DD4BF]/20 transition-colors cursor-pointer min-h-[42px]"
+                className="inline-flex w-fit items-center gap-2 rounded-full border border-[#0F766E]/40 dark:border-[#2DD4BF]/50 bg-[#0F766E]/10 dark:bg-[#2DD4BF]/10 px-5 py-2.5 text-xs sm:text-sm font-semibold text-[#0F766E] dark:text-[#2DD4BF] hover:bg-[#0F766E]/15 dark:hover:bg-[#2DD4BF]/20 transition-colors cursor-pointer min-h-[42px]"
               >
                 <span>{t.dualEngine.saasCta}</span>
                 <ArrowRight className="h-4 w-4" aria-hidden="true" />
               </button>
             </div>
 
-            <div className="lg:col-span-6 rounded-2xl border border-[#FBBF24]/30 bg-[#1C1917] p-6 sm:p-8 flex flex-col justify-between">
+            <div className="lg:col-span-6 rounded-2xl border border-[#B45309]/30 dark:border-[#FBBF24]/30 bg-white dark:bg-[#1C1917] p-6 sm:p-8 flex flex-col justify-between shadow-sm dark:shadow-none">
               <div>
-                <div className="flex items-center gap-2 text-xs font-semibold text-[#FBBF24] mb-2">
+                <div className="flex items-center gap-2 text-xs font-semibold text-[#B45309] dark:text-[#FBBF24] mb-2">
                   <Globe className="h-4 w-4" aria-hidden="true" />
                   <span>{t.dualEngine.agencyTag}</span>
                 </div>
-                <h3 className="font-display text-xl font-semibold text-[#FAFAF9] mb-2">
+                <h3 className="font-display text-xl font-semibold text-[#141210] dark:text-[#FAFAF9] mb-2">
                   {t.dualEngine.agencyTitle}
                 </h3>
-                <p className="text-sm text-[#A8A29E] leading-relaxed mb-5">
+                <p className="text-sm text-[#57534E] dark:text-[#A8A29E] leading-relaxed mb-5">
                   {t.dualEngine.agencyDescription}
                 </p>
                 <ul className="space-y-2.5 mb-6">
                   {t.dualEngine.agencyPoints.map((pt) => (
-                    <li key={pt} className="flex items-start gap-2 text-xs sm:text-sm text-[#FAFAF9]">
-                      <Check className="h-4 w-4 text-[#FBBF24] mt-0.5 shrink-0" aria-hidden="true" />
+                    <li key={pt} className="flex items-start gap-2 text-xs sm:text-sm text-[#141210] dark:text-[#FAFAF9]">
+                      <Check className="h-4 w-4 text-[#B45309] dark:text-[#FBBF24] mt-0.5 shrink-0" aria-hidden="true" />
                       <span>{pt}</span>
                     </li>
                   ))}
@@ -466,7 +466,7 @@ export function HomeView({
               <button
                 type="button"
                 onClick={() => onNavigate('/lavori')}
-                className="inline-flex w-fit items-center gap-2 rounded-full border border-[#FBBF24]/50 bg-[#FBBF24]/10 px-5 py-2.5 text-xs sm:text-sm font-semibold text-[#FBBF24] hover:bg-[#FBBF24]/20 transition-colors cursor-pointer min-h-[42px]"
+                className="inline-flex w-fit items-center gap-2 rounded-full border border-[#B45309]/40 dark:border-[#FBBF24]/50 bg-[#FBBF24]/15 dark:bg-[#FBBF24]/10 px-5 py-2.5 text-xs sm:text-sm font-semibold text-[#B45309] dark:text-[#FBBF24] hover:bg-[#FBBF24]/25 dark:hover:bg-[#FBBF24]/20 transition-colors cursor-pointer min-h-[42px]"
               >
                 <span>{t.dualEngine.agencyCta}</span>
                 <ArrowRight className="h-4 w-4" aria-hidden="true" />
@@ -479,17 +479,17 @@ export function HomeView({
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
               {t.hero.metrics.map((m, idx) => {
                 const MIcon = metricIcons[idx % metricIcons.length];
-                const iconTint = idx % 2 === 0 ? 'text-[#2DD4BF]' : 'text-[#FBBF24]';
+                const iconTint = idx % 2 === 0 ? 'text-[#0F766E] dark:text-[#2DD4BF]' : 'text-[#B45309] dark:text-[#FBBF24]';
                 return (
                   <div key={m.label} className="flex items-center gap-4">
-                    <div className={`flex h-11 w-11 items-center justify-center rounded-xl border border-[#292524] bg-[#0C0A09] ${iconTint} shrink-0`}>
+                    <div className={`flex h-11 w-11 items-center justify-center rounded-xl border border-[#E5E2DC] dark:border-[#292524] bg-[#F3F1EC] dark:bg-[#0C0A09] ${iconTint} shrink-0`}>
                       <MIcon className="h-5 w-5" aria-hidden="true" />
                     </div>
                     <div>
-                      <div className="font-mono text-2xl sm:text-3xl font-bold tabular-nums text-[#FAFAF9] leading-none">
+                      <div className="font-mono text-2xl sm:text-3xl font-bold tabular-nums text-[#141210] dark:text-[#FAFAF9] leading-none">
                         {m.value}
                       </div>
-                      <div className="mt-1 text-xs text-[#A8A29E]">
+                      <div className="mt-1 text-xs text-[#57534E] dark:text-[#A8A29E]">
                         {m.label}
                       </div>
                     </div>
@@ -513,20 +513,20 @@ export function HomeView({
         <div className="mx-auto max-w-[1280px] px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8">
             <div className="max-w-xl">
-              <p className="text-xs font-medium uppercase tracking-wider text-[#FBBF24] mb-1.5">
+              <p className="text-xs font-medium uppercase tracking-wider text-[#B45309] dark:text-[#FBBF24] mb-1.5">
                 Portfolio &amp; Venture Studio
               </p>
-              <h2 className="font-display text-3xl font-bold tracking-tight text-[#FAFAF9]">
+              <h2 className="font-display text-3xl font-bold tracking-tight text-[#141210] dark:text-[#FAFAF9]">
                 {t.filterSection.sectionTitle}
               </h2>
-              <p className="mt-2 text-sm sm:text-base text-[#A8A29E]">
+              <p className="mt-2 text-sm sm:text-base text-[#57534E] dark:text-[#A8A29E]">
                 {t.filterSection.sectionSubtitle}
               </p>
             </div>
 
             <div className="flex flex-wrap items-center gap-3">
               <div
-                className="inline-flex max-w-full overflow-x-auto items-center rounded-full border border-[#292524] bg-[#1C1917] p-1"
+                className="inline-flex max-w-full overflow-x-auto items-center rounded-full border border-[#E5E2DC] dark:border-[#292524] bg-white dark:bg-[#1C1917] p-1"
                 role="tablist"
                 aria-label={t.filterSection.sectionTitle}
               >
@@ -550,7 +550,7 @@ export function HomeView({
                           ? tab.key === 'agency'
                             ? 'bg-[#FBBF24] text-[#0C0A09] font-semibold'
                             : 'bg-[#2DD4BF] text-[#0C0A09] font-semibold'
-                          : 'text-[#A8A29E] hover:text-[#FAFAF9]'
+                          : 'text-[#57534E] hover:text-[#141210] dark:text-[#A8A29E] dark:hover:text-[#FAFAF9]'
                       }`}
                     >
                       {tab.label}
@@ -558,7 +558,7 @@ export function HomeView({
                   );
                 })}
               </div>
-              <span className="font-mono text-xs text-[#A8A29E] tabular-nums">
+              <span className="font-mono text-xs text-[#57534E] dark:text-[#A8A29E] tabular-nums">
                 {filteredProjects.length} {t.filterSection.countLabel}
               </span>
             </div>
@@ -580,8 +580,8 @@ export function HomeView({
               ))}
             </div>
           ) : filteredProjects.length === 0 ? (
-            <div className="rounded-2xl border border-[#292524] bg-[#1C1917] p-10 text-center space-y-3">
-              <p className="text-base text-[#FAFAF9]">
+            <div className="rounded-2xl border border-[#E5E2DC] dark:border-[#292524] bg-white dark:bg-[#1C1917] p-10 text-center space-y-3">
+              <p className="text-base text-[#141210] dark:text-[#FAFAF9]">
                 Nessun progetto corrisponde a “{searchQuery}”.
               </p>
               <button
@@ -626,17 +626,17 @@ export function HomeView({
         <div className="mx-auto max-w-[1280px] px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8">
             <div className="max-w-2xl">
-              <h2 className="font-display text-2xl sm:text-3xl font-bold tracking-tight text-[#FAFAF9]">
+              <h2 className="font-display text-2xl sm:text-3xl font-bold tracking-tight text-[#141210] dark:text-[#FAFAF9]">
                 {t.caseStudies.sectionTitle}
               </h2>
-              <p className="mt-2 text-sm sm:text-base text-[#A8A29E]">
+              <p className="mt-2 text-sm sm:text-base text-[#57534E] dark:text-[#A8A29E]">
                 {t.caseStudies.sectionSubtitle}
               </p>
             </div>
             <button
               type="button"
               onClick={() => onNavigate('/lavori')}
-              className="inline-flex items-center gap-1.5 rounded-full border border-[#292524] bg-[#1C1917] px-4 py-2 text-xs font-semibold text-[#FBBF24] hover:border-[#FBBF24] whitespace-nowrap cursor-pointer min-h-[38px]"
+              className="inline-flex items-center gap-1.5 rounded-full border border-[#E5E2DC] dark:border-[#292524] bg-white dark:bg-[#1C1917] px-4 py-2 text-xs font-semibold text-[#B45309] dark:text-[#FBBF24] hover:border-[#B45309] dark:hover:border-[#FBBF24] whitespace-nowrap cursor-pointer min-h-[38px]"
             >
               <span>{t.caseStudies.viewAllWorks}</span>
               <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
@@ -654,7 +654,7 @@ export function HomeView({
                   className={`rounded-full border px-4 py-2 text-xs sm:text-sm font-medium transition-colors cursor-pointer whitespace-nowrap min-h-[40px] ${
                     selected
                       ? 'border-[#FBBF24] bg-[#FBBF24] text-[#0C0A09] font-semibold'
-                      : 'border-[#292524] bg-[#1C1917] text-[#A8A29E] hover:text-[#FAFAF9]'
+                      : 'border-[#E5E2DC] dark:border-[#292524] bg-white dark:bg-[#1C1917] text-[#57534E] hover:text-[#141210] dark:text-[#A8A29E] dark:hover:text-[#FAFAF9]'
                   }`}
                 >
                   {item.name}
@@ -664,11 +664,11 @@ export function HomeView({
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-            <div className="lg:col-span-5 rounded-2xl border border-[#292524] bg-[#1C1917] p-6 sm:p-7 space-y-6">
+            <div className="lg:col-span-5 rounded-2xl border border-[#E5E2DC] dark:border-[#292524] bg-white dark:bg-[#1C1917] p-6 sm:p-7 space-y-6 shadow-sm dark:shadow-none">
               <div className="flex items-center justify-between gap-3">
                 <div>
-                  <p className="text-xs text-[#A8A29E]">{activeCase.sector[lang]}</p>
-                  <h3 className="font-display text-2xl font-bold text-[#FAFAF9] mt-0.5">
+                  <p className="text-xs text-[#57534E] dark:text-[#A8A29E]">{activeCase.sector[lang]}</p>
+                  <h3 className="font-display text-2xl font-bold text-[#141210] dark:text-[#FAFAF9] mt-0.5">
                     {activeCase.name}
                   </h3>
                 </div>
@@ -676,29 +676,29 @@ export function HomeView({
               </div>
 
               <div className="space-y-4">
-                <div className="border-t border-[#292524] pt-4">
-                  <div className="text-xs font-semibold text-[#FB923C] mb-1">
+                <div className="border-t border-[#E5E2DC] dark:border-[#292524] pt-4">
+                  <div className="text-xs font-semibold text-[#C2410C] dark:text-[#FB923C] mb-1">
                     01. {t.caseStudies.challengeLabel}
                   </div>
-                  <p className="text-sm text-[#A8A29E] leading-relaxed">
+                  <p className="text-sm text-[#57534E] dark:text-[#A8A29E] leading-relaxed">
                     {activeCase.problemOrChallenge[lang]}
                   </p>
                 </div>
 
-                <div className="border-t border-[#292524] pt-4">
-                  <div className="text-xs font-semibold text-[#FBBF24] mb-1">
+                <div className="border-t border-[#E5E2DC] dark:border-[#292524] pt-4">
+                  <div className="text-xs font-semibold text-[#B45309] dark:text-[#FBBF24] mb-1">
                     02. {t.caseStudies.solutionLabel}
                   </div>
-                  <p className="text-sm text-[#A8A29E] leading-relaxed">
+                  <p className="text-sm text-[#57534E] dark:text-[#A8A29E] leading-relaxed">
                     {activeCase.solution[lang]}
                   </p>
                 </div>
 
-                <div className="border-t border-[#292524] pt-4">
-                  <div className="text-xs font-semibold text-[#22C55E] mb-1">
+                <div className="border-t border-[#E5E2DC] dark:border-[#292524] pt-4">
+                  <div className="text-xs font-semibold text-[#15803D] dark:text-[#22C55E] mb-1">
                     03. {t.caseStudies.resultLabel}
                   </div>
-                  <p className="text-sm text-[#FAFAF9] leading-relaxed">
+                  <p className="text-sm text-[#141210] dark:text-[#FAFAF9] leading-relaxed">
                     {activeCase.results[lang]}
                   </p>
                 </div>
@@ -717,7 +717,7 @@ export function HomeView({
                   href={activeCase.externalUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1 text-xs font-medium text-[#A8A29E] hover:text-[#FAFAF9]"
+                  className="inline-flex items-center gap-1 text-xs font-medium text-[#57534E] hover:text-[#141210] dark:text-[#A8A29E] dark:hover:text-[#FAFAF9]"
                 >
                   <span>{t.caseDetail.visitLiveSite}</span>
                 </a>
@@ -736,10 +736,10 @@ export function HomeView({
         <div className="mx-auto max-w-[1280px] px-4 sm:px-6 lg:px-8 space-y-12">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
             <div className="max-w-2xl">
-              <h2 className="font-display text-2xl sm:text-3xl font-bold tracking-tight text-[#FAFAF9]">
+              <h2 className="font-display text-2xl sm:text-3xl font-bold tracking-tight text-[#141210] dark:text-[#FAFAF9]">
                 {t.socialProof.sectionTitle}
               </h2>
-              <p className="mt-2 text-sm sm:text-base text-[#A8A29E]">
+              <p className="mt-2 text-sm sm:text-base text-[#57534E] dark:text-[#A8A29E]">
                 {t.socialProof.sectionSubtitle}
               </p>
             </div>
@@ -747,14 +747,14 @@ export function HomeView({
               <button
                 type="button"
                 onClick={() => onNavigate('/servizi/agenti-ai-ristoranti')}
-                className="rounded-full border border-[#60A5FA]/35 bg-[#60A5FA]/10 px-4 py-2 text-xs font-medium text-[#60A5FA] hover:bg-[#60A5FA]/20 cursor-pointer"
+                className="rounded-full border border-[#1D4ED8]/30 dark:border-[#60A5FA]/35 bg-[#1D4ED8]/10 dark:bg-[#60A5FA]/10 px-4 py-2 text-xs font-medium text-[#1D4ED8] dark:text-[#60A5FA] hover:bg-[#1D4ED8]/15 dark:hover:bg-[#60A5FA]/20 cursor-pointer"
               >
                 {t.servicesSection.aiRestaurantsCta}
               </button>
               <button
                 type="button"
                 onClick={() => onNavigate('/servizi/agenti-ai-parrucchieri')}
-                className="rounded-full border border-[#60A5FA]/35 bg-[#60A5FA]/10 px-4 py-2 text-xs font-medium text-[#60A5FA] hover:bg-[#60A5FA]/20 cursor-pointer"
+                className="rounded-full border border-[#1D4ED8]/30 dark:border-[#60A5FA]/35 bg-[#1D4ED8]/10 dark:bg-[#60A5FA]/10 px-4 py-2 text-xs font-medium text-[#1D4ED8] dark:text-[#60A5FA] hover:bg-[#1D4ED8]/15 dark:hover:bg-[#60A5FA]/20 cursor-pointer"
               >
                 {t.servicesSection.aiSalonsCta}
               </button>
@@ -765,7 +765,7 @@ export function HomeView({
             {CLIENT_LOGOS.map((brand) => (
               <div
                 key={brand}
-                className="rounded-xl border border-[#292524] bg-[#1C1917] px-3 py-3 text-center text-xs font-display font-semibold text-[#FAFAF9]"
+                className="rounded-xl border border-[#E5E2DC] dark:border-[#292524] bg-white dark:bg-[#1C1917] px-3 py-3 text-center text-xs font-display font-semibold text-[#141210] dark:text-[#FAFAF9]"
               >
                 {brand}
               </div>
@@ -776,11 +776,11 @@ export function HomeView({
             {TESTIMONIALS.map((rev) => (
               <blockquote
                 key={rev.id}
-                className="rounded-2xl border border-[#292524] bg-[#1C1917] p-6 flex flex-col justify-between"
+                className="rounded-2xl border border-[#E5E2DC] dark:border-[#292524] bg-white dark:bg-[#1C1917] p-6 flex flex-col justify-between shadow-sm dark:shadow-none"
               >
                 <div>
                   <div className="flex items-center justify-between gap-2 mb-4">
-                    <div className="flex items-center gap-1 text-[#FBBF24]" aria-label="5/5">
+                    <div className="flex items-center gap-1 text-[#D97706] dark:text-[#FBBF24]" aria-label="5/5">
                       {Array.from({ length: rev.rating }).map((_, i) => (
                         <Star
                           key={i}
@@ -789,23 +789,23 @@ export function HomeView({
                         />
                       ))}
                     </div>
-                    <span className="font-mono text-xs text-[#A8A29E]">
+                    <span className="font-mono text-xs text-[#57534E] dark:text-[#A8A29E]">
                       Google · {rev.city}
                     </span>
                   </div>
-                  <p className="text-sm text-[#FAFAF9] leading-relaxed">
+                  <p className="text-sm text-[#141210] dark:text-[#FAFAF9] leading-relaxed">
                     “{rev.quote[lang]}”
                   </p>
                 </div>
 
-                <footer className="mt-5 pt-4 border-t border-[#292524]">
-                  <div className="text-sm font-semibold text-[#FAFAF9]">
+                <footer className="mt-5 pt-4 border-t border-[#E5E2DC] dark:border-[#292524]">
+                  <div className="text-sm font-semibold text-[#141210] dark:text-[#FAFAF9]">
                     {rev.authorName}
                   </div>
-                  <div className="text-xs text-[#A8A29E]">
+                  <div className="text-xs text-[#57534E] dark:text-[#A8A29E]">
                     {rev.role[lang]} · {rev.company}
                   </div>
-                  <div className="mt-2 font-mono text-xs text-[#2DD4BF]">
+                  <div className="mt-2 font-mono text-xs text-[#0F766E] dark:text-[#2DD4BF]">
                     {rev.outcome[lang]}
                   </div>
                 </footer>
@@ -819,19 +819,19 @@ export function HomeView({
                 key={city.slug}
                 type="button"
                 onClick={() => onNavigate(`/servizi/${city.slug}`)}
-                className="group rounded-2xl border border-[#292524] bg-[#1C1917] p-5 text-left hover:border-[#2DD4BF]/50 transition-colors cursor-pointer"
+                className="group rounded-2xl border border-[#E5E2DC] dark:border-[#292524] bg-white dark:bg-[#1C1917] p-5 text-left hover:border-[#0F766E]/50 dark:hover:border-[#2DD4BF]/50 transition-colors cursor-pointer"
               >
                 <div className="flex items-center justify-between gap-2 mb-2">
-                  <span className="inline-flex items-center gap-1.5 font-display text-lg font-semibold text-[#FAFAF9]">
-                    <MapPin className="h-4 w-4 text-[#2DD4BF]" aria-hidden="true" />
+                  <span className="inline-flex items-center gap-1.5 font-display text-lg font-semibold text-[#141210] dark:text-[#FAFAF9]">
+                    <MapPin className="h-4 w-4 text-[#0F766E] dark:text-[#2DD4BF]" aria-hidden="true" />
                     {city.name}
                   </span>
-                  <ArrowRight className="h-4 w-4 text-[#A8A29E] group-hover:text-[#2DD4BF] transition-colors" aria-hidden="true" />
+                  <ArrowRight className="h-4 w-4 text-[#57534E] dark:text-[#A8A29E] group-hover:text-[#0F766E] dark:group-hover:text-[#2DD4BF] transition-colors" aria-hidden="true" />
                 </div>
-                <p className="text-xs text-[#A8A29E] mb-3">
+                <p className="text-xs text-[#57534E] dark:text-[#A8A29E] mb-3">
                   {city.regionLabel[lang]}
                 </p>
-                <div className="font-mono text-xs text-[#FAFAF9] tabular-nums">
+                <div className="font-mono text-xs text-[#141210] dark:text-[#FAFAF9] tabular-nums">
                   {city.stats.businessesServed} · {city.primaryKeyword}
                 </div>
               </button>
@@ -853,26 +853,26 @@ export function HomeView({
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
               <div className="lg:col-span-5 space-y-6">
                 <div>
-                  <p className="text-xs font-medium uppercase tracking-wider text-[#FBBF24] mb-2">
+                  <p className="text-xs font-medium uppercase tracking-wider text-[#B45309] dark:text-[#FBBF24] mb-2">
                     kreativalab · Lugano
                   </p>
-                  <h2 className="font-display text-3xl sm:text-4xl font-bold tracking-tight text-[#FAFAF9]">
+                  <h2 className="font-display text-3xl sm:text-4xl font-bold tracking-tight text-[#141210] dark:text-[#FAFAF9]">
                     {t.quickContact.sectionTitle}
                   </h2>
-                  <p className="mt-3 text-sm sm:text-base text-[#A8A29E] leading-relaxed">
+                  <p className="mt-3 text-sm sm:text-base text-[#57534E] dark:text-[#A8A29E] leading-relaxed">
                     {t.quickContact.sectionSubtitle}
                   </p>
                 </div>
 
 
-                <div className="rounded-2xl border border-[#292524] bg-[#0C0A09] p-5 space-y-4">
+                <div className="rounded-2xl border border-[#E5E2DC] dark:border-[#292524] bg-white dark:bg-[#0C0A09] p-5 space-y-4">
                   <div className="flex items-start gap-3">
-                    <Calendar className="h-5 w-5 text-[#FBBF24] mt-0.5 shrink-0" aria-hidden="true" />
+                    <Calendar className="h-5 w-5 text-[#B45309] dark:text-[#FBBF24] mt-0.5 shrink-0" aria-hidden="true" />
                     <div>
-                      <h3 className="font-display text-sm font-semibold text-[#FAFAF9]">
+                      <h3 className="font-display text-sm font-semibold text-[#141210] dark:text-[#FAFAF9]">
                         {t.quickContact.bookCallTitle}
                       </h3>
-                      <p className="text-xs text-[#A8A29E]">
+                      <p className="text-xs text-[#57534E] dark:text-[#A8A29E]">
                         {t.quickContact.bookCallSub}
                       </p>
                     </div>
@@ -882,7 +882,7 @@ export function HomeView({
                     href="https://cal.com/kreativalab/call-20-minuti"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="block w-full rounded-full border border-[#FBBF24]/50 bg-[#FBBF24]/10 py-2.5 text-center text-xs font-semibold leading-[26px] text-[#FBBF24] hover:bg-[#FBBF24]/20 transition-colors min-h-[42px]"
+                    className="block w-full rounded-full border border-[#B45309]/40 dark:border-[#FBBF24]/50 bg-[#FBBF24]/15 dark:bg-[#FBBF24]/10 py-2.5 text-center text-xs font-semibold leading-[26px] text-[#B45309] dark:text-[#FBBF24] hover:bg-[#FBBF24]/25 dark:hover:bg-[#FBBF24]/20 transition-colors min-h-[42px]"
                   >
                     {lang === 'de'
                       ? 'Termin im Kalender wählen'
@@ -893,7 +893,7 @@ export function HomeView({
                       : 'Scegli giorno e orario'}
                   </a>
 
-                  <p className="text-xs text-[#A8A29E]">
+                  <p className="text-xs text-[#57534E] dark:text-[#A8A29E]">
                     {t.quickContact.responseTime}
                   </p>
                 </div>

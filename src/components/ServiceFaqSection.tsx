@@ -11,10 +11,16 @@ interface ServiceFaqSectionProps {
 
 type FaqCategorySelection = 'all' | string;
 
-function getAccentHex(accentType: ServiceItem['accentType']): string {
-  if (accentType === 'saas') return '#2DD4BF';
-  if (accentType === 'ai') return '#60A5FA';
-  return '#FBBF24';
+function getAccentVar(accentType: ServiceItem['accentType']): string {
+  if (accentType === 'saas') return 'var(--kl-accent-saas)';
+  if (accentType === 'ai') return 'var(--kl-accent-ai)';
+  return 'var(--kl-accent-agency)';
+}
+
+function getAccentBorderClass(accentType?: ServiceItem['accentType']): string {
+  if (accentType === 'ai') return 'border-[#1D4ED8]/45 dark:border-[#60A5FA]/55';
+  if (accentType === 'agency') return 'border-[#B45309]/45 dark:border-[#FBBF24]/55';
+  return 'border-[#0F766E]/45 dark:border-[#2DD4BF]/55';
 }
 
 export function ServiceFaqSection({ lang, onNavigate }: ServiceFaqSectionProps) {
@@ -125,16 +131,16 @@ export function ServiceFaqSection({ lang, onNavigate }: ServiceFaqSectionProps) 
       <div className="mx-auto max-w-[1280px] px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8">
           <div className="max-w-2xl">
-            <p className="text-xs font-medium tracking-wider text-[#2DD4BF] mb-2">
+            <p className="text-xs font-medium tracking-wider text-[#0F766E] dark:text-[#2DD4BF] mb-2">
               {t.homeFaq.eyebrow}
             </p>
             <h2
               id="home-faq-heading"
-              className="font-display text-2xl sm:text-3xl font-bold tracking-tight text-[#FAFAF9] text-balance"
+              className="font-display text-2xl sm:text-3xl font-bold tracking-tight text-[#141210] dark:text-[#FAFAF9] text-balance"
             >
               {t.homeFaq.sectionTitle}
             </h2>
-            <p className="mt-2 text-sm sm:text-base text-[#A8A29E] leading-relaxed">
+            <p className="mt-2 text-sm sm:text-base text-[#57534E] dark:text-[#A8A29E] leading-relaxed">
               {t.homeFaq.sectionSubtitle}
             </p>
           </div>
@@ -142,7 +148,7 @@ export function ServiceFaqSection({ lang, onNavigate }: ServiceFaqSectionProps) 
           <button
             type="button"
             onClick={handleToggleAllVisible}
-            className="inline-flex items-center justify-center rounded-full border border-[#292524] bg-[#1C1917] px-4 py-2 text-xs font-semibold text-[#FAFAF9] hover:border-[#2DD4BF] transition-colors whitespace-nowrap shrink-0 cursor-pointer min-h-[40px]"
+            className="inline-flex items-center justify-center rounded-full border border-[#E5E2DC] bg-white text-[#141210] hover:border-[#0F766E] dark:border-[#292524] dark:bg-[#1C1917] px-4 py-2 text-xs font-semibold dark:text-[#FAFAF9] dark:hover:border-[#2DD4BF] transition-colors whitespace-nowrap shrink-0 cursor-pointer min-h-[40px]"
           >
             {allVisibleOpen ? t.homeFaq.collapseAll : t.homeFaq.expandAll}
           </button>
@@ -157,8 +163,11 @@ export function ServiceFaqSection({ lang, onNavigate }: ServiceFaqSectionProps) 
                   (s) => s.slug === selectedSlug
                 );
                 const activeAccent = activeSingleService
-                  ? getAccentHex(activeSingleService.accentType)
-                  : '#2DD4BF';
+                  ? getAccentVar(activeSingleService.accentType)
+                  : 'var(--kl-accent-saas)';
+                const activeBorderClass = getAccentBorderClass(
+                  activeSingleService?.accentType
+                );
                 const activeLabel = activeSingleService
                   ? activeSingleService.shortTitle[lang]
                   : t.homeFaq.allCategories;
@@ -174,8 +183,7 @@ export function ServiceFaqSection({ lang, onNavigate }: ServiceFaqSectionProps) 
                       aria-expanded={isDropdownOpen}
                       aria-label={t.homeFaq.eyebrow}
                       onClick={() => setIsDropdownOpen((prev) => !prev)}
-                      className="flex w-full items-center justify-between gap-3 rounded-xl border bg-[#1C1917] px-4 py-3 text-left text-[#FAFAF9] transition-colors cursor-pointer min-h-[46px]"
-                      style={{ borderColor: `${activeAccent}88` }}
+                      className={`flex w-full items-center justify-between gap-3 rounded-xl border bg-white text-[#141210] dark:bg-[#1C1917] px-4 py-3 text-left dark:text-[#FAFAF9] transition-colors cursor-pointer min-h-[46px] ${activeBorderClass}`}
                     >
                       <span className="flex items-center gap-3 min-w-0">
                         {activeIndex >= 0 && (
@@ -191,12 +199,12 @@ export function ServiceFaqSection({ lang, onNavigate }: ServiceFaqSectionProps) 
                         </span>
                       </span>
                       <span className="flex items-center gap-2.5 shrink-0">
-                        <span className="font-mono text-xs tabular-nums text-[#A8A29E]">
+                        <span className="font-mono text-xs tabular-nums text-[#57534E] dark:text-[#A8A29E]">
                           {activeCount}
                         </span>
                         <ChevronDown
-                          className={`h-4 w-4 text-[#A8A29E] transition-transform duration-200 ${
-                            isDropdownOpen ? 'rotate-180 text-[#FAFAF9]' : ''
+                          className={`h-4 w-4 text-[#57534E] dark:text-[#A8A29E] transition-transform duration-200 ${
+                            isDropdownOpen ? 'rotate-180 text-[#141210] dark:text-[#FAFAF9]' : ''
                           }`}
                           aria-hidden="true"
                         />
@@ -207,11 +215,11 @@ export function ServiceFaqSection({ lang, onNavigate }: ServiceFaqSectionProps) 
                       <div
                         role="listbox"
                         aria-label={t.homeFaq.eyebrow}
-                        className="absolute left-0 right-0 top-full z-30 mt-2 rounded-xl border border-[#292524] bg-[#0C0A09] p-1.5 shadow-2xl space-y-1"
+                        className="absolute left-0 right-0 top-full z-30 mt-2 rounded-xl border border-[#E5E2DC] bg-white dark:border-[#292524] dark:bg-[#0C0A09] p-1.5 shadow-2xl space-y-1"
                       >
                         {SERVICES.map((srv, idx) => {
                           const isSelected = selectedSlug === srv.slug;
-                          const accent = getAccentHex(srv.accentType);
+                          const accent = getAccentVar(srv.accentType);
                           const indexLabel = String(idx + 1).padStart(2, '0');
 
                           return (
@@ -226,15 +234,15 @@ export function ServiceFaqSection({ lang, onNavigate }: ServiceFaqSectionProps) 
                               }}
                               className={`flex w-full items-center justify-between gap-3 rounded-lg px-3 py-2.5 text-left transition-colors cursor-pointer min-h-[42px] ${
                                 isSelected
-                                  ? 'bg-[#1C1917] text-[#FAFAF9]'
-                                  : 'text-[#A8A29E] hover:bg-[#1C1917]/60 hover:text-[#FAFAF9]'
+                                  ? 'bg-[#F3F1EC] text-[#141210] dark:bg-[#1C1917] dark:text-[#FAFAF9]'
+                                  : 'text-[#57534E] hover:bg-[#F3F1EC]/70 hover:text-[#141210] dark:text-[#A8A29E] dark:hover:bg-[#1C1917]/60 dark:hover:text-[#FAFAF9]'
                               }`}
                             >
                               <span className="flex items-center gap-3 min-w-0">
                                 <span
                                   className="font-mono text-xs tabular-nums shrink-0"
                                   style={{
-                                    color: isSelected ? accent : '#A8A29E',
+                                    color: isSelected ? accent : 'var(--kl-text-muted)',
                                   }}
                                 >
                                   {indexLabel}.
@@ -244,7 +252,7 @@ export function ServiceFaqSection({ lang, onNavigate }: ServiceFaqSectionProps) 
                                 </span>
                               </span>
                               <span className="flex items-center gap-2 shrink-0">
-                                <span className="font-mono text-xs tabular-nums text-[#A8A29E]">
+                                <span className="font-mono text-xs tabular-nums text-[#57534E] dark:text-[#A8A29E]">
                                   {srv.faqs.length}
                                 </span>
                                 {isSelected && (
@@ -267,22 +275,22 @@ export function ServiceFaqSection({ lang, onNavigate }: ServiceFaqSectionProps) 
                             handleSelectCategory('all');
                             setIsDropdownOpen(false);
                           }}
-                          className={`flex w-full items-center justify-between gap-3 rounded-lg border-t border-[#292524] pt-2.5 px-3 py-2.5 text-left transition-colors cursor-pointer min-h-[42px] ${
+                          className={`flex w-full items-center justify-between gap-3 rounded-lg border-t border-[#E5E2DC] dark:border-[#292524] pt-2.5 px-3 py-2.5 text-left transition-colors cursor-pointer min-h-[42px] ${
                             selectedSlug === 'all'
-                              ? 'bg-[#1C1917] text-[#FAFAF9]'
-                              : 'text-[#A8A29E] hover:bg-[#1C1917]/60 hover:text-[#FAFAF9]'
+                              ? 'bg-[#F3F1EC] text-[#141210] dark:bg-[#1C1917] dark:text-[#FAFAF9]'
+                              : 'text-[#57534E] hover:bg-[#F3F1EC]/70 hover:text-[#141210] dark:text-[#A8A29E] dark:hover:bg-[#1C1917]/60 dark:hover:text-[#FAFAF9]'
                           }`}
                         >
                           <span className="text-sm font-medium">
                             {t.homeFaq.allCategories}
                           </span>
                           <span className="flex items-center gap-2 shrink-0">
-                            <span className="font-mono text-xs tabular-nums text-[#A8A29E]">
+                            <span className="font-mono text-xs tabular-nums text-[#57534E] dark:text-[#A8A29E]">
                               {totalFaqCount}
                             </span>
                             {selectedSlug === 'all' && (
                               <Check
-                                className="h-3.5 w-3.5 text-[#2DD4BF]"
+                                className="h-3.5 w-3.5 text-[#0F766E] dark:text-[#2DD4BF]"
                                 aria-hidden="true"
                               />
                             )}
@@ -296,15 +304,15 @@ export function ServiceFaqSection({ lang, onNavigate }: ServiceFaqSectionProps) 
             </div>
 
             {activeSingleService && (
-              <div className="hidden lg:block pt-3 space-y-3 border-t border-[#292524]">
-                <p className="text-xs text-[#A8A29E] leading-relaxed">
+              <div className="hidden lg:block pt-3 space-y-3 border-t border-[#E5E2DC] dark:border-[#292524]">
+                <p className="text-xs text-[#57534E] dark:text-[#A8A29E] leading-relaxed">
                   {activeSingleService.subtitle[lang]}
                 </p>
                 <button
                   type="button"
                   onClick={() => onNavigate(`/servizi/${activeSingleService.slug}`)}
                   className="inline-flex items-center gap-1.5 text-xs font-semibold hover:underline cursor-pointer min-h-[40px]"
-                  style={{ color: getAccentHex(activeSingleService.accentType) }}
+                  style={{ color: getAccentVar(activeSingleService.accentType) }}
                 >
                   <span>
                     {t.homeFaq.exploreServiceCta}: {activeSingleService.shortTitle[lang]}
@@ -316,20 +324,17 @@ export function ServiceFaqSection({ lang, onNavigate }: ServiceFaqSectionProps) 
           </div>
 
           {/* Expandable Questions Panel */}
-          <div className="lg:col-span-8 rounded-2xl border border-[#292524] bg-[#1C1917] p-6 sm:p-8 space-y-6">
+          <div className="lg:col-span-8 rounded-2xl border border-[#E5E2DC] bg-white dark:border-[#292524] dark:bg-[#1C1917] p-6 sm:p-8 space-y-6 shadow-sm dark:shadow-none">
             {visibleServices.map((srv, serviceIdx) => {
-              const accent = getAccentHex(srv.accentType);
+              const accent = getAccentVar(srv.accentType);
               return (
                 <div
                   key={srv.slug}
-                  className={serviceIdx > 0 ? 'pt-6 border-t border-[#292524]' : ''}
+                  className={serviceIdx > 0 ? 'pt-6 border-t border-[#E5E2DC] dark:border-[#292524]' : ''}
                 >
                   <div className="flex flex-wrap items-baseline justify-between gap-2 mb-3">
-                    <div className="flex flex-wrap items-baseline gap-2 text-xs text-[#A8A29E]">
-                      <h3
-                        className="font-display text-base sm:text-lg font-semibold"
-                        style={{ color: '#FAFAF9' }}
-                      >
+                    <div className="flex flex-wrap items-baseline gap-2 text-xs text-[#57534E] dark:text-[#A8A29E]">
+                      <h3 className="font-display text-base sm:text-lg font-semibold text-[#141210] dark:text-[#FAFAF9]">
                         {srv.title[lang]}
                       </h3>
                       <span aria-hidden="true">·</span>
@@ -341,14 +346,14 @@ export function ServiceFaqSection({ lang, onNavigate }: ServiceFaqSectionProps) 
                     <button
                       type="button"
                       onClick={() => onNavigate(`/servizi/${srv.slug}`)}
-                      className="inline-flex items-center gap-1 text-xs font-medium text-[#A8A29E] hover:text-[#FAFAF9] cursor-pointer whitespace-nowrap"
+                      className="inline-flex items-center gap-1 text-xs font-medium text-[#57534E] hover:text-[#141210] dark:text-[#A8A29E] dark:hover:text-[#FAFAF9] cursor-pointer whitespace-nowrap"
                     >
                       <span>{t.homeFaq.exploreServiceCta}</span>
                       <ArrowRight className="h-3 w-3" aria-hidden="true" />
                     </button>
                   </div>
 
-                  <div className="divide-y divide-[#292524]">
+                  <div className="divide-y divide-[#E5E2DC] dark:divide-[#292524]">
                     {srv.faqs.map((faq, faqIdx) => {
                       const itemKey = `${srv.slug}:${faqIdx}`;
                       const isOpen = Boolean(openKeys[itemKey]);
@@ -363,7 +368,7 @@ export function ServiceFaqSection({ lang, onNavigate }: ServiceFaqSectionProps) 
                             onClick={() => handleToggleFaq(itemKey)}
                             aria-expanded={isOpen}
                             aria-controls={panelId}
-                            className="flex w-full items-center justify-between gap-4 text-left font-medium text-[#FAFAF9] hover:text-white cursor-pointer min-h-[44px]"
+                            className="flex w-full items-center justify-between gap-4 text-left font-medium text-[#141210] hover:text-[#0F766E] dark:text-[#FAFAF9] dark:hover:text-white cursor-pointer min-h-[44px]"
                           >
                             <span className="text-sm sm:text-base leading-snug">
                               {faq.question[lang]}
@@ -372,7 +377,7 @@ export function ServiceFaqSection({ lang, onNavigate }: ServiceFaqSectionProps) 
                               className={`h-4 w-4 shrink-0 transition-transform duration-200 ${
                                 isOpen ? 'rotate-180' : ''
                               }`}
-                              style={{ color: isOpen ? accent : '#A8A29E' }}
+                              style={{ color: isOpen ? accent : 'var(--kl-text-muted)' }}
                               aria-hidden="true"
                             />
                           </button>
@@ -389,7 +394,7 @@ export function ServiceFaqSection({ lang, onNavigate }: ServiceFaqSectionProps) 
                             aria-hidden={!isOpen}
                           >
                             <div className="overflow-hidden">
-                              <p className="text-sm text-[#A8A29E] leading-relaxed pr-6">
+                              <p className="text-sm text-[#57534E] dark:text-[#A8A29E] leading-relaxed pr-6">
                                 {faq.answer[lang]}
                               </p>
                             </div>
@@ -402,8 +407,8 @@ export function ServiceFaqSection({ lang, onNavigate }: ServiceFaqSectionProps) 
               );
             })}
 
-            <div className="pt-5 border-t border-[#292524] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-              <p className="text-xs sm:text-sm text-[#A8A29E]">
+            <div className="pt-5 border-t border-[#E5E2DC] dark:border-[#292524] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <p className="text-xs sm:text-sm text-[#57534E] dark:text-[#A8A29E]">
                 {t.homeFaq.contactBridgeText}
               </p>
               <button
