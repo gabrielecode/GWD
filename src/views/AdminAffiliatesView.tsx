@@ -3,6 +3,7 @@ import {
   AlertCircle,
   CheckCircle2,
   Copy,
+  Download,
   Loader2,
   Plus,
   RefreshCw,
@@ -34,6 +35,11 @@ import {
   validateIban,
   validateVatNumber,
 } from '../lib/affiliateRules';
+import {
+  exportPayoutsToCsv,
+  exportSinglePayoutStatementToCsv,
+  PAYOUT_STATUS_LABELS,
+} from '../lib/payoutCsvExport';
 import { AdminAuthGate } from '../components/affiliate/AdminAuthGate';
 import { WorkspaceBar } from '../components/affiliate/WorkspaceBar';
 
@@ -41,7 +47,7 @@ interface AdminAffiliatesViewProps {
   onNavigate: (path: string) => void;
 }
 
-type AdminTab = 'affiliates' | 'applications' | 'leads' | 'sales' | 'admins';
+type AdminTab = 'affiliates' | 'applications' | 'leads' | 'sales' | 'payouts' | 'admins';
 
 const STATUS_LABELS: Record<AffiliateStatus, string> = {
   active: 'Attivo',
@@ -572,6 +578,18 @@ function AdminAffiliatesDashboard({
     }
   };
 
+  const handleExportAllPayoutsCsv = () => {
+    const payouts = data?.payouts ?? [];
+    const count = exportPayoutsToCsv({
+      payouts,
+      affiliatesById: affiliateById,
+      sales: data?.sales ?? [],
+    });
+    setNotice(
+      `Esportati ${count} estratti payout in formato CSV UTF-8 per la contabilità esterna.`
+    );
+  };
+
   return (
     <div className="min-h-screen pb-16">
       <WorkspaceBar
@@ -602,6 +620,14 @@ function AdminAffiliatesDashboard({
             >
               <RefreshCw className={`h-3.5 w-3.5 ${loading ? 'animate-spin' : ''}`} aria-hidden="true" />
               <span>Aggiorna</span>
+            </button>
+            <button
+              type="button"
+              onClick={handleExportAllPayoutsCsv}
+              className="inline-flex items-center gap-1.5 rounded-lg border border-[#292524] bg-[#1C1917] px-3.5 py-2 text-xs font-medium text-[#FAFAF9] hover:border-[#2DD4BF] hover:text-[#2DD4BF] transition-colors cursor-pointer min-h-[40px]"
+            >
+              <Download className="h-3.5 w-3.5" aria-hidden="true" />
+              <span>Esporta Payouts CSV</span>
             </button>
             <button
               type="button"
@@ -748,6 +774,7 @@ function AdminAffiliatesDashboard({
                 { id: 'applications', label: `Candidature (${data?.applications.length ?? 0})` },
                 { id: 'leads', label: `Lead 90gg (${data?.leads.length ?? 0})` },
                 { id: 'sales', label: `Clienti & Vendite (${data?.sales.length ?? 0})` },
+                { id: 'payouts', label: `Payouts (${data?.payouts.length ?? 0})` },
                 { id: 'admins', label: `Team Admin (${data?.admins?.length ?? 1})` },
               ] as const
             ).map((item) => (
@@ -1356,6 +1383,151 @@ function AdminAffiliatesDashboard({
               <p>
                 Oltre a creare nuovi amministratori con il pulsante <strong className="text-[#FAFAF9]">Aggiungi Nuovo Admin</strong>, puoi anche elencare più email separate da virgola nella variabile d&rsquo;ambiente <span className="font-mono text-[#2DD4BF]">ADMIN_EMAIL</span> su Vercel (es. <span className="font-mono text-[#FAFAF9]">contatto@kreativalab.ch, direzione@kreativalab.ch</span>).
               </p>
+            </div>
+          </section>
+        )}
+
+        {/* TAB 6: PAYOUTS & ACCOUNTING CSV EXPORT */}
+        {tab === 'payouts' && (
+          <section aria-label="Payouts e Contabilità" className="space-y-4">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div>
+                <h2 className="font-display text-base font-semibold text-[#FAFAF9]">
+                  Lista Payout &amp; Esportazione Contabile CSV ({data?.payouts.length ?? 0})
+                </h2>
+                <p className="text-xs text-[#A8A29E]">
+                  Esporta l&rsquo;elenco completo dei payout con IBAN, dati fiscali AVS/IDI, imponibile netto, IVA 8.1% e riferimenti di pagamento per la contabilità esterna.
+                </p>
+              </div>
+              <div className="flex flex-wrap items-center gap-2 shrink-0">
+                <button
+                  type="button"
+                  onClick={handleExportAllPayoutsCsv}
+                  className="inline-flex items-center gap-1.5 rounded-lg bg-[#2DD4BF] px-3.5 py-2 text-xs font-semibold text-[#0C0A09] hover:opacity-90 cursor-pointer min-h-[38px]"
+                >
+                  <Download className="h-3.5 w-3.5" aria-hidden="true" />
+                  <span>Esporta Lista Payout CSV ({data?.payouts.length ?? 0})</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => onNavigate('/admin/payouts')}
+                  className="inline-flex items-center gap-1.5 rounded-lg border border-[#292524] bg-[#1C1917] px-3.5 py-2 text-xs font-medium text-[#FAFAF9] hover:border-[#FBBF24] cursor-pointer min-h-[38px]"
+                >
+                  <span>Gestisci &amp; Genera Payouts</span>
+                </button>
+              </div>
+            </div>
+
+            <div className="rounded-xl border border-[#292524] bg-[#1C1917] overflow-hidden">
+              {(data?.payouts.length ?? 0) === 0 ? (
+                <div className="p-10 text-center text-xs text-[#A8A29E]">
+                  Nessun payout generato finora. Puoi comunque esportare il template CSV contabile o generare gli estratti mensili dalla console Payouts.
+                </div>
+              ) : (
+                <div className="overflow-x-auto">
+                  <table className="w-full text-left border-collapse text-xs">
+                    <thead>
+                      <tr className="border-b border-[#292524] text-[#A8A29E]">
+                        <th className="py-3 px-4 font-medium">Periodo &amp; Agente</th>
+                        <th className="py-3 px-4 font-medium">IBAN &amp; Dati Fiscali</th>
+                        <th className="py-3 px-4 font-medium text-right">Imponibile / Totale c/IVA</th>
+                        <th className="py-3 px-4 font-medium">Fattura Agente &amp; Scadenza</th>
+                        <th className="py-3 px-4 font-medium">Stato</th>
+                        <th className="py-3 px-4 font-medium text-right">Esporta</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-[#292524]">
+                      {(data?.payouts ?? []).map((p) => {
+                        const aff = affiliateById.get(p.affiliate_id);
+                        return (
+                          <tr key={p.id} className="hover:bg-[#0C0A09]/40">
+                            <td className="py-3.5 px-4">
+                              <div className="font-medium text-[#FAFAF9]">
+                                <span className="font-mono text-[#2DD4BF]">{p.period_month}</span> ·{' '}
+                                {aff?.name || p.affiliate_id}
+                              </div>
+                              <div className="text-[11px] text-[#A8A29E] font-mono">
+                                {aff?.code || ''} {aff?.company_name ? `· ${aff.company_name}` : ''}
+                              </div>
+                            </td>
+                            <td className="py-3.5 px-4 font-mono text-[11px] text-[#A8A29E]">
+                              <div className="text-[#FAFAF9]">
+                                {aff?.iban ? formatIbanDisplay(aff.iban) : 'IBAN non inserito'}
+                              </div>
+                              <div>
+                                {aff?.is_vat_registered
+                                  ? `IVA: ${aff.vat_number || 'Soggetto IVA'}`
+                                  : 'Esente IVA'}{' '}
+                                {aff?.avs_idi_number ? `· ${aff.avs_idi_number}` : ''}
+                              </div>
+                            </td>
+                            <td className="py-3.5 px-4 text-right font-mono tabular-nums">
+                              <div className="font-semibold text-[#FAFAF9]">
+                                {formatChf(p.net_payable)}
+                              </div>
+                              <div className="text-[11px] text-[#A8A29E]">
+                                Lordo: {formatChf(p.gross_invoice_amount)}
+                              </div>
+                            </td>
+                            <td className="py-3.5 px-4 font-mono text-[11px] text-[#A8A29E]">
+                              {p.agent_invoice_number ? (
+                                <div>
+                                  <div className="text-[#FAFAF9]">
+                                    Fatt. {p.agent_invoice_number} ({p.agent_invoice_date})
+                                  </div>
+                                  <div>
+                                    {p.paid_at
+                                      ? `Pagato il ${p.paid_at.slice(0, 10)} · ${p.payment_reference || ''}`
+                                      : `Scadenza: ${p.payment_due_date || '30gg'}`}
+                                  </div>
+                                </div>
+                              ) : (
+                                <span>In attesa fattura</span>
+                              )}
+                            </td>
+                            <td className="py-3.5 px-4">
+                              <span
+                                className={`font-medium ${
+                                  p.status === 'paid'
+                                    ? 'text-[#22C55E]'
+                                    : p.status === 'invoice_received'
+                                    ? 'text-[#2DD4BF]'
+                                    : p.status === 'statement_sent'
+                                    ? 'text-[#FBBF24]'
+                                    : p.status === 'cancelled'
+                                    ? 'text-[#FB923C]'
+                                    : 'text-[#A8A29E]'
+                                }`}
+                              >
+                                {PAYOUT_STATUS_LABELS[p.status]}
+                              </span>
+                            </td>
+                            <td className="py-3.5 px-4 text-right">
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  exportSinglePayoutStatementToCsv({
+                                    payout: p,
+                                    affiliate: aff,
+                                    sales: data?.sales ?? [],
+                                  });
+                                  setNotice(
+                                    `Estratto analitico CSV scaricato per ${aff?.name || p.affiliate_id} (${p.period_month}).`
+                                  );
+                                }}
+                                className="inline-flex items-center gap-1 rounded-md border border-[#292524] bg-[#0C0A09] px-2.5 py-1.5 text-xs text-[#A8A29E] hover:border-[#2DD4BF] hover:text-[#2DD4BF] cursor-pointer"
+                              >
+                                <Download className="h-3 w-3" aria-hidden="true" />
+                                <span>Estratto CSV</span>
+                              </button>
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                </div>
+              )}
             </div>
           </section>
         )}

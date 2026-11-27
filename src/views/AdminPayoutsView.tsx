@@ -23,20 +23,17 @@ import {
   getPreviousMonthPeriod,
   PAYOUT_MIN_THRESHOLD_CHF,
 } from '../lib/affiliateRules';
+import {
+  exportPayoutsToCsv,
+  exportSinglePayoutStatementToCsv,
+  PAYOUT_STATUS_LABELS,
+} from '../lib/payoutCsvExport';
 import { AdminAuthGate } from '../components/affiliate/AdminAuthGate';
 import { WorkspaceBar } from '../components/affiliate/WorkspaceBar';
 
 interface AdminPayoutsViewProps {
   onNavigate: (path: string) => void;
 }
-
-const PAYOUT_STATUS_LABELS: Record<PayoutStatus, string> = {
-  draft: 'Bozza',
-  statement_sent: 'Estratto inviato',
-  invoice_received: 'Fattura ricevuta',
-  paid: 'Pagato su IBAN',
-  cancelled: 'Annullato',
-};
 
 export function AdminPayoutsView({ onNavigate }: AdminPayoutsViewProps) {
   return (
@@ -72,6 +69,8 @@ function AdminPayoutsDashboard({
   const [periodMonth, setPeriodMonth] = useState(() => getPreviousMonthPeriod());
   const [previews, setPreviews] = useState<PayoutPreviewItem[]>([]);
   const [statusFilter, setStatusFilter] = useState<PayoutStatus | 'all'>('all');
+  const [historyPeriodFilter, setHistoryPeriodFilter] = useState<string>('all');
+  const [historyAffiliateFilter, setHistoryAffiliateFilter] = useState<string>('all');
   const [loading, setLoading] = useState(true);
   const [previewLoading, setPreviewLoading] = useState(false);
   const [busy, setBusy] = useState(false);
@@ -129,11 +128,23 @@ function AdminPayoutsDashboard({
     return m;
   }, [overview?.affiliates]);
 
+  const availableHistoryPeriods = useMemo(() => {
+    const set = new Set<string>();
+    for (const p of overview?.payouts ?? []) {
+      if (p.period_month) set.add(p.period_month);
+    }
+    return Array.from(set).sort().reverse();
+  }, [overview?.payouts]);
+
   const filteredPayouts = useMemo(() => {
     const list = overview?.payouts ?? [];
-    if (statusFilter === 'all') return list;
-    return list.filter((p) => p.status === statusFilter);
-  }, [overview?.payouts, statusFilter]);
+    return list.filter((p) => {
+      if (statusFilter !== 'all' && p.status !== statusFilter) return false;
+      if (historyPeriodFilter !== 'all' && p.period_month !== historyPeriodFilter) return false;
+      if (historyAffiliateFilter !== 'all' && p.affiliate_id !== historyAffiliateFilter) return false;
+      return true;
+    });
+  }, [overview?.payouts, statusFilter, historyPeriodFilter, historyAffiliateFilter]);
 
   const payoutStats = useMemo(() => {
     const list = overview?.payouts ?? [];
@@ -241,49 +252,30 @@ function AdminPayoutsDashboard({
   };
 
   const handleExportCsv = () => {
-    const rows = [
-      [
-        'Periodo',
-        'Agente',
-        'Codice',
-        'IBAN',
-        'Totale Provvigioni CHF',
-        'Deduzioni Storni CHF',
-        'Netto Imponibile CHF',
-        'IVA 8.1% CHF',
-        'Totale Fattura CHF',
-        'Stato',
-        'N. Fattura Agente',
-        'Scadenza 30gg',
-        'Rif. Pagamento',
-      ],
-      ...filteredPayouts.map((p) => {
-        const aff = affiliateMap.get(p.affiliate_id);
-        return [
-          p.period_month,
-          aff?.name || p.affiliate_id,
-          aff?.code || '',
-          aff?.iban || '',
-          p.total_commissions.toFixed(2),
-          p.deductions.toFixed(2),
-          p.net_payable.toFixed(2),
-          p.vat_amount.toFixed(2),
-          p.gross_invoice_amount.toFixed(2),
-          PAYOUT_STATUS_LABELS[p.status],
-          p.agent_invoice_number || '',
-          p.payment_due_date || '',
-          p.payment_reference || '',
-        ];
-      }),
+    const suffixParts = [
+      historyPeriodFilter !== 'all' ? historyPeriodFilter : periodMonth,
+      statusFilter !== 'all' ? statusFilter : 'tutti',
     ];
-    const csv = rows.map((r) => r.map((c) => `"${String(c).replace(/"/g, '""')}"`).join(',')).join('\n');
-    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `kreativalab-payouts-${periodMonth}.csv`;
-    a.click();
-    URL.revokeObjectURL(url);
+    const count = exportPayoutsToCsv({
+      payouts: filteredPayouts,
+      affiliatesById: affiliateMap,
+      sales: overview?.sales ?? [],
+      filenameSuffix: suffixParts.join('-'),
+    });
+    setNotice(
+      `Esportati ${count} estratti payout in formato CSV UTF-8 per la contabilità esterna.`
+    );
+  };
+
+  const handleExportSinglePayoutCsv = (payout: AffiliatePayout) => {
+    exportSinglePayoutStatementToCsv({
+      payout,
+      affiliate: affiliateMap.get(payout.affiliate_id),
+      sales: overview?.sales ?? [],
+    });
+    setNotice(
+      `Estratto analitico CSV scaricato per il periodo ${payout.period_month}.`
+    );
   };
 
   return (
@@ -319,10 +311,10 @@ function AdminPayoutsDashboard({
             <button
               type="button"
               onClick={handleExportCsv}
-              className="inline-flex items-center gap-1.5 rounded-lg border border-[#292524] bg-[#1C1917] px-3.5 py-2 text-xs font-medium text-[#FAFAF9] hover:border-[#2DD4BF] cursor-pointer min-h-[40px]"
+              className="inline-flex items-center gap-1.5 rounded-lg border border-[#2DD4BF]/50 bg-[#1C1917] px-3.5 py-2 text-xs font-semibold text-[#2DD4BF] hover:bg-[#2DD4BF] hover:text-[#0C0A09] transition-colors cursor-pointer min-h-[40px]"
             >
               <Download className="h-3.5 w-3.5" aria-hidden="true" />
-              <span>Esporta CSV</span>
+              <span>Esporta CSV Contabile ({filteredPayouts.length})</span>
             </button>
           </div>
         </div>
@@ -481,34 +473,73 @@ function AdminPayoutsDashboard({
 
         {/* Payouts History & Workflow */}
         <section className="space-y-4">
-          <div className="flex flex-wrap items-center justify-between gap-3">
+          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-3">
             <h2 className="font-display text-lg font-semibold text-[#FAFAF9]">
               Storico Estratti &amp; Pagamenti ({filteredPayouts.length})
             </h2>
-            <div className="flex flex-wrap items-center gap-1 rounded-lg bg-[#1C1917] border border-[#292524] p-1">
-              {(
-                [
-                  { id: 'all', label: 'Tutti' },
-                  { id: 'draft', label: 'Bozza' },
-                  { id: 'statement_sent', label: 'Estratto Inviato' },
-                  { id: 'invoice_received', label: 'Fattura Ricevuta' },
-                  { id: 'paid', label: 'Pagato' },
-                  { id: 'cancelled', label: 'Annullato' },
-                ] as const
-              ).map((tab) => (
-                <button
-                  key={tab.id}
-                  type="button"
-                  onClick={() => setStatusFilter(tab.id)}
-                  className={`px-3 py-1.5 text-xs font-medium rounded-md cursor-pointer ${
-                    statusFilter === tab.id
-                      ? 'bg-[#FAFAF9] text-[#0C0A09] font-semibold'
-                      : 'text-[#A8A29E] hover:text-[#FAFAF9]'
-                  }`}
-                >
-                  {tab.label}
-                </button>
-              ))}
+            <div className="flex flex-wrap items-center gap-2">
+              <select
+                aria-label="Filtra per periodo"
+                value={historyPeriodFilter}
+                onChange={(e) => setHistoryPeriodFilter(e.target.value)}
+                className="rounded-lg border border-[#292524] bg-[#1C1917] px-3 py-1.5 text-xs text-[#FAFAF9] font-mono min-h-[36px]"
+              >
+                <option value="all">Tutti i periodi</option>
+                {availableHistoryPeriods.map((per) => (
+                  <option key={per} value={per}>
+                    Periodo {per}
+                  </option>
+                ))}
+              </select>
+
+              <select
+                aria-label="Filtra per agente"
+                value={historyAffiliateFilter}
+                onChange={(e) => setHistoryAffiliateFilter(e.target.value)}
+                className="rounded-lg border border-[#292524] bg-[#1C1917] px-3 py-1.5 text-xs text-[#FAFAF9] min-h-[36px]"
+              >
+                <option value="all">Tutti gli agenti</option>
+                {(overview?.affiliates ?? []).map((aff) => (
+                  <option key={aff.id} value={aff.id}>
+                    {aff.name} ({aff.code})
+                  </option>
+                ))}
+              </select>
+
+              <div className="flex flex-wrap items-center gap-1 rounded-lg bg-[#1C1917] border border-[#292524] p-1">
+                {(
+                  [
+                    { id: 'all', label: 'Tutti' },
+                    { id: 'draft', label: 'Bozza' },
+                    { id: 'statement_sent', label: 'Estratto Inviato' },
+                    { id: 'invoice_received', label: 'Fattura Ricevuta' },
+                    { id: 'paid', label: 'Pagato' },
+                    { id: 'cancelled', label: 'Annullato' },
+                  ] as const
+                ).map((tab) => (
+                  <button
+                    key={tab.id}
+                    type="button"
+                    onClick={() => setStatusFilter(tab.id)}
+                    className={`px-3 py-1.5 text-xs font-medium rounded-md cursor-pointer ${
+                      statusFilter === tab.id
+                        ? 'bg-[#FAFAF9] text-[#0C0A09] font-semibold'
+                        : 'text-[#A8A29E] hover:text-[#FAFAF9]'
+                    }`}
+                  >
+                    {tab.label}
+                  </button>
+                ))}
+              </div>
+
+              <button
+                type="button"
+                onClick={handleExportCsv}
+                className="inline-flex items-center gap-1.5 rounded-lg border border-[#292524] bg-[#1C1917] px-3 py-1.5 text-xs font-medium text-[#FAFAF9] hover:border-[#2DD4BF] hover:text-[#2DD4BF] transition-colors cursor-pointer min-h-[36px]"
+              >
+                <Download className="h-3.5 w-3.5" aria-hidden="true" />
+                <span>CSV ({filteredPayouts.length})</span>
+              </button>
             </div>
           </div>
 
@@ -594,6 +625,16 @@ function AdminPayoutsDashboard({
                                 className="rounded-md border border-[#292524] bg-[#0C0A09] px-2.5 py-1.5 text-[#A8A29E] hover:text-[#FAFAF9] cursor-pointer"
                               >
                                 Dettaglio
+                              </button>
+
+                              <button
+                                type="button"
+                                onClick={() => handleExportSinglePayoutCsv(p)}
+                                title="Scarica estratto conto CSV di questo payout"
+                                className="inline-flex items-center gap-1 rounded-md border border-[#292524] bg-[#0C0A09] px-2.5 py-1.5 text-[#A8A29E] hover:border-[#2DD4BF] hover:text-[#2DD4BF] cursor-pointer"
+                              >
+                                <Download className="h-3 w-3" aria-hidden="true" />
+                                <span>CSV</span>
                               </button>
 
                               {p.status === 'draft' && (
@@ -782,13 +823,23 @@ function AdminPayoutsDashboard({
       {detailPayout && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 p-4 overflow-y-auto">
           <div className="w-full max-w-2xl rounded-xl border border-[#292524] bg-[#1C1917] p-6 space-y-4 text-xs my-8">
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between gap-2">
               <h2 className="font-display text-lg font-bold text-[#FAFAF9]">
                 Estratto Provvigioni · {detailPayout.period_month}
               </h2>
-              <button type="button" onClick={() => setDetailPayout(null)} className="text-[#A8A29E] cursor-pointer">
-                <X className="h-5 w-5" aria-hidden="true" />
-              </button>
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => handleExportSinglePayoutCsv(detailPayout)}
+                  className="inline-flex items-center gap-1.5 rounded-lg border border-[#2DD4BF]/50 bg-[#0C0A09] px-3 py-1.5 text-xs font-semibold text-[#2DD4BF] hover:bg-[#2DD4BF] hover:text-[#0C0A09] transition-colors cursor-pointer"
+                >
+                  <Download className="h-3.5 w-3.5" aria-hidden="true" />
+                  <span>Scarica Estratto CSV</span>
+                </button>
+                <button type="button" onClick={() => setDetailPayout(null)} className="text-[#A8A29E] cursor-pointer">
+                  <X className="h-5 w-5" aria-hidden="true" />
+                </button>
+              </div>
             </div>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 rounded-lg border border-[#292524] bg-[#0C0A09] p-3 font-mono tabular-nums">
               <div>
