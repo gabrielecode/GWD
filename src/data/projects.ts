@@ -1339,6 +1339,7 @@ export const PROJECTS: ProjectItem[] = [
     engine: 'agency',
     status: 'client-work',
     featured: true,
+    previewImage: '/assets/aistudio/Screenshot__1530__43f513fb.png',
     category: {
       it: 'Caso Studio Agenzia',
       de: 'Agentur-Fallstudie',
@@ -1667,6 +1668,7 @@ export const PROJECTS: ProjectItem[] = [
     engine: 'agency',
     status: 'ai-division',
     featured: false,
+    previewImage: '/assets/aistudio/Screenshot__1531__56fad9a4.png',
     category: {
       it: 'Caso Studio · Divisione AI',
       de: 'Fallstudie · KI-Division',
@@ -1831,6 +1833,7 @@ export const PROJECTS: ProjectItem[] = [
     engine: 'agency',
     status: 'client-work',
     featured: false,
+    previewImage: '/assets/aistudio/Screenshot__1532__7cf8c053.png',
     category: {
       it: 'Caso Studio Agenzia',
       de: 'Agentur-Fallstudie',
@@ -1995,6 +1998,7 @@ export const PROJECTS: ProjectItem[] = [
     engine: 'agency',
     status: 'client-work',
     featured: false,
+    previewImage: '/assets/aistudio/Screenshot__1533__57043f23.png',
     category: {
       it: 'Caso Studio Agenzia',
       de: 'Agentur-Fallstudie',
@@ -2159,6 +2163,7 @@ export const PROJECTS: ProjectItem[] = [
     engine: 'agency',
     status: 'client-work',
     featured: false,
+    previewImage: '/assets/aistudio/Screenshot__1534__bd634861.png',
     category: {
       it: 'Caso Studio Agenzia',
       de: 'Agentur-Fallstudie',
@@ -2323,6 +2328,7 @@ export const PROJECTS: ProjectItem[] = [
     engine: 'agency',
     status: 'client-work',
     featured: false,
+    previewImage: '/assets/aistudio/Screenshot__1535__1ccc3618.png',
     category: {
       it: 'Caso Studio Agenzia',
       de: 'Agentur-Fallstudie',
@@ -2487,6 +2493,7 @@ export const PROJECTS: ProjectItem[] = [
     engine: 'agency',
     status: 'ai-division',
     featured: false,
+    previewImage: '/assets/aistudio/Screenshot__1536__026fd70c.png',
     category: {
       it: 'Caso Studio · Divisione AI',
       de: 'Fallstudie · KI-Division',

@@ -72,6 +72,12 @@ export interface UiStrings {
     viewAll: string;
     openPlatform: string;
     technicalSheet: string;
+    prevSlide: string;
+    nextSlide: string;
+    shuffleCards: string;
+    pauseAutoplay: string;
+    playAutoplay: string;
+    carouselPagination: string;
   };
   caseStudies: {
     sectionTitle: string;
@@ -334,12 +340,18 @@ export const TRANSLATIONS: Record<Language, UiStrings> = {
       technicalTagsHeading: 'Tag Tecnici',
     },
     featuredSaas: {
-      sectionTitle: 'Prodotti SaaS in evidenza',
+      sectionTitle: 'Prodotti in Evidenza',
       sectionSubtitle:
-        'Tre piattaforme attive sul mercato svizzero con accesso diretto e metriche verificate.',
-      viewAll: 'Vedi tutti i 6 SaaS',
+        'Tutte le piattaforme SaaS, le soluzioni AI e i progetti digitali attivi in rotazione casuale.',
+      viewAll: 'Vedi tutti i prodotti',
       openPlatform: 'Apri piattaforma ↗',
       technicalSheet: 'Scheda prodotto',
+      prevSlide: 'Card precedente',
+      nextSlide: 'Card successiva',
+      shuffleCards: 'Mescola',
+      pauseAutoplay: 'Metti in pausa il carosello',
+      playAutoplay: 'Avvia il carosello',
+      carouselPagination: 'Navigazione carosello prodotti',
     },
     caseStudies: {
       sectionTitle: 'Casi studio: Sfida, Soluzione, Risultato',
@@ -624,12 +636,18 @@ export const TRANSLATIONS: Record<Language, UiStrings> = {
       technicalTagsHeading: 'Technische Tags',
     },
     featuredSaas: {
-      sectionTitle: 'Ausgewählte SaaS-Plattformen',
+      sectionTitle: 'Ausgewählte Produkte',
       sectionSubtitle:
-        'Drei aktiv am Schweizer Markt betriebene Produkte mit direktem Zugang und verifizierten Kennzahlen.',
-      viewAll: 'Alle 6 SaaS ansehen',
+        'Alle aktiven SaaS-Plattformen, KI-Lösungen und Kundenprojekte in zufälliger Rotation.',
+      viewAll: 'Alle Produkte ansehen',
       openPlatform: 'Plattform öffnen ↗',
       technicalSheet: 'Produktdatenblatt',
+      prevSlide: 'Vorherige Karte',
+      nextSlide: 'Nächste Karte',
+      shuffleCards: 'Mischen',
+      pauseAutoplay: 'Karussell pausieren',
+      playAutoplay: 'Karussell fortsetzen',
+      carouselPagination: 'Produkt-Karussell-Navigation',
     },
     caseStudies: {
       sectionTitle: 'Fallstudien: Herausforderung, Lösung, Ergebnis',
@@ -914,12 +932,18 @@ export const TRANSLATIONS: Record<Language, UiStrings> = {
       technicalTagsHeading: 'Tags Techniques',
     },
     featuredSaas: {
-      sectionTitle: 'Produits SaaS en vedette',
+      sectionTitle: 'Produits en vedette',
       sectionSubtitle:
-        'Trois plateformes actives sur le marché suisse avec accès direct et résultats vérifiés.',
-      viewAll: 'Voir les 6 SaaS',
+        'Toutes nos plateformes SaaS, solutions IA et réalisations digitales en rotation aléatoire.',
+      viewAll: 'Voir tous les produits',
       openPlatform: 'Ouvrir la plateforme ↗',
       technicalSheet: 'Fiche produit',
+      prevSlide: 'Carte précédente',
+      nextSlide: 'Carte suivante',
+      shuffleCards: 'Mélanger',
+      pauseAutoplay: 'Mettre le carrousel en pause',
+      playAutoplay: 'Relancer le carrousel',
+      carouselPagination: 'Pagination du carrousel produits',
     },
     caseStudies: {
       sectionTitle: 'Études de cas : Défi, Solution, Résultat',
@@ -1204,12 +1228,18 @@ export const TRANSLATIONS: Record<Language, UiStrings> = {
       technicalTagsHeading: 'Technical Tags',
     },
     featuredSaas: {
-      sectionTitle: 'Featured SaaS platforms',
+      sectionTitle: 'Featured Products',
       sectionSubtitle:
-        'Three live platforms operating across Switzerland with direct launch access and verified metrics.',
-      viewAll: 'View all 6 SaaS',
+        'All active SaaS platforms, AI solutions, and digital builds rotating in random order.',
+      viewAll: 'View all products',
       openPlatform: 'Open platform ↗',
       technicalSheet: 'Product sheet',
+      prevSlide: 'Previous card',
+      nextSlide: 'Next card',
+      shuffleCards: 'Shuffle',
+      pauseAutoplay: 'Pause carousel',
+      playAutoplay: 'Play carousel',
+      carouselPagination: 'Featured products carousel pagination',
     },
     caseStudies: {
       sectionTitle: 'Case studies: Challenge, Solution, Result',
