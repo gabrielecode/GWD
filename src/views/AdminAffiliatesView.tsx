@@ -2,12 +2,16 @@ import { FormEvent, useCallback, useEffect, useMemo, useState } from 'react';
 import {
   AlertCircle,
   CheckCircle2,
+  Copy,
   Loader2,
   Plus,
   RefreshCw,
   RotateCcw,
   Search,
+  ShieldCheck,
+  Trash2,
   UserCheck,
+  UserPlus,
   X,
 } from 'lucide-react';
 import {
@@ -37,7 +41,7 @@ interface AdminAffiliatesViewProps {
   onNavigate: (path: string) => void;
 }
 
-type AdminTab = 'affiliates' | 'applications' | 'leads' | 'sales';
+type AdminTab = 'affiliates' | 'applications' | 'leads' | 'sales' | 'admins';
 
 const STATUS_LABELS: Record<AffiliateStatus, string> = {
   active: 'Attivo',
@@ -97,6 +101,13 @@ function AdminAffiliatesDashboard({
   const [showLeadModal, setShowLeadModal] = useState(false);
   const [showCustomerModal, setShowCustomerModal] = useState(false);
   const [showSaleModal, setShowSaleModal] = useState(false);
+  const [showAdminModal, setShowAdminModal] = useState(false);
+  const [newAdminForm, setNewAdminForm] = useState({
+    email: '',
+    password: '',
+    confirmPassword: '',
+  });
+  const [copiedSql, setCopiedSql] = useState(false);
   const [reversingSaleId, setReversingSaleId] = useState<string | null>(null);
   const [reverseReason, setReverseReason] = useState('');
   const [busy, setBusy] = useState(false);
@@ -505,6 +516,62 @@ function AdminAffiliatesDashboard({
     }
   };
 
+  const handleCreateAdminMember = async (e: FormEvent) => {
+    e.preventDefault();
+    if (busy) return;
+    if (newAdminForm.password.trim().length < 8) {
+      setError('La password del nuovo Admin deve contenere almeno 8 caratteri.');
+      return;
+    }
+    if (newAdminForm.password !== newAdminForm.confirmPassword) {
+      setError('Le due password non coincidono.');
+      return;
+    }
+    setBusy(true);
+    setError(null);
+    setNotice(null);
+    try {
+      const res = await affiliateApi.addAdminByAdmin({
+        email: newAdminForm.email.trim(),
+        password: newAdminForm.password,
+      });
+      setShowAdminModal(false);
+      setNewAdminForm({ email: '', password: '', confirmPassword: '' });
+      setNotice(`Amministratore "${res.admin.email}" aggiunto con pieni permessi.`);
+      await loadOverview();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Impossibile creare il nuovo Admin.');
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const handleRemoveAdminMember = async (idOrEmail: string, emailLabel: string) => {
+    if (busy) return;
+    setBusy(true);
+    setError(null);
+    setNotice(null);
+    try {
+      await affiliateApi.removeAdminByAdmin(idOrEmail);
+      setNotice(`Permessi amministratore revocati per ${emailLabel}.`);
+      await loadOverview();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Rimozione amministratore non riuscita.');
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const handleCopySqlFix = async (sqlText: string) => {
+    try {
+      await navigator.clipboard.writeText(sqlText);
+      setCopiedSql(true);
+      setTimeout(() => setCopiedSql(false), 3500);
+    } catch {
+      setError('Copia automatica non riuscita: seleziona e copia manualmente il blocco SQL qui sotto.');
+    }
+  };
+
   return (
     <div className="min-h-screen pb-16">
       <WorkspaceBar
@@ -524,7 +591,7 @@ function AdminAffiliatesDashboard({
               Gestione Agenti &amp; Affiliati (CO 418a segg.)
             </h1>
             <p className="text-sm text-[#A8A29E] max-w-2xl">
-              Anagrafiche fiscali e IBAN CH/SEPA, approvazione candidature, attribuzione lead 90 giorni first-touch e calcolo provvigioni sul netto incassato.
+              Anagrafiche fiscali e IBAN CH/SEPA, approvazione candidature, attribuzione lead 90 giorni first-touch, calcolo provvigioni sul netto incassato e gestione Multi-Admin.
             </p>
           </div>
           <div className="flex flex-wrap items-center gap-2 shrink-0">
@@ -545,6 +612,17 @@ function AdminAffiliatesDashboard({
             </button>
             <button
               type="button"
+              onClick={() => {
+                setNewAdminForm({ email: '', password: '', confirmPassword: '' });
+                setShowAdminModal(true);
+              }}
+              className="inline-flex items-center gap-1.5 rounded-lg border border-[#292524] bg-[#1C1917] px-3.5 py-2 text-xs font-semibold text-[#FAFAF9] hover:border-[#2DD4BF] transition-colors cursor-pointer min-h-[40px]"
+            >
+              <UserPlus className="h-3.5 w-3.5 text-[#2DD4BF]" aria-hidden="true" />
+              <span>Nuovo Admin</span>
+            </button>
+            <button
+              type="button"
               onClick={openNewAffiliateModal}
               className="inline-flex items-center gap-1.5 rounded-lg bg-[#2DD4BF] px-4 py-2 text-xs font-semibold text-[#0C0A09] hover:opacity-90 transition-opacity cursor-pointer min-h-[40px]"
             >
@@ -553,6 +631,44 @@ function AdminAffiliatesDashboard({
             </button>
           </div>
         </div>
+
+        {/* Supabase 42501 Permission Denied Quick Repair Box */}
+        {data?.db_permission_error && (
+          <div
+            role="alert"
+            className="rounded-xl border border-[#FB923C]/60 bg-[#1C1917] p-5 space-y-3 text-xs"
+          >
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div className="flex items-start gap-2.5">
+                <AlertCircle className="h-4 w-4 text-[#FB923C] shrink-0 mt-0.5" aria-hidden="true" />
+                <div className="space-y-1">
+                  <p className="font-semibold text-[#FAFAF9]">
+                    Riparazione Permessi Database Supabase ({data.db_permission_error.message})
+                  </p>
+                  <p className="text-[#A8A29E] leading-relaxed">
+                    {data.db_permission_error.is_anon_key
+                      ? 'Attenzione: la variabile SUPABASE_SERVICE_ROLE_KEY su Vercel risulta essere una chiave "anon" anziché "service_role". Inoltre le tabelle nello schema public di Supabase richiedono i permessi GRANT.'
+                      : 'Le tabelle nello schema public di Supabase non hanno ancora i permessi GRANT per i ruoli service_role / authenticated (errore PostgreSQL 42501).'}
+                  </p>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => void handleCopySqlFix(data.db_permission_error!.sql_fix)}
+                className="inline-flex items-center gap-1.5 rounded-lg bg-[#2DD4BF] px-3.5 py-2 text-xs font-semibold text-[#0C0A09] hover:opacity-90 cursor-pointer shrink-0 min-h-[38px]"
+              >
+                <Copy className="h-3.5 w-3.5" aria-hidden="true" />
+                <span>{copiedSql ? 'Script SQL Copiato!' : '1. Copia Script SQL Riparazione'}</span>
+              </button>
+            </div>
+            <p className="text-[#A8A29E]">
+              Clicca su <strong className="text-[#FAFAF9]">1. Copia Script SQL Riparazione</strong>, apri la dashboard del tuo progetto <strong className="text-[#FAFAF9]">Supabase &rarr; SQL Editor &rarr; New Query</strong>, incolla lo script e premi <strong className="text-[#FAFAF9]">Run</strong>. Poi clicca su <strong className="text-[#FAFAF9]">Aggiorna</strong> qui sopra.
+            </p>
+            <pre className="max-h-44 overflow-y-auto rounded-lg border border-[#292524] bg-[#0C0A09] p-3 font-mono text-[11px] text-[#A8A29E] select-all">
+              {data.db_permission_error.sql_fix}
+            </pre>
+          </div>
+        )}
 
         {/* Feedback Banners */}
         {error && (
@@ -632,6 +748,7 @@ function AdminAffiliatesDashboard({
                 { id: 'applications', label: `Candidature (${data?.applications.length ?? 0})` },
                 { id: 'leads', label: `Lead 90gg (${data?.leads.length ?? 0})` },
                 { id: 'sales', label: `Clienti & Vendite (${data?.sales.length ?? 0})` },
+                { id: 'admins', label: `Team Admin (${data?.admins?.length ?? 1})` },
               ] as const
             ).map((item) => (
               <button
@@ -1137,7 +1254,190 @@ function AdminAffiliatesDashboard({
             </div>
           </section>
         )}
+
+        {/* TAB 5: TEAM ADMIN (MULTI-ADMIN MANAGEMENT) */}
+        {tab === 'admins' && (
+          <section className="space-y-4">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div className="space-y-1">
+                <h2 className="text-sm font-semibold text-[#FAFAF9] flex items-center gap-2">
+                  <ShieldCheck className="h-4 w-4 text-[#2DD4BF]" aria-hidden="true" />
+                  <span>Amministratori Autorizzati ({data?.admins?.length ?? 1})</span>
+                </h2>
+                <p className="text-xs text-[#A8A29E]">
+                  Gli amministratori hanno accesso completo a <span className="font-mono text-[#FAFAF9]">/admin/affiliates</span> e <span className="font-mono text-[#FAFAF9]">/admin/payouts</span>. Gli agenti (<span className="font-mono text-[#FAFAF9]">role = affiliate</span>) sono invece vincolati esclusivamente al portale <span className="font-mono text-[#FAFAF9]">/affiliate</span>.
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() => {
+                  setNewAdminForm({ email: '', password: '', confirmPassword: '' });
+                  setShowAdminModal(true);
+                }}
+                className="inline-flex items-center gap-1.5 rounded-lg bg-[#2DD4BF] px-4 py-2 text-xs font-semibold text-[#0C0A09] hover:opacity-90 cursor-pointer shrink-0 min-h-[38px]"
+              >
+                <UserPlus className="h-3.5 w-3.5" aria-hidden="true" />
+                <span>Aggiungi Nuovo Admin</span>
+              </button>
+            </div>
+
+            <div className="rounded-xl border border-[#292524] bg-[#1C1917] overflow-hidden">
+              <div className="overflow-x-auto">
+                <table className="w-full text-left border-collapse text-xs">
+                  <thead>
+                    <tr className="border-b border-[#292524] text-[#A8A29E]">
+                      <th className="py-3 px-4 font-medium">Email Amministratore</th>
+                      <th className="py-3 px-4 font-medium">Origine / Permesso</th>
+                      <th className="py-3 px-4 font-medium">Data Creazione</th>
+                      <th className="py-3 px-4 font-medium text-right">Azioni</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-[#292524]">
+                    {(data?.admins && data.admins.length > 0
+                      ? data.admins
+                      : [
+                          {
+                            id: 'current',
+                            email: adminEmail,
+                            source: storageMode === 'supabase' ? ('supabase_auth' as const) : ('database' as const),
+                            created_at: null,
+                            is_removable: false,
+                          },
+                        ]
+                    ).map((adm) => {
+                      const isSelf = adm.email.toLowerCase() === adminEmail.toLowerCase();
+                      return (
+                        <tr key={adm.id} className="hover:bg-[#0C0A09]/40">
+                          <td className="py-3.5 px-4">
+                            <div className="flex flex-wrap items-center gap-2">
+                              <span className="font-mono font-medium text-[#FAFAF9]">{adm.email}</span>
+                              {isSelf && (
+                                <span className="rounded bg-[#2DD4BF]/15 px-2 py-0.5 text-[11px] font-medium text-[#2DD4BF]">
+                                  Sessione corrente
+                                </span>
+                              )}
+                            </div>
+                          </td>
+                          <td className="py-3.5 px-4 text-[#A8A29E]">
+                            {adm.source === 'env'
+                              ? 'Variabile Ambiente (ADMIN_EMAIL)'
+                              : adm.source === 'supabase_auth'
+                              ? 'Supabase Auth (role = admin)'
+                              : 'Database Admin'}
+                          </td>
+                          <td className="py-3.5 px-4 font-mono text-[#A8A29E]">
+                            {adm.created_at ? adm.created_at.slice(0, 10) : '—'}
+                          </td>
+                          <td className="py-3.5 px-4 text-right">
+                            {adm.is_removable && !isSelf ? (
+                              <button
+                                type="button"
+                                disabled={busy}
+                                onClick={() => void handleRemoveAdminMember(adm.id, adm.email)}
+                                className="inline-flex items-center gap-1 rounded-md border border-[#292524] bg-[#0C0A09] px-2.5 py-1 text-xs text-[#FB923C] hover:border-[#FB923C] cursor-pointer disabled:opacity-40"
+                              >
+                                <Trash2 className="h-3 w-3" aria-hidden="true" />
+                                <span>Revoca Admin</span>
+                              </button>
+                            ) : (
+                              <span className="text-[11px] text-[#A8A29E]">Protetto</span>
+                            )}
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <div className="rounded-xl border border-[#292524] bg-[#1C1917] p-4 text-xs text-[#A8A29E] space-y-1">
+              <p className="font-medium text-[#FAFAF9]">Suggerimento Multi-Admin via Vercel</p>
+              <p>
+                Oltre a creare nuovi amministratori con il pulsante <strong className="text-[#FAFAF9]">Aggiungi Nuovo Admin</strong>, puoi anche elencare più email separate da virgola nella variabile d&rsquo;ambiente <span className="font-mono text-[#2DD4BF]">ADMIN_EMAIL</span> su Vercel (es. <span className="font-mono text-[#FAFAF9]">contatto@kreativalab.ch, direzione@kreativalab.ch</span>).
+              </p>
+            </div>
+          </section>
+        )}
       </div>
+
+      {/* MODAL: ADD NEW ADMIN */}
+      {showAdminModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 p-4">
+          <div className="w-full max-w-md rounded-xl border border-[#292524] bg-[#1C1917] p-6 space-y-4 text-xs">
+            <div className="flex items-center justify-between">
+              <h2 className="font-display text-lg font-bold text-[#FAFAF9] flex items-center gap-2">
+                <UserPlus className="h-5 w-5 text-[#2DD4BF]" aria-hidden="true" />
+                <span>Aggiungi Nuovo Admin</span>
+              </h2>
+              <button
+                type="button"
+                onClick={() => setShowAdminModal(false)}
+                className="text-[#A8A29E] hover:text-[#FAFAF9] cursor-pointer"
+              >
+                <X className="h-5 w-5" aria-hidden="true" />
+              </button>
+            </div>
+            <p className="text-[#A8A29E] leading-relaxed">
+              Crea un nuovo account amministratore (o promuovi un account esistente) con accesso completo alle console <span className="font-mono text-[#FAFAF9]">/admin/affiliates</span> e <span className="font-mono text-[#FAFAF9]">/admin/payouts</span>.
+            </p>
+            <form onSubmit={handleCreateAdminMember} className="space-y-3">
+              <div>
+                <label className="block text-[#A8A29E] mb-1">Email Nuovo Admin *</label>
+                <input
+                  type="email"
+                  required
+                  value={newAdminForm.email}
+                  onChange={(e) => setNewAdminForm((p) => ({ ...p, email: e.target.value }))}
+                  placeholder="collega@kreativalab.ch"
+                  className="w-full rounded-lg border border-[#292524] bg-[#0C0A09] px-3 py-2 text-[#FAFAF9]"
+                />
+              </div>
+              <div>
+                <label className="block text-[#A8A29E] mb-1">Password (min. 8 caratteri) *</label>
+                <input
+                  type="password"
+                  required
+                  minLength={8}
+                  value={newAdminForm.password}
+                  onChange={(e) => setNewAdminForm((p) => ({ ...p, password: e.target.value }))}
+                  placeholder="••••••••••••"
+                  className="w-full rounded-lg border border-[#292524] bg-[#0C0A09] px-3 py-2 text-[#FAFAF9]"
+                />
+              </div>
+              <div>
+                <label className="block text-[#A8A29E] mb-1">Conferma Password *</label>
+                <input
+                  type="password"
+                  required
+                  minLength={8}
+                  value={newAdminForm.confirmPassword}
+                  onChange={(e) => setNewAdminForm((p) => ({ ...p, confirmPassword: e.target.value }))}
+                  placeholder="••••••••••••"
+                  className="w-full rounded-lg border border-[#292524] bg-[#0C0A09] px-3 py-2 text-[#FAFAF9]"
+                />
+              </div>
+              <div className="flex justify-end gap-2 pt-3 border-t border-[#292524]">
+                <button
+                  type="button"
+                  onClick={() => setShowAdminModal(false)}
+                  className="rounded-lg border border-[#292524] bg-[#0C0A09] px-4 py-2 text-[#A8A29E] cursor-pointer"
+                >
+                  Annulla
+                </button>
+                <button
+                  type="submit"
+                  disabled={busy}
+                  className="inline-flex items-center gap-1.5 rounded-lg bg-[#2DD4BF] px-4 py-2 font-semibold text-[#0C0A09] cursor-pointer disabled:opacity-50"
+                >
+                  {busy && <Loader2 className="h-3.5 w-3.5 animate-spin" aria-hidden="true" />}
+                  <span>Crea Admin</span>
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
 
       {/* MODAL: CREATE / EDIT AFFILIATE */}
       {showAffiliateModal && (

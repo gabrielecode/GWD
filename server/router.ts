@@ -1,5 +1,4 @@
 import express, { NextFunction, Request, Response } from 'express';
-import process from 'node:process';
 import {
   createAdminAccount,
   createAffiliate,
@@ -11,10 +10,12 @@ import {
   getAdminOverview,
   getAffiliatePortalData,
   getAuthConfigStatus,
+  listAdminAccounts,
   loginAdminLocal,
   loginAffiliateLocal,
   previewMonthlyPayouts,
   registerAffiliateAccount,
+  removeAdminAccount,
   reverseSale,
   reviewApplication,
   ServiceError,
@@ -26,7 +27,14 @@ import {
   updatePayoutStatus,
 } from './affiliateService.js';
 import { verifySessionToken } from './auth.js';
-import { getSqliteDb, getSupabaseAdmin } from './db.js';
+import {
+  getSqliteDb,
+  getSupabaseAdmin,
+  getSupabaseBaseAdminClient,
+  getSupabaseConfig,
+  isConfiguredAdminEmail,
+  requestAuthStorage,
+} from './db.js';
 import { AffiliateStatus } from '../src/types/affiliate.js';
 
 interface AuthenticatedRequest extends Request {
@@ -44,11 +52,75 @@ function extractBearerToken(req: Request): string | null {
   return token.length > 0 ? token : null;
 }
 
+async function isEmailInAdminDirectory(email?: string | null): Promise<boolean> {
+  if (!email) return false;
+  const norm = email.trim().toLowerCase();
+  if (!norm) return false;
+  if (isConfiguredAdminEmail(norm)) return true;
+
+  try {
+    const db = getSqliteDb();
+    const row = db
+      .prepare('SELECT id FROM admin_users WHERE lower(email) = ?')
+      .get(norm) as { id?: string } | undefined;
+    if (row?.id) return true;
+  } catch {
+    // ignore if SQLite unavailable
+  }
+
+  const supabase = getSupabaseAdmin();
+  if (supabase) {
+    try {
+      const { data } = await supabase
+        .from('admin_users')
+        .select('id')
+        .ilike('email', norm)
+        .maybeSingle();
+      if (data?.id) return true;
+    } catch {
+      // ignore if public.admin_users table not yet created
+    }
+  }
+  return false;
+}
+
 async function resolveAuth(req: AuthenticatedRequest): Promise<boolean> {
   const token = extractBearerToken(req);
   if (!token) return false;
 
-  const supabase = getSupabaseAdmin();
+  const store = requestAuthStorage.getStore();
+  if (store) {
+    store.token = token;
+  }
+
+  // First check if token is a locally signed HMAC session token
+  const localSession = verifySessionToken(token);
+  if (localSession) {
+    req.authRole = localSession.role;
+    req.authEmail = localSession.email;
+    req.affiliateId = localSession.affiliateId;
+    if (store) {
+      store.role = localSession.role;
+      store.email = localSession.email;
+    }
+
+    if (localSession.role === 'affiliate' && localSession.affiliateId) {
+      try {
+        const db = getSqliteDb();
+        const aff = db
+          .prepare('SELECT status FROM affiliates WHERE id = ?')
+          .get(localSession.affiliateId) as { status?: AffiliateStatus } | undefined;
+        if (aff) {
+          req.affiliateStatus = aff.status;
+        }
+      } catch {
+        // ignore sqlite lookup errors in supabase mode
+      }
+    }
+    return true;
+  }
+
+  const supabase = getSupabaseBaseAdminClient() || getSupabaseAdmin();
   if (supabase) {
     const { data, error } = await supabase.auth.getUser(token);
     if (error || !data?.user) return false;
@@ -56,11 +128,30 @@ async function resolveAuth(req: AuthenticatedRequest): Promise<boolean> {
     const appRole =
       (user.app_metadata?.role as string | undefined) ||
       (user.user_metadata?.role as string | undefined);
-    const adminEmail = process.env.ADMIN_EMAIL?.trim().toLowerCase();
 
-    if (appRole === 'admin' || (adminEmail && user.email?.toLowerCase() === adminEmail)) {
+    const isAdminUser =
+      appRole === 'admin' ||
+      isConfiguredAdminEmail(user.email) ||
+      (await isEmailInAdminDirectory(user.email));
+
+    if (isAdminUser) {
       req.authRole = 'admin';
       req.authEmail = user.email || 'admin@kreativalab.ch';
+      if (store) {
+        store.role = 'admin';
+        store.email = req.authEmail;
+        store.userId = user.id;
+      }
+
+      // Auto-sync app_metadata.role = 'admin' in background if service_role is available
+      const cfg = getSupabaseConfig();
+      if (cfg.isServiceRole && user.app_metadata?.role !== 'admin') {
+        void supabase.auth.admin
+          .updateUserById(user.id, {
+            app_metadata: { ...(user.app_metadata || {}), role: 'admin' },
+          })
+          .catch(() => {});
+      }
       return true;
     }
 
@@ -70,30 +161,17 @@ async function resolveAuth(req: AuthenticatedRequest): Promise<boolean> {
       req.authEmail = aff.email;
       req.affiliateId = aff.id;
       req.affiliateStatus = aff.status;
+      if (store) {
+        store.role = 'affiliate';
+        store.email = aff.email;
+        store.userId = user.id;
+      }
       return true;
     }
     return false;
   }
 
-  const session = verifySessionToken(token);
-  if (!session) return false;
-  req.authRole = session.role;
-  req.authEmail = session.email;
-  req.affiliateId = session.affiliateId;
-
-  if (session.role === 'affiliate' && session.affiliateId) {
-    try {
-      const db = getSqliteDb();
-      const aff = db.prepare('SELECT status FROM affiliates WHERE id = ?').get(session.affiliateId) as { status?: AffiliateStatus } | undefined;
-      if (aff) {
-        req.affiliateStatus = aff.status;
-      }
-    } catch {
-      // ignore sqlite lookup errors in supabase mode
-    }
-  }
-
-  return true;
+  return false;
 }
 
 function asyncHandler(
@@ -149,20 +227,23 @@ async function requireAffiliate(req: AuthenticatedRequest, res: Response, next: 
 export function createAffiliateRouter(): express.Router {
   const router = express.Router();
   router.use((req, _res, next) => {
-    const bodyReq = req as Request & { _body?: boolean };
-    if (bodyReq.body !== undefined) {
-      if (typeof bodyReq.body === 'string') {
-        try {
-          bodyReq.body = JSON.parse(bodyReq.body);
+    const token = extractBearerToken(req) || undefined;
+    requestAuthStorage.run({ token }, () => {
+      const bodyReq = req as Request & { _body?: boolean };
+      if (bodyReq.body !== undefined) {
+        if (typeof bodyReq.body === 'string') {
+          try {
+            bodyReq.body = JSON.parse(bodyReq.body);
+            bodyReq._body = true;
+          } catch {
+            // Let express.json() handle malformed payload or empty body
+          }
+        } else if (typeof bodyReq.body === 'object') {
           bodyReq._body = true;
-        } catch {
-          // Let express.json() handle malformed payload or empty body
         }
-      } else if (typeof bodyReq.body === 'object') {
-        bodyReq._body = true;
       }
-    }
-    next();
+      next();
+    });
   });
   router.use(express.json({ limit: '1mb' }));
 
@@ -272,9 +353,42 @@ export function createAffiliateRouter(): express.Router {
   router.get(
     '/admin/overview',
     requireAdmin,
-    asyncHandler(async (_req, res) => {
-      const overview = await getAdminOverview();
+    asyncHandler(async (req, res) => {
+      const overview = await getAdminOverview(req.authEmail);
       res.json(overview);
+    })
+  );
+
+  router.get(
+    '/admin/admins',
+    requireAdmin,
+    asyncHandler(async (req, res) => {
+      const admins = await listAdminAccounts(req.authEmail);
+      res.json({ admins });
+    })
+  );
+
+  router.post(
+    '/admin/admins',
+    requireAdmin,
+    asyncHandler(async (req, res) => {
+      const created = await createAdminAccount({
+        email: typeof req.body?.email === 'string' ? req.body.email : '',
+        password: typeof req.body?.password === 'string' ? req.body.password : '',
+        requester_is_admin: true,
+      });
+      const admins = await listAdminAccounts(req.authEmail);
+      res.status(201).json({ admin: created, admins });
+    })
+  );
+
+  router.delete(
+    '/admin/admins/:id',
+    requireAdmin,
+    asyncHandler(async (req, res) => {
+      const result = await removeAdminAccount(String(req.params.id), req.authEmail);
+      const admins = await listAdminAccounts(req.authEmail);
+      res.json({ removed: result.removed, admins });
     })
   );
 

@@ -152,6 +152,21 @@ export interface PayoutPreviewItem {
   already_generated_payout_id: string | null;
 }
 
+export interface AdminUserItem {
+  id: string;
+  email: string;
+  source: 'supabase_auth' | 'database' | 'env';
+  created_at: string | null;
+  is_removable: boolean;
+}
+
+export interface DbPermissionDiagnostic {
+  message: string;
+  key_role: string;
+  is_anon_key: boolean;
+  sql_fix: string;
+}
+
 export interface AdminOverviewData {
   storage_mode: 'supabase' | 'sqlite';
   kpis: {
@@ -169,6 +184,8 @@ export interface AdminOverviewData {
   customers: ReferralCustomer[];
   sales: ReferralSale[];
   payouts: AffiliatePayout[];
+  admins?: AdminUserItem[];
+  db_permission_error?: DbPermissionDiagnostic | null;
 }
 
 export interface AffiliatePortalData {

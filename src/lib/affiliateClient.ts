@@ -1,5 +1,6 @@
 import {
   AdminOverviewData,
+  AdminUserItem,
   Affiliate,
   AffiliateApplication,
   AffiliateLead,
@@ -194,6 +195,29 @@ export const affiliateApi = {
   // Admin endpoints
   getAdminOverview(): Promise<AdminOverviewData> {
     return apiFetch<AdminOverviewData>('/admin/overview');
+  },
+
+  listAdmins(): Promise<{ admins: AdminUserItem[] }> {
+    return apiFetch<{ admins: AdminUserItem[] }>('/admin/admins');
+  },
+
+  addAdminByAdmin(body: {
+    email: string;
+    password: string;
+  }): Promise<{ admin: { email: string }; admins: AdminUserItem[] }> {
+    return apiFetch<{ admin: { email: string }; admins: AdminUserItem[] }>('/admin/admins', {
+      method: 'POST',
+      body: JSON.stringify(body),
+    });
+  },
+
+  removeAdminByAdmin(idOrEmail: string): Promise<{ removed: string; admins: AdminUserItem[] }> {
+    return apiFetch<{ removed: string; admins: AdminUserItem[] }>(
+      `/admin/admins/${encodeURIComponent(idOrEmail)}`,
+      {
+        method: 'DELETE',
+      }
+    );
   },
 
   createAffiliate(body: Record<string, unknown>): Promise<{ affiliate: Affiliate }> {

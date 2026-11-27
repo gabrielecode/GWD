@@ -1,8 +1,19 @@
+import { AsyncLocalStorage } from 'node:async_hooks';
+import { Buffer } from 'node:buffer';
 import fs from 'node:fs';
 import { createRequire } from 'node:module';
 import path from 'node:path';
 import process from 'node:process';
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
+
+export interface RequestAuthContext {
+  token?: string;
+  role?: 'admin' | 'affiliate';
+  email?: string;
+  userId?: string;
+}
+
+export const requestAuthStorage = new AsyncLocalStorage<RequestAuthContext>();
 
 export interface SqliteStatementLike {
   get: (...params: unknown[]) => unknown;
@@ -19,6 +30,44 @@ type SqliteConstructor = new (path: string) => SqliteDatabaseLike;
 
 let sqliteDb: SqliteDatabaseLike | null = null;
 let supabaseAdminClient: SupabaseClient | null = null;
+let lastServiceRoleKeyUsed = '';
+
+export function getJwtRole(tokenOrKey: string): string | null {
+  const clean = (tokenOrKey || '').trim();
+  if (!clean) return null;
+  if (clean.startsWith('sb_secret_')) return 'service_role';
+  if (clean.startsWith('sb_publishable_')) return 'anon';
+  const parts = clean.split('.');
+  if (parts.length !== 3) return null;
+  try {
+    const json = Buffer.from(parts[1], 'base64url').toString('utf8');
+    const payload = JSON.parse(json) as { role?: string };
+    return typeof payload.role === 'string' ? payload.role : null;
+  } catch {
+    return null;
+  }
+}
+
+export function getConfiguredAdminEmails(): string[] {
+  const raw = (process.env.ADMIN_EMAIL || '').trim();
+  if (!raw) return [];
+  return Array.from(
+    new Set(
+      raw
+        .split(/[,;\s]+/)
+        .map((e) => e.trim().toLowerCase())
+        .filter((e) => e.includes('@'))
+    )
+  );
+}
+
+export function isConfiguredAdminEmail(email?: string | null): boolean {
+  if (!email) return false;
+  const norm = email.trim().toLowerCase();
+  if (!norm) return false;
+  const list = getConfiguredAdminEmails();
+  return list.includes(norm);
+}
 
 function loadSqliteConstructor(): SqliteConstructor | null {
   try {
@@ -45,28 +94,68 @@ export function getSupabaseConfig(): {
   url: string;
   serviceRoleKey: string;
   anonKey: string;
+  keyRole: string;
+  isServiceRole: boolean;
   enabled: boolean;
 } {
   const url = (process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL || '').trim();
   const serviceRoleKey = (process.env.SUPABASE_SERVICE_ROLE_KEY || '').trim();
   const anonKey = (process.env.VITE_SUPABASE_ANON_KEY || '').trim();
+  const detectedRole = getJwtRole(serviceRoleKey);
+  const isAnonKey =
+    detectedRole === 'anon' ||
+    (Boolean(anonKey) && Boolean(serviceRoleKey) && anonKey === serviceRoleKey);
+  const keyRole = isAnonKey ? 'anon' : detectedRole || (serviceRoleKey ? 'service_role' : 'none');
   return {
     url,
     serviceRoleKey,
     anonKey,
+    keyRole,
+    isServiceRole: Boolean(serviceRoleKey) && !isAnonKey,
     enabled: Boolean(url && serviceRoleKey),
   };
 }
 
-export function getSupabaseAdmin(): SupabaseClient | null {
+export function getSupabaseBaseAdminClient(): SupabaseClient | null {
   const cfg = getSupabaseConfig();
   if (!cfg.enabled) return null;
-  if (!supabaseAdminClient) {
+  if (!supabaseAdminClient || lastServiceRoleKeyUsed !== cfg.serviceRoleKey) {
+    lastServiceRoleKeyUsed = cfg.serviceRoleKey;
     supabaseAdminClient = createClient(cfg.url, cfg.serviceRoleKey, {
       auth: { persistSession: false, autoRefreshToken: false },
     });
   }
   return supabaseAdminClient;
+}
+
+export function getSupabaseUserClient(explicitToken?: string): SupabaseClient | null {
+  const cfg = getSupabaseConfig();
+  if (!cfg.enabled) return null;
+  const token = explicitToken || requestAuthStorage.getStore()?.token;
+  if (!token || token.split('.').length !== 3) return null;
+  const apiKey = cfg.anonKey || cfg.serviceRoleKey;
+  return createClient(cfg.url, apiKey, {
+    auth: { persistSession: false, autoRefreshToken: false },
+    global: {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    },
+  });
+}
+
+export function getSupabaseAdmin(): SupabaseClient | null {
+  const cfg = getSupabaseConfig();
+  if (!cfg.enabled) return null;
+
+  // If SUPABASE_SERVICE_ROLE_KEY is actually an anon key and we have an authenticated user JWT in context,
+  // forward the user's JWT so PostgREST executes queries as 'authenticated' instead of 'anon'.
+  if (!cfg.isServiceRole) {
+    const userClient = getSupabaseUserClient();
+    if (userClient) return userClient;
+  }
+
+  return getSupabaseBaseAdminClient();
 }
 
 export function getSqliteDb(): SqliteDatabaseLike {

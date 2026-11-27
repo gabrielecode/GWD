@@ -300,7 +300,31 @@ create trigger trg_referral_sales_updated_at
   before update on public.referral_sales
   for each row execute function public.set_updated_at();
 
--- 8. Row Level Security (RLS) Helpers & Policies
+-- 8. Table: admin_users (Multi-Admin directory & RLS helper)
+create table if not exists public.admin_users (
+  id uuid primary key default gen_random_uuid(),
+  email text not null unique,
+  created_by text,
+  created_at timestamptz not null default now()
+);
+
+create index if not exists idx_admin_users_email on public.admin_users (lower(email));
+
+-- Normalize any auth.users row where top-level role was mistakenly set to 'admin' back to 'authenticated'
+do $$
+begin
+  update auth.users
+  set
+    raw_app_meta_data = coalesce(raw_app_meta_data, '{}'::jsonb) || '{"role": "admin"}'::jsonb,
+    role = 'authenticated'
+  where role = 'admin';
+exception
+  when insufficient_privilege or undefined_table then
+    null;
+end;
+$$;
+
+-- 9. Row Level Security (RLS) Helpers & Policies
 create or replace function public.is_admin()
 returns boolean
 language sql
@@ -308,11 +332,18 @@ stable
 security definer
 set search_path = public
 as $$
-  select coalesce(
-    nullif(auth.jwt() -> 'app_metadata' ->> 'role', ''),
-    nullif(auth.jwt() -> 'user_metadata' ->> 'role', ''),
-    ''
-  ) = 'admin';
+  select (
+    coalesce(
+      nullif(auth.jwt() -> 'app_metadata' ->> 'role', ''),
+      nullif(auth.jwt() -> 'user_metadata' ->> 'role', ''),
+      ''
+    ) = 'admin'
+    or lower(coalesce(auth.jwt() ->> 'email', '')) in ('contatto@kreativalab.ch', 'admin@kreativalab.ch')
+    or exists (
+      select 1 from public.admin_users au
+      where lower(au.email) = lower(coalesce(auth.jwt() ->> 'email', ''))
+    )
+  );
 $$;
 
 create or replace function public.current_affiliate_id()
@@ -325,12 +356,20 @@ as $$
   select id from public.affiliates where auth_user_id = auth.uid() limit 1;
 $$;
 
+alter table public.admin_users enable row level security;
 alter table public.affiliates enable row level security;
 alter table public.affiliate_applications enable row level security;
 alter table public.affiliate_leads enable row level security;
 alter table public.referral_customers enable row level security;
 alter table public.affiliate_payouts enable row level security;
 alter table public.referral_sales enable row level security;
+
+-- Policies: admin_users
+drop policy if exists admin_users_admin_all on public.admin_users;
+create policy admin_users_admin_all on public.admin_users
+  for all to authenticated
+  using (public.is_admin())
+  with check (public.is_admin());
 
 -- Policies: affiliates
 drop policy if exists affiliates_admin_all on public.affiliates;
@@ -440,3 +479,23 @@ drop policy if exists sales_affiliate_select on public.referral_sales;
 create policy sales_affiliate_select on public.referral_sales
   for select to authenticated
   using (affiliate_id = public.current_affiliate_id());
+
+-- 10. Explicit Schema, Table, Sequence & Function Grants (Fixes Postgres 42501 permission denied for table affiliates)
+grant usage on schema public to postgres, anon, authenticated, service_role;
+
+grant all privileges on table public.admin_users to postgres, authenticated, service_role;
+grant all privileges on table public.affiliates to postgres, anon, authenticated, service_role;
+grant all privileges on table public.affiliate_applications to postgres, anon, authenticated, service_role;
+grant all privileges on table public.affiliate_leads to postgres, anon, authenticated, service_role;
+grant all privileges on table public.referral_customers to postgres, anon, authenticated, service_role;
+grant all privileges on table public.affiliate_payouts to postgres, anon, authenticated, service_role;
+grant all privileges on table public.referral_sales to postgres, anon, authenticated, service_role;
+
+grant all privileges on all tables in schema public to postgres, authenticated, service_role;
+grant all privileges on all sequences in schema public to postgres, anon, authenticated, service_role;
+grant execute on all functions in schema public to postgres, anon, authenticated, service_role;
+
+alter default privileges in schema public grant all on tables to postgres, anon, authenticated, service_role;
+alter default privileges in schema public grant all on sequences to postgres, anon, authenticated, service_role;
+alter default privileges in schema public grant execute on functions to postgres, anon, authenticated, service_role;
+

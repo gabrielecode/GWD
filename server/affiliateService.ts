@@ -2,6 +2,7 @@ import crypto from 'node:crypto';
 import process from 'node:process';
 import {
   AdminOverviewData,
+  AdminUserItem,
   Affiliate,
   AffiliateApplication,
   AffiliateLead,
@@ -10,6 +11,7 @@ import {
   AffiliateStatus,
   ApplicationStatus,
   CustomerStatus,
+  DbPermissionDiagnostic,
   LeadStatus,
   PayoutPreviewItem,
   PayoutStatus,
@@ -36,7 +38,16 @@ import {
   validatePostalCode,
   validateVatNumber,
 } from '../src/lib/affiliateRules.js';
-import { getSqliteDb, getSupabaseAdmin, getSupabaseConfig } from './db.js';
+import {
+  getConfiguredAdminEmails,
+  getSqliteDb,
+  getSupabaseAdmin,
+  getSupabaseBaseAdminClient,
+  getSupabaseConfig,
+  getSupabaseUserClient,
+  isConfiguredAdminEmail,
+  requestAuthStorage,
+} from './db.js';
 import { hashPassword, signSessionToken, timingSafeEqualsText, verifyPassword } from './auth.js';
 import { sendAdminEmailNotification } from './emailService.js';
 
@@ -161,6 +172,85 @@ function mapSupabaseNumbers<T extends Record<string, unknown>>(row: T): T {
   return copy as T;
 }
 
+// ---------- SUPABASE SQL PERMISSION DIAGNOSTIC & MULTI-ADMIN ----------
+
+export function buildSupabasePermissionFixSql(extraEmails: string[] = []): string {
+  const emailSet = new Set<string>([
+    'contatto@kreativalab.ch',
+    'admin@kreativalab.ch',
+    ...getConfiguredAdminEmails(),
+    ...extraEmails.map((e) => e.trim().toLowerCase()).filter((e) => e.includes('@')),
+  ]);
+  const reqEmail = requestAuthStorage.getStore()?.email?.trim().toLowerCase();
+  if (reqEmail && reqEmail.includes('@')) {
+    emailSet.add(reqEmail);
+  }
+  const sqlEmails = Array.from(emailSet)
+    .map((e) => `'${e.replace(/'/g, "''")}'`)
+    .join(', ');
+
+  return `-- Kreativalab: Riparazione Permessi Tabella Affiliates & Multi-Admin (Esegui in Supabase -> SQL Editor -> Run)
+
+-- 1. Tabella admin_users per gestione Multi-Admin
+create table if not exists public.admin_users (
+  id uuid primary key default gen_random_uuid(),
+  email text not null unique,
+  created_by text,
+  created_at timestamptz not null default now()
+);
+
+-- 2. Normalizza eventuali utenti in auth.users e assegna claim app_metadata.role = 'admin'
+update auth.users
+set
+  raw_app_meta_data = coalesce(raw_app_meta_data, '{}'::jsonb) || '{"role": "admin"}'::jsonb,
+  role = 'authenticated'
+where role = 'admin'
+   or lower(email) in (${sqlEmails})
+   or (raw_user_meta_data ->> 'role') = 'admin'
+   or (raw_app_meta_data ->> 'role') = 'admin';
+
+-- 3. Concedi tutti i permessi (GRANT) su schema, tabelle, sequenze e funzioni (risolve "permission denied for table affiliates")
+grant usage on schema public to postgres, anon, authenticated, service_role;
+
+grant all privileges on table public.admin_users to postgres, authenticated, service_role;
+grant all privileges on table public.affiliates to postgres, anon, authenticated, service_role;
+grant all privileges on table public.affiliate_applications to postgres, anon, authenticated, service_role;
+grant all privileges on table public.affiliate_leads to postgres, anon, authenticated, service_role;
+grant all privileges on table public.referral_customers to postgres, anon, authenticated, service_role;
+grant all privileges on table public.affiliate_payouts to postgres, anon, authenticated, service_role;
+grant all privileges on table public.referral_sales to postgres, anon, authenticated, service_role;
+
+grant all privileges on all tables in schema public to postgres, anon, authenticated, service_role;
+grant all privileges on all sequences in schema public to postgres, anon, authenticated, service_role;
+grant execute on all functions in schema public to postgres, anon, authenticated, service_role;
+
+alter default privileges in schema public grant all on tables to postgres, anon, authenticated, service_role;
+alter default privileges in schema public grant all on sequences to postgres, anon, authenticated, service_role;
+alter default privileges in schema public grant execute on functions to postgres, anon, authenticated, service_role;
+
+-- 4. Aggiorna funzione RLS public.is_admin() per supportare Multi-Admin
+create or replace function public.is_admin()
+returns boolean
+language sql
+stable
+security definer
+set search_path = public
+as $$
+  select (
+    coalesce(
+      nullif(auth.jwt() -> 'app_metadata' ->> 'role', ''),
+      nullif(auth.jwt() -> 'user_metadata' ->> 'role', ''),
+      ''
+    ) = 'admin'
+    or lower(coalesce(auth.jwt() ->> 'email', '')) in (${sqlEmails})
+    or exists (
+      select 1 from public.admin_users au
+      where lower(au.email) = lower(coalesce(auth.jwt() ->> 'email', ''))
+    )
+  );
+$$;`;
+}
+
 // ---------- AUTH & BOOTSTRAP ----------
 
 export async function getAuthConfigStatus(): Promise<{
@@ -173,27 +263,44 @@ export async function getAuthConfigStatus(): Promise<{
   const hasMasterPasscode = Boolean(process.env.ADMIN_PASSCODE?.trim());
   const supaCfg = getSupabaseConfig();
   if (supaCfg.enabled) {
-    let hasAnyAdmin = false;
+    let hasAnyAdmin = getConfiguredAdminEmails().length > 0;
     let supaError: string | null = null;
     try {
-      const supabase = getSupabaseAdmin();
-      if (supabase) {
-        const adminEmail = process.env.ADMIN_EMAIL?.trim().toLowerCase();
+      const supabase = getSupabaseBaseAdminClient();
+      if (supabase && supaCfg.isServiceRole) {
         const { data, error } = await supabase.auth.admin.listUsers({ page: 1, perPage: 200 });
         if (error) {
           supaError = error.message;
         } else {
           const users = data?.users ?? [];
-          hasAnyAdmin = users.some((u) => {
-            const appRole =
-              (u.app_metadata?.role as string | undefined) ||
-              (u.user_metadata?.role as string | undefined);
-            return appRole === 'admin' || Boolean(adminEmail && u.email?.toLowerCase() === adminEmail);
-          });
+          if (
+            users.some((u) => {
+              const appRole =
+                (u.app_metadata?.role as string | undefined) ||
+                (u.user_metadata?.role as string | undefined);
+              return appRole === 'admin' || isConfiguredAdminEmail(u.email);
+            })
+          ) {
+            hasAnyAdmin = true;
+          }
         }
+      } else if (supabase && !supaCfg.isServiceRole) {
+        // Anon key configured in SUPABASE_SERVICE_ROLE_KEY: keep Supabase Auth enabled on frontend
+        hasAnyAdmin = true;
       }
     } catch (err) {
       supaError = err instanceof Error ? err.message : 'Errore Supabase';
+    }
+
+    if (supaError && /not allowed|not_admin/i.test(supaError)) {
+      // SUPABASE_SERVICE_ROLE_KEY is an anon key, so auth.admin.listUsers is not allowed,
+      // but Supabase Auth login still works with VITE_SUPABASE_ANON_KEY.
+      return {
+        storage_mode: 'supabase',
+        supabase_configured: true,
+        needs_admin_setup: false,
+        has_master_passcode: hasMasterPasscode,
+      };
     }
 
     if (supaError && /bearer|token|apikey|unauthorized|invalid/i.test(supaError)) {
@@ -211,7 +318,8 @@ export async function getAuthConfigStatus(): Promise<{
           supabase_configured: false,
           needs_admin_setup: !hasMasterPasscode && !hasLocalAdmin,
           has_master_passcode: hasMasterPasscode,
-          config_error: 'Attenzione: la chiave SUPABASE_SERVICE_ROLE_KEY su Vercel non è valida o è una chiave anon anziché service_role. Il sistema sta operando in modalità SQLite locale. Correggi la chiave su Vercel o rimuovi le variabili Supabase.',
+          config_error:
+            'Attenzione: la chiave SUPABASE_SERVICE_ROLE_KEY su Vercel non è valida. Il sistema sta operando in modalità SQLite locale.',
         };
       } catch {
         return {
@@ -259,6 +367,12 @@ export async function getAuthConfigStatus(): Promise<{
 }
 
 export function setupInitialAdminPassword(password: string): { token: string; email: string } {
+  if (!process.env.ADMIN_PASSCODE?.trim()) {
+    throw new ServiceError(
+      403,
+      'Configura ADMIN_PASSCODE nelle variabili ambiente per creare il primo admin.'
+    );
+  }
   if (getSupabaseConfig().enabled) {
     throw new ServiceError(400, 'Con Supabase attivo, crea l’utente Admin dal tab "Crea Utente Admin".');
   }
@@ -282,11 +396,189 @@ export function setupInitialAdminPassword(password: string): { token: string; em
     hash,
     nowIso()
   );
-  const email = process.env.ADMIN_EMAIL?.trim() || 'admin@kreativalab.ch';
+  const envEmails = getConfiguredAdminEmails();
+  const email = envEmails[0] || 'admin@kreativalab.ch';
   return {
     token: signSessionToken({ role: 'admin', email }),
     email,
   };
+}
+
+export async function listAdminAccounts(currentAdminEmail?: string): Promise<AdminUserItem[]> {
+  const byEmail = new Map<string, AdminUserItem>();
+  const envEmails = getConfiguredAdminEmails();
+
+  for (const email of envEmails) {
+    byEmail.set(email, {
+      id: `env:${email}`,
+      email,
+      source: 'env',
+      created_at: null,
+      is_removable: false,
+    });
+  }
+
+  const supaCfg = getSupabaseConfig();
+  if (supaCfg.enabled) {
+    const baseClient = getSupabaseBaseAdminClient();
+    if (baseClient && supaCfg.isServiceRole) {
+      try {
+        const { data } = await baseClient.auth.admin.listUsers({ page: 1, perPage: 200 });
+        for (const u of data?.users ?? []) {
+          const email = (u.email || '').trim().toLowerCase();
+          if (!email) continue;
+          const appRole =
+            (u.app_metadata?.role as string | undefined) ||
+            (u.user_metadata?.role as string | undefined);
+          if (appRole === 'admin' || isConfiguredAdminEmail(email)) {
+            const isEnv = envEmails.includes(email);
+            byEmail.set(email, {
+              id: u.id,
+              email,
+              source: isEnv ? 'env' : 'supabase_auth',
+              created_at: u.created_at || null,
+              is_removable: !isEnv,
+            });
+          }
+        }
+      } catch {
+        // ignore listUsers error if service_role is restricted
+      }
+    }
+
+    const activeClient = getSupabaseAdmin();
+    if (activeClient) {
+      try {
+        const { data: tableAdmins } = await activeClient
+          .from('admin_users')
+          .select('*')
+          .order('created_at', { ascending: false });
+        for (const row of (tableAdmins ?? []) as Array<Record<string, unknown>>) {
+          const email = String(row.email || '').trim().toLowerCase();
+          if (!email || byEmail.has(email)) continue;
+          const isEnv = envEmails.includes(email);
+          byEmail.set(email, {
+            id: String(row.id || email),
+            email,
+            source: isEnv ? 'env' : 'database',
+            created_at: row.created_at ? String(row.created_at) : null,
+            is_removable: !isEnv,
+          });
+        }
+      } catch {
+        // admin_users table might not exist yet in Supabase before running migration
+      }
+    }
+  }
+
+  try {
+    const db = getSqliteDb();
+    const rows = db
+      .prepare('SELECT id, email, created_at FROM admin_users ORDER BY created_at DESC')
+      .all() as Array<{ id?: string; email?: string; created_at?: string }>;
+    for (const r of rows) {
+      const email = (r.email || '').trim().toLowerCase();
+      if (!email || byEmail.has(email)) continue;
+      const isEnv = envEmails.includes(email);
+      byEmail.set(email, {
+        id: String(r.id || email),
+        email,
+        source: isEnv ? 'env' : 'database',
+        created_at: r.created_at || null,
+        is_removable: !isEnv,
+      });
+    }
+  } catch {
+    // SQLite may not be available on serverless runtime
+  }
+
+  const activeEmail = (currentAdminEmail || requestAuthStorage.getStore()?.email || '')
+    .trim()
+    .toLowerCase();
+  if (activeEmail && !byEmail.has(activeEmail)) {
+    byEmail.set(activeEmail, {
+      id: `active:${activeEmail}`,
+      email: activeEmail,
+      source: supaCfg.enabled ? 'supabase_auth' : 'database',
+      created_at: null,
+      is_removable: false,
+    });
+  }
+
+  return Array.from(byEmail.values()).map((item) => ({
+    ...item,
+    is_removable: item.is_removable && item.email.toLowerCase() !== activeEmail,
+  }));
+}
+
+export async function removeAdminAccount(
+  idOrEmail: string,
+  currentAdminEmail?: string
+): Promise<{ removed: string }> {
+  const target = (idOrEmail || '').trim();
+  if (!target) {
+    throw new ServiceError(400, 'Specifica l’amministratore da rimuovere.');
+  }
+  const activeEmail = (currentAdminEmail || requestAuthStorage.getStore()?.email || '')
+    .trim()
+    .toLowerCase();
+
+  const allAdmins = await listAdminAccounts(activeEmail);
+  const found = allAdmins.find(
+    (a) => a.id === target || a.email.toLowerCase() === target.toLowerCase()
+  );
+  const targetEmail = (found?.email || target).trim().toLowerCase();
+
+  if (activeEmail && targetEmail === activeEmail) {
+    throw new ServiceError(400, 'Non puoi rimuovere il tuo stesso account Admin attualmente connesso.');
+  }
+  if (isConfiguredAdminEmail(targetEmail)) {
+    throw new ServiceError(
+      400,
+      `L'account ${targetEmail} è configurato nella variabile d'ambiente ADMIN_EMAIL su Vercel e non può essere rimosso da qui.`
+    );
+  }
+  if (allAdmins.length <= 1) {
+    throw new ServiceError(400, 'Impossibile rimuovere l’unico amministratore rimasto nel sistema.');
+  }
+
+  const supaCfg = getSupabaseConfig();
+  if (supaCfg.enabled) {
+    const activeClient = getSupabaseAdmin();
+    if (activeClient) {
+      try {
+        await activeClient.from('admin_users').delete().ilike('email', targetEmail);
+      } catch {
+        // ignore if admin_users table doesn't exist
+      }
+    }
+    const baseClient = getSupabaseBaseAdminClient();
+    if (baseClient && supaCfg.isServiceRole) {
+      try {
+        const { data } = await baseClient.auth.admin.listUsers({ page: 1, perPage: 200 });
+        const matched = (data?.users ?? []).find(
+          (u) => (u.email || '').trim().toLowerCase() === targetEmail || u.id === target
+        );
+        if (matched) {
+          await baseClient.auth.admin.updateUserById(matched.id, {
+            app_metadata: { ...(matched.app_metadata || {}), role: 'revoked' },
+            user_metadata: { ...(matched.user_metadata || {}), role: 'revoked' },
+          });
+        }
+      } catch {
+        // ignore if listUsers fails
+      }
+    }
+  }
+
+  try {
+    const db = getSqliteDb();
+    db.prepare('DELETE FROM admin_users WHERE id = ? OR lower(email) = ?').run(target, targetEmail);
+  } catch {
+    // ignore if SQLite unavailable
+  }
+
+  return { removed: targetEmail };
 }
 
 export async function createAdminAccount(input: {
@@ -314,77 +606,129 @@ export async function createAdminAccount(input: {
 
   let authorized = Boolean(input.requester_is_admin);
   if (!authorized) {
-    if (status.needs_admin_setup && !envPass) {
+    if (!envPass) {
+      throw new ServiceError(
+        403,
+        'Configura ADMIN_PASSCODE nelle variabili ambiente per creare il primo admin.'
+      );
+    }
+    if (providedPasscode && timingSafeEqualsText(providedPasscode, envPass)) {
       authorized = true;
-    } else if (envPass && providedPasscode && timingSafeEqualsText(providedPasscode, envPass)) {
-      authorized = true;
-    } else if (!status.supabase_configured && providedPasscode) {
-      const db = getSqliteDb();
-      const legacy = db
-        .prepare('SELECT value FROM app_settings WHERE key = ?')
-        .get('admin_password_hash') as { value?: string } | undefined;
-      if (legacy?.value && verifyPassword(providedPasscode, legacy.value)) {
-        authorized = true;
-      } else {
-        const admins = db.prepare('SELECT password_hash FROM admin_users').all() as Array<{
-          password_hash?: string;
-        }>;
-        if (admins.some((a) => a.password_hash && verifyPassword(providedPasscode, a.password_hash))) {
-          authorized = true;
-        }
-      }
     }
   }
 
   if (!authorized) {
     throw new ServiceError(
       403,
-      envPass
-        ? 'Autorizzazione negata: inserisci il Passcode Master (ADMIN_PASSCODE) corretto.'
-        : 'Esiste già un amministratore: inserisci la password di un Admin esistente oppure accedi prima come Admin.'
+      'Autorizzazione negata: inserisci il Passcode Master (ADMIN_PASSCODE) corretto.'
     );
   }
 
-  const supabase = status.storage_mode === 'supabase' ? getSupabaseAdmin() : null;
-  if (supabase) {
-    const { data, error } = await supabase.auth.admin.createUser({
-      email,
-      password,
-      email_confirm: true,
-      app_metadata: { role: 'admin' },
-    });
-    if (error || !data?.user) {
+  // Save in local SQLite admin_users as well if available (supports multi-admin & hybrid fallback)
+  try {
+    const db = getSqliteDb();
+    const existingSqlite = db
+      .prepare('SELECT id FROM admin_users WHERE lower(email) = ?')
+      .get(email) as { id?: string } | undefined;
+    const hash = hashPassword(password);
+    if (existingSqlite?.id) {
+      db.prepare('UPDATE admin_users SET password_hash = ? WHERE id = ?').run(hash, existingSqlite.id);
+    } else {
+      db.prepare('INSERT INTO admin_users (id, email, password_hash, created_at) VALUES (?, ?, ?, ?)').run(
+        crypto.randomUUID(),
+        email,
+        hash,
+        nowIso()
+      );
+    }
+  } catch {
+    // ignore if SQLite is not available on Vercel
+  }
+
+  const supaCfg = getSupabaseConfig();
+  if (status.storage_mode === 'supabase' && supaCfg.enabled) {
+    const baseClient = getSupabaseBaseAdminClient();
+    const activeClient = getSupabaseAdmin();
+
+    // Record in public.admin_users table if present
+    if (activeClient) {
+      try {
+        await activeClient.from('admin_users').upsert(
+          {
+            email,
+            created_by: requestAuthStorage.getStore()?.email || 'admin',
+          },
+          { onConflict: 'email' }
+        );
+      } catch {
+        // ignore if public.admin_users table not yet migrated
+      }
+    }
+
+    if (baseClient) {
+      const { data, error } = await baseClient.auth.admin.createUser({
+        email,
+        password,
+        email_confirm: true,
+        app_metadata: { role: 'admin' },
+        user_metadata: { role: 'admin' },
+      });
+
+      if (!error && data?.user) {
+        return { email: data.user.email || email };
+      }
+
       const msg = error?.message || 'Impossibile creare l’utente Admin su Supabase.';
-      if (/already/i.test(msg)) {
+
+      // If user already exists in Supabase Auth, promote them to role='admin' and update password!
+      if (/already|registered|exists/i.test(msg)) {
+        const { data: listData } = await baseClient.auth.admin.listUsers({ page: 1, perPage: 200 });
+        const existingUser = (listData?.users ?? []).find(
+          (u) => (u.email || '').trim().toLowerCase() === email
+        );
+        if (existingUser) {
+          const { error: upErr } = await baseClient.auth.admin.updateUserById(existingUser.id, {
+            password,
+            email_confirm: true,
+            app_metadata: { ...(existingUser.app_metadata || {}), role: 'admin' },
+            user_metadata: { ...(existingUser.user_metadata || {}), role: 'admin' },
+          });
+          if (!upErr) {
+            return { email };
+          }
+        }
         throw new ServiceError(409, 'Esiste già un utente Supabase registrato con questa email.');
       }
-      if (/bearer|token|apikey|unauthorized|invalid/i.test(msg)) {
+
+      // If SUPABASE_SERVICE_ROLE_KEY on Vercel is an anon key (GoTrue returns "User not allowed"),
+      // fallback to standard signUp with user_metadata.role = 'admin' so multi-admin creation still succeeds!
+      if (/not allowed|not_admin|bearer|token|apikey|unauthorized|invalid/i.test(msg)) {
+        const { data: signUpData, error: signUpErr } = await baseClient.auth.signUp({
+          email,
+          password,
+          options: {
+            data: { role: 'admin' },
+          },
+        });
+        if (!signUpErr && signUpData?.user) {
+          return {
+            email: signUpData.user.email || email,
+            token: signUpData.session?.access_token,
+          };
+        }
+        if (signUpErr && /already|registered/i.test(signUpErr.message)) {
+          return { email };
+        }
         throw new ServiceError(
           400,
-          'Errore Supabase Auth: la chiave SUPABASE_SERVICE_ROLE_KEY su Vercel non è valida o è una chiave anon anziché service_role. Correggi la chiave nelle impostazioni di Vercel oppure rimuovi le variabili d’ambiente Supabase per usare SQLite.'
+          signUpErr?.message ||
+            'Errore Supabase Auth: verifica che SUPABASE_SERVICE_ROLE_KEY su Vercel sia la chiave service_role.'
         );
       }
+
       throw new ServiceError(400, msg);
     }
-    return { email: data.user.email || email };
   }
-
-  const db = getSqliteDb();
-  const existingUser = db
-    .prepare('SELECT id FROM admin_users WHERE lower(email) = ?')
-    .get(email) as { id?: string } | undefined;
-  if (existingUser) {
-    throw new ServiceError(409, 'Esiste già un utente Admin con questa email.');
-  }
-
-  const id = crypto.randomUUID();
-  const hash = hashPassword(password);
-  db.prepare('INSERT INTO admin_users (id, email, password_hash, created_at) VALUES (?, ?, ?, ?)').run(
-    id,
-    email,
-    hash,
-    nowIso()
-  );
 
   return {
     email,
@@ -398,7 +742,8 @@ export function loginAdminLocal(passcode: string, emailInput?: string): { token:
     throw new ServiceError(400, 'Inserisci il passcode o la password Admin.');
   }
   const envPass = process.env.ADMIN_PASSCODE?.trim();
-  const defaultEmail = process.env.ADMIN_EMAIL?.trim() || 'admin@kreativalab.ch';
+  const envEmails = getConfiguredAdminEmails();
+  const defaultEmail = envEmails[0] || 'admin@kreativalab.ch';
   const normEmail = normalizeEmail(emailInput);
 
   if (envPass && timingSafeEqualsText(clean, envPass)) {
@@ -548,7 +893,20 @@ export async function loginAffiliateLocal(
 
 // ---------- SHARED DATA FETCHERS ----------
 
-async function fetchAllCollections(): Promise<{
+async function queryAllSupabaseTables(client: NonNullable<ReturnType<typeof getSupabaseAdmin>>) {
+  return Promise.all([
+    client.from('affiliates').select('*').order('created_at', { ascending: false }),
+    client.from('affiliate_applications').select('*').order('created_at', { ascending: false }),
+    client.from('affiliate_leads').select('*').order('registered_at', { ascending: false }),
+    client.from('referral_customers').select('*').order('created_at', { ascending: false }),
+    client.from('referral_sales').select('*').order('created_at', { ascending: false }),
+    client.from('affiliate_payouts').select('*').order('period_month', { ascending: false }),
+  ]);
+}
+
+async function fetchAllCollections(options?: {
+  allowPermissionErrorFallback?: boolean;
+}): Promise<{
   storage_mode: 'supabase' | 'sqlite';
   affiliates: Affiliate[];
   applications: AffiliateApplication[];
@@ -556,20 +914,67 @@ async function fetchAllCollections(): Promise<{
   customers: ReferralCustomer[];
   sales: ReferralSale[];
   payouts: AffiliatePayout[];
+  db_permission_error?: DbPermissionDiagnostic | null;
 }> {
-  const supabase = getSupabaseAdmin();
-  if (supabase) {
-    const [affRes, appRes, leadRes, custRes, saleRes, payRes] = await Promise.all([
-      supabase.from('affiliates').select('*').order('created_at', { ascending: false }),
-      supabase.from('affiliate_applications').select('*').order('created_at', { ascending: false }),
-      supabase.from('affiliate_leads').select('*').order('registered_at', { ascending: false }),
-      supabase.from('referral_customers').select('*').order('created_at', { ascending: false }),
-      supabase.from('referral_sales').select('*').order('created_at', { ascending: false }),
-      supabase.from('affiliate_payouts').select('*').order('period_month', { ascending: false }),
-    ]);
-    for (const r of [affRes, appRes, leadRes, custRes, saleRes, payRes]) {
-      if (r.error) throw new ServiceError(500, r.error.message);
+  const supaCfg = getSupabaseConfig();
+  const primaryClient = getSupabaseAdmin();
+  if (primaryClient) {
+    let results = await queryAllSupabaseTables(primaryClient);
+    let firstError = results.find((r) => r.error)?.error ?? null;
+
+    // If primary client hit a permission error (e.g. 42501), try the alternate client
+    // (either user JWT client or base service_role client)
+    if (firstError) {
+      const alternateClient = supaCfg.isServiceRole
+        ? getSupabaseUserClient()
+        : getSupabaseBaseAdminClient();
+      if (alternateClient && alternateClient !== primaryClient) {
+        const retryResults = await queryAllSupabaseTables(alternateClient);
+        const retryError = retryResults.find((r) => r.error)?.error ?? null;
+        if (!retryError) {
+          results = retryResults;
+          firstError = null;
+        }
+      }
     }
+
+    if (firstError) {
+      const isPermDenied =
+        firstError.code === '42501' ||
+        /permission denied/i.test(firstError.message || '');
+
+      if (isPermDenied) {
+        const diagnostic: DbPermissionDiagnostic = {
+          message: firstError.message,
+          key_role: supaCfg.keyRole,
+          is_anon_key: !supaCfg.isServiceRole,
+          sql_fix: buildSupabasePermissionFixSql(),
+        };
+
+        if (options?.allowPermissionErrorFallback) {
+          const [affRes, appRes, leadRes, custRes, saleRes, payRes] = results;
+          return {
+            storage_mode: 'supabase',
+            affiliates: ((affRes.data ?? []) as Record<string, unknown>[]).map(mapSupabaseNumbers) as unknown as Affiliate[],
+            applications: ((appRes.data ?? []) as Record<string, unknown>[]).map(mapSupabaseNumbers) as unknown as AffiliateApplication[],
+            leads: ((leadRes.data ?? []) as Record<string, unknown>[]).map(mapSupabaseNumbers) as unknown as AffiliateLead[],
+            customers: ((custRes.data ?? []) as Record<string, unknown>[]).map(mapSupabaseNumbers) as unknown as ReferralCustomer[],
+            sales: ((saleRes.data ?? []) as Record<string, unknown>[]).map(mapSupabaseNumbers) as unknown as ReferralSale[],
+            payouts: ((payRes.data ?? []) as Record<string, unknown>[]).map(mapSupabaseNumbers) as unknown as AffiliatePayout[],
+            db_permission_error: diagnostic,
+          };
+        }
+
+        throw new ServiceError(
+          403,
+          `Permessi database Supabase mancanti (${firstError.message}). Copia ed esegui lo script SQL di riparazione mostrato nel banner in alto nella Console Admin.`
+        );
+      }
+
+      throw new ServiceError(500, firstError.message);
+    }
+
+    const [affRes, appRes, leadRes, custRes, saleRes, payRes] = results;
     return {
       storage_mode: 'supabase',
       affiliates: (affRes.data ?? []).map(mapSupabaseNumbers) as Affiliate[],
@@ -578,6 +983,7 @@ async function fetchAllCollections(): Promise<{
       customers: (custRes.data ?? []).map(mapSupabaseNumbers) as ReferralCustomer[],
       sales: (saleRes.data ?? []).map(mapSupabaseNumbers) as ReferralSale[],
       payouts: (payRes.data ?? []).map(mapSupabaseNumbers) as AffiliatePayout[],
+      db_permission_error: null,
     };
   }
 
@@ -603,6 +1009,7 @@ async function fetchAllCollections(): Promise<{
     customers,
     sales,
     payouts,
+    db_permission_error: null,
   };
 }
 
@@ -610,11 +1017,15 @@ async function expireStaleLeadsInternal(): Promise<void> {
   const now = nowIso();
   const supabase = getSupabaseAdmin();
   if (supabase) {
-    await supabase
-      .from('affiliate_leads')
-      .update({ status: 'expired' })
-      .in('status', ['registered', 'in_progress'])
-      .lt('expires_at', now);
+    try {
+      await supabase
+        .from('affiliate_leads')
+        .update({ status: 'expired' })
+        .in('status', ['registered', 'in_progress'])
+        .lt('expires_at', now);
+    } catch {
+      // ignore if table permissions are not yet applied
+    }
     return;
   }
   const db = getSqliteDb();
@@ -711,7 +1122,7 @@ export async function submitApplication(input: {
        <p><b>Cantone / Paese:</b> ${record.canton_or_country}</p>
        <p><b>Azienda:</b> ${record.company_name || 'N/D'}</p>
        <p><b>Esperienza & Network:</b> ${record.experience_and_network}</p>
-       <p><a href="https://kreativalab.ch/admin/affiliates" style="background:#2DD4BF;color:#0C0A09;padding:10px 20px;text-decoration:none;border-radius:6px;font-weight:bold;">Accedi alla Console Admin</a></p>
+       <p><a href="https://www.kreativalab.ch/admin/affiliates" style="background:#2DD4BF;color:#0C0A09;padding:10px 20px;text-decoration:none;border-radius:6px;font-weight:bold;">Accedi alla Console Admin</a></p>
      </div>`
   ).catch(() => {});
 
@@ -720,9 +1131,12 @@ export async function submitApplication(input: {
 
 // ---------- ADMIN OVERVIEW ----------
 
-export async function getAdminOverview(): Promise<AdminOverviewData> {
+export async function getAdminOverview(currentAdminEmail?: string): Promise<AdminOverviewData> {
   await expireStaleLeadsInternal();
-  const data = await fetchAllCollections();
+  const [data, admins] = await Promise.all([
+    fetchAllCollections({ allowPermissionErrorFallback: true }),
+    listAdminAccounts(currentAdminEmail),
+  ]);
   const nowMs = Date.now();
 
   const activeAffiliates = data.affiliates.filter((a) => a.status === 'active').length;
@@ -753,6 +1167,7 @@ export async function getAdminOverview(): Promise<AdminOverviewData> {
 
   return {
     ...data,
+    admins,
     kpis: {
       active_affiliates: activeAffiliates,
       pending_applications: pendingApplications,
@@ -1931,7 +2346,7 @@ export async function generateMonthlyPayouts(periodMonth: string): Promise<{
       `<div style="font-family:sans-serif;padding:20px;color:#141210;">
          <h2>Generazione Payout Mensili (${periodMonth})</h2>
          <p>Sono stati generati <b>${created.length}</b> estratti conto provvigionali per un totale di <b>CHF ${totalPayableSum.toFixed(2)}</b>.</p>
-         <p><a href="https://kreativalab.ch/admin/payouts" style="background:#FBBF24;color:#0C0A09;padding:10px 20px;text-decoration:none;border-radius:6px;font-weight:bold;">Visualizza Payouts & Estratti Conto</a></p>
+         <p><a href="https://www.kreativalab.ch/admin/payouts" style="background:#FBBF24;color:#0C0A09;padding:10px 20px;text-decoration:none;border-radius:6px;font-weight:bold;">Visualizza Payouts & Estratti Conto</a></p>
        </div>`
     ).catch(() => {});
   }
