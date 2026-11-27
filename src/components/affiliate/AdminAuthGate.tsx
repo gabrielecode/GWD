@@ -52,6 +52,9 @@ export function AdminAuthGate({
         const me = await affiliateApi.getSessionMe();
         if (me.role === 'admin') {
           setAdminEmail(me.email);
+        } else if (me.role === 'affiliate') {
+          setAdminEmail(null);
+          setError('Accesso negato: gli agenti commerciali non possono accedere al pannello di amministrazione. Accedi al Portale Agenti su /affiliate.');
         } else {
           setAdminEmail(null);
         }
@@ -117,6 +120,11 @@ export function AdminAuthGate({
         passcode,
         loginEmail.trim() || undefined
       );
+      const me = await affiliateApi.getSessionMe();
+      if (me.role !== 'admin') {
+        await affiliateApi.logout();
+        throw new Error('Accesso negato: gli agenti non possono accedere al pannello di amministrazione.');
+      }
       setAdminEmail(res.email);
       setPasscode('');
     } catch (err) {

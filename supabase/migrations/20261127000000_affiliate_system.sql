@@ -309,8 +309,8 @@ security definer
 set search_path = public
 as $$
   select coalesce(
-    nullif(auth.jwt() ->> 'role', ''),
     nullif(auth.jwt() -> 'app_metadata' ->> 'role', ''),
+    nullif(auth.jwt() -> 'user_metadata' ->> 'role', ''),
     ''
   ) = 'admin';
 $$;
