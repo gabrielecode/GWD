@@ -26,7 +26,8 @@ import {
   updatePayoutStatus,
 } from './affiliateService.js';
 import { verifySessionToken } from './auth.js';
-import { getSupabaseAdmin } from './db.js';
+import { getSqliteDb, getSupabaseAdmin } from './db.js';
+import { AffiliateStatus } from '../src/types/affiliate.js';
 
 interface AuthenticatedRequest extends Request {
   authRole?: 'admin' | 'affiliate';
@@ -79,6 +80,19 @@ async function resolveAuth(req: AuthenticatedRequest): Promise<boolean> {
   req.authRole = session.role;
   req.authEmail = session.email;
   req.affiliateId = session.affiliateId;
+
+  if (session.role === 'affiliate' && session.affiliateId) {
+    try {
+      const db = getSqliteDb();
+      const aff = db.prepare('SELECT status FROM affiliates WHERE id = ?').get(session.affiliateId) as { status?: AffiliateStatus } | undefined;
+      if (aff) {
+        req.affiliateStatus = aff.status;
+      }
+    } catch {
+      // ignore sqlite lookup errors in supabase mode
+    }
+  }
+
   return true;
 }
 
