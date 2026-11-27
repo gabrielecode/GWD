@@ -751,6 +751,55 @@ export function resolveSeoMetadata(params: {
     };
   }
 
+  // 8b. Admin & Affiliate Portal Routes
+  if (path === '/admin/affiliates' || path === '/admin/payouts') {
+    const isPayouts = path === '/admin/payouts';
+    return {
+      title: isPayouts
+        ? 'Admin Payouts & Provvigioni · kreativalab'
+        : 'Admin Agenti & Candidature · kreativalab',
+      description: 'Console amministrativa interna per gestione agenti commerciali CO 418a e liquidazioni CHF.',
+      canonicalUrl,
+      ogType: 'website',
+      ogLocale,
+      ogLocaleAlternates,
+      ogImage,
+      ogImageAlt,
+      robots: 'noindex, nofollow',
+      hreflangs,
+      jsonLd: {
+        '@context': 'https://schema.org',
+        '@graph': [orgNode],
+      },
+    };
+  }
+
+  if (path === '/affiliate') {
+    return {
+      title: 'Portale Agenti & Partner CO 418a · kreativalab',
+      description:
+        'Area riservata agenti commerciali e candidature partner Kreativalab in Svizzera: lead 90gg first-touch, vendite CHF e estratti provvigioni.',
+      canonicalUrl,
+      ogType: 'website',
+      ogLocale,
+      ogLocaleAlternates,
+      ogImage,
+      ogImageAlt,
+      robots: 'index, follow',
+      hreflangs,
+      jsonLd: {
+        '@context': 'https://schema.org',
+        '@graph': [
+          orgNode,
+          buildBreadcrumbSchema(origin, [
+            { name: t.seoUi.homeLabel, url: buildCanonicalRouteUrl(origin, '/', lang) },
+            { name: 'Portale Agenti', url: canonicalUrl },
+          ]),
+        ],
+      },
+    };
+  }
+
   // 9. Home (/)
   const homeTitles: Record<Language, string> = {
     it: 'kreativalab — Digital Venture Studio & Agency | Lugano',

@@ -20,6 +20,9 @@ import { ServicesView } from './views/ServicesView';
 import { AboutView } from './views/AboutView';
 import { ContactView } from './views/ContactView';
 import { LegalView } from './views/LegalView';
+import { AdminAffiliatesView } from './views/AdminAffiliatesView';
+import { AdminPayoutsView } from './views/AdminPayoutsView';
+import { AffiliatePortalView } from './views/AffiliatePortalView';
 
 const COOKIE_STORAGE_KEY = 'kreativalab_group_cookie_prefs_v1';
 
@@ -294,6 +297,18 @@ export default function App() {
           onNavigate={navigate}
         />
       );
+    }
+
+    if (currentPath === '/admin/affiliates') {
+      return <AdminAffiliatesView onNavigate={navigate} />;
+    }
+
+    if (currentPath === '/admin/payouts') {
+      return <AdminPayoutsView onNavigate={navigate} />;
+    }
+
+    if (currentPath === '/affiliate') {
+      return <AffiliatePortalView onNavigate={navigate} />;
     }
 
     // Fallback to Home

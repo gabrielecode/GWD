@@ -114,6 +114,24 @@ export function Footer({
                   {t.nav.contact}
                 </a>
               </li>
+              <li>
+                <a
+                  href={getHref('/affiliate')}
+                  onClick={(e) => handleLinkClick(e, '/affiliate')}
+                  className="hover:text-[#2DD4BF] transition-colors cursor-pointer"
+                >
+                  Area Agenti &amp; Partner
+                </a>
+              </li>
+              <li>
+                <a
+                  href={getHref('/admin/affiliates')}
+                  onClick={(e) => handleLinkClick(e, '/admin/affiliates')}
+                  className="text-xs text-[#A8A29E]/80 hover:text-[#FAFAF9] transition-colors cursor-pointer"
+                >
+                  Admin Agenti / Payouts
+                </a>
+              </li>
             </ul>
           </div>
 
