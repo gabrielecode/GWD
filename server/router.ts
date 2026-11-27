@@ -5,6 +5,7 @@ import {
   createCustomer,
   createLead,
   createSalesFromEntry,
+  deleteAffiliate,
   findAffiliateByAuthUser,
   generateMonthlyPayouts,
   getAdminOverview,
@@ -16,8 +17,10 @@ import {
   previewMonthlyPayouts,
   registerAffiliateAccount,
   removeAdminAccount,
+  resendAffiliateNotifications,
   reverseSale,
   reviewApplication,
+  sendTestResendNotification,
   ServiceError,
   setupInitialAdminPassword,
   submitAffiliateInvoice,
@@ -407,6 +410,37 @@ export function createAffiliateRouter(): express.Router {
     asyncHandler(async (req, res) => {
       const affiliate = await updateAffiliate(String(req.params.id), req.body ?? {}, true);
       res.json({ affiliate });
+    })
+  );
+
+  router.delete(
+    '/admin/affiliates/:id',
+    requireAdmin,
+    asyncHandler(async (req, res) => {
+      const result = await deleteAffiliate(String(req.params.id));
+      res.json(result);
+    })
+  );
+
+  router.post(
+    '/admin/affiliates/:id/notify',
+    requireAdmin,
+    asyncHandler(async (req, res) => {
+      const result = await resendAffiliateNotifications(String(req.params.id));
+      res.json(result);
+    })
+  );
+
+  router.post(
+    '/admin/test-email',
+    requireAdmin,
+    asyncHandler(async (req, res) => {
+      const targetEmail =
+        typeof req.body?.email === 'string' && req.body.email.trim()
+          ? req.body.email.trim()
+          : req.authEmail;
+      const result = await sendTestResendNotification(targetEmail);
+      res.json(result);
     })
   );
 

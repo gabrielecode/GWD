@@ -167,6 +167,13 @@ export interface DbPermissionDiagnostic {
   sql_fix: string;
 }
 
+export interface EmailConfigDiagnostic {
+  configured: boolean;
+  from_email: string;
+  admin_recipients: string[];
+  hint?: string | null;
+}
+
 export interface AdminOverviewData {
   storage_mode: 'supabase' | 'sqlite';
   kpis: {
@@ -186,6 +193,7 @@ export interface AdminOverviewData {
   payouts: AffiliatePayout[];
   admins?: AdminUserItem[];
   db_permission_error?: DbPermissionDiagnostic | null;
+  email_config?: EmailConfigDiagnostic;
 }
 
 export interface AffiliatePortalData {

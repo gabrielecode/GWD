@@ -1,5 +1,9 @@
-import process from 'node:process';
 import { BUSINESS_INFO } from '../src/data/business.js';
+import {
+  escapeHtml,
+  sendAdminEmailNotification,
+  sendTransactionalEmail,
+} from '../server/emailService.js';
 
 interface ApiRequest {
   method?: string;
@@ -11,15 +15,6 @@ interface ApiResponse {
   status: (code: number) => {
     json: (payload: unknown) => void;
   };
-}
-
-function escapeHtml(value: string): string {
-  return value
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#39;');
 }
 
 function parseBody(rawBody: unknown): Record<string, unknown> | null {
@@ -53,7 +48,7 @@ export default async function handler(req: ApiRequest, res: ApiResponse) {
   }
 
   const nome = typeof body.nome === 'string' ? body.nome.trim() : '';
-  const email = typeof body.email === 'string' ? body.email.trim() : '';
+  const email = typeof body.email === 'string' ? body.email.trim().toLowerCase() : '';
   const messaggio =
     typeof body.messaggio === 'string' ? body.messaggio.trim() : '';
 
@@ -72,14 +67,6 @@ export default async function handler(req: ApiRequest, res: ApiResponse) {
     return;
   }
 
-  const apiKey = process.env.RESEND_API_KEY;
-  if (!apiKey) {
-    res.status(500).json({ error: 'Servizio email non configurato.' });
-    return;
-  }
-
-  const fromAddress =
-    process.env.RESEND_FROM_EMAIL || 'kreativalab <noreply@kreativalab.ch>';
   const safeSubjectName = nome.replace(/[\r\n]+/g, ' ');
 
   const textBody = [
@@ -102,33 +89,38 @@ export default async function handler(req: ApiRequest, res: ApiResponse) {
     </div>
   `.trim();
 
-  try {
-    const resendResponse = await fetch('https://api.resend.com/emails', {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${apiKey}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        from: fromAddress,
-        to: [BUSINESS_INFO.email],
-        reply_to: email,
-        subject: `Richiesta contatto sito · ${safeSubjectName}`,
-        text: textBody,
-        html: htmlBody,
-      }),
+  const userConfirmHtml = `
+    <div style="font-family: sans-serif; line-height: 1.6; color: #1c1917; max-width: 600px;">
+      <h2 style="margin: 0 0 12px;">Abbiamo ricevuto la tua richiesta · Kreativalab</h2>
+      <p>Ciao <strong>${escapeHtml(nome)}</strong>,</p>
+      <p>Grazie per aver contattato <strong>Kreativalab</strong>. Abbiamo ricevuto il tuo messaggio e ti risponderemo al più presto.</p>
+      <div style="background: #f5f5f4; border-left: 4px solid #2DD4BF; padding: 12px 16px; margin: 16px 0;">
+        <p style="margin: 0 0 6px; font-size: 12px; color: #57534e;"><strong>Riepilogo del tuo messaggio:</strong></p>
+        <p style="margin: 0; white-space: pre-wrap; font-size: 14px;">${escapeHtml(messaggio)}</p>
+      </div>
+      <p style="font-size: 13px; color: #57534e;">Cordiali saluti,<br/><strong>Team Kreativalab</strong> · Lugano, Ticino (CH)<br/><a href="https://www.kreativalab.ch" style="color: #0d9488;">www.kreativalab.ch</a></p>
+    </div>
+  `.trim();
+
+  const [adminResult] = await Promise.all([
+    sendAdminEmailNotification(`Richiesta contatto sito · ${safeSubjectName}`, htmlBody, {
+      replyTo: email,
+      textContent: textBody,
+    }),
+    sendTransactionalEmail({
+      to: email,
+      subject: 'Abbiamo ricevuto la tua richiesta · Kreativalab',
+      html: userConfirmHtml,
+      replyTo: BUSINESS_INFO.email,
+    }).catch(() => null),
+  ]);
+
+  if (!adminResult.ok) {
+    res.status(502).json({
+      error: adminResult.error || 'Invio email non riuscito.',
     });
-
-    if (!resendResponse.ok) {
-      res.status(502).json({ error: 'Invio email non riuscito.' });
-      return;
-    }
-
-    const data = (await resendResponse.json().catch(() => ({}))) as {
-      id?: string;
-    };
-    res.status(200).json({ ok: true, id: data.id ?? null });
-  } catch {
-    res.status(502).json({ error: 'Errore di rete durante l’invio.' });
+    return;
   }
+
+  res.status(200).json({ ok: true, id: adminResult.id ?? null });
 }

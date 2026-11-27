@@ -135,8 +135,16 @@ export const affiliateApi = {
     company_name?: string;
     canton: string;
     accept_terms: boolean;
-  }): Promise<{ affiliate: Affiliate; pending_approval: boolean }> {
-    return apiFetch<{ affiliate: Affiliate; pending_approval: boolean }>('/auth/register', {
+  }): Promise<{
+    affiliate: Affiliate;
+    pending_approval: boolean;
+    email_notification?: {
+      personal_sent: boolean;
+      admin_sent: boolean;
+      error: string | null;
+    };
+  }> {
+    return apiFetch('/auth/register', {
       method: 'POST',
       body: JSON.stringify(body),
     });
@@ -231,6 +239,34 @@ export const affiliateApi = {
     return apiFetch<{ affiliate: Affiliate }>(`/admin/affiliates/${id}`, {
       method: 'PATCH',
       body: JSON.stringify(body),
+    });
+  },
+
+  deleteAffiliate(id: string): Promise<{ deleted_id: string; email: string }> {
+    return apiFetch<{ deleted_id: string; email: string }>(`/admin/affiliates/${id}`, {
+      method: 'DELETE',
+    });
+  },
+
+  resendAffiliateNotifications(id: string): Promise<{
+    personal: { ok: boolean; recipients: string[]; from: string; error?: string | null };
+    admin: { ok: boolean; recipients: string[]; from: string; error?: string | null };
+  }> {
+    return apiFetch(`/admin/affiliates/${id}/notify`, {
+      method: 'POST',
+    });
+  },
+
+  sendTestEmail(email?: string): Promise<{
+    ok: boolean;
+    id?: string | null;
+    recipients: string[];
+    from: string;
+    error?: string | null;
+  }> {
+    return apiFetch('/admin/test-email', {
+      method: 'POST',
+      body: JSON.stringify({ email }),
     });
   },
 

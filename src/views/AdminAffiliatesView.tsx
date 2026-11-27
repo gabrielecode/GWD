@@ -5,6 +5,7 @@ import {
   Copy,
   Download,
   Loader2,
+  Mail,
   Plus,
   RefreshCw,
   RotateCcw,
@@ -590,6 +591,91 @@ function AdminAffiliatesDashboard({
     );
   };
 
+  const handleTestResendEmail = async () => {
+    if (busy) return;
+    setBusy(true);
+    setError(null);
+    setNotice(null);
+    try {
+      const res = await affiliateApi.sendTestEmail(adminEmail);
+      if (res.ok) {
+        setNotice(
+          `Email di test Resend inviata con successo da "${res.from}" a: ${res.recipients.join(', ')}`
+        );
+      } else {
+        setError(
+          `Errore Resend (${res.from}): ${res.error || 'Invio fallito. Verifica RESEND_API_KEY e il dominio mittente su Resend.'}`
+        );
+      }
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Test email Resend non riuscito.');
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const handleQuickApproveAffiliate = async (aff: Affiliate) => {
+    if (busy) return;
+    setBusy(true);
+    setError(null);
+    setNotice(null);
+    try {
+      await affiliateApi.updateAffiliate(aff.id, { status: 'active' });
+      setNotice(
+        `Account agente "${aff.name}" (${aff.code}) approvato e attivato. Email di attivazione inviata a ${aff.email}.`
+      );
+      await loadOverview();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Approvazione agente non riuscita.');
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const handleResendAffiliateEmail = async (aff: Affiliate) => {
+    if (busy) return;
+    setBusy(true);
+    setError(null);
+    setNotice(null);
+    try {
+      const res = await affiliateApi.resendAffiliateNotifications(aff.id);
+      const errParts = [res.personal.error, res.admin.error].filter(Boolean);
+      if (res.personal.ok && res.admin.ok) {
+        setNotice(
+          `Notifiche Resend inviate con successo: email personale a ${aff.email} + notifica aziendale a ${res.admin.recipients.join(', ')}.`
+        );
+      } else if (res.personal.ok || res.admin.ok) {
+        setNotice(
+          `Invio parziale Resend (Personale: ${res.personal.ok ? 'OK' : 'KO'}, Aziendale: ${res.admin.ok ? 'OK' : 'KO'}). Dettagli: ${errParts.join(' | ')}`
+        );
+      } else {
+        setError(
+          `Invio email Resend non riuscito: ${errParts.join(' | ') || 'Verifica RESEND_API_KEY su Vercel.'}`
+        );
+      }
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Reinvio email non riuscito.');
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const handleDeleteAffiliate = async (aff: Affiliate) => {
+    if (busy) return;
+    setBusy(true);
+    setError(null);
+    setNotice(null);
+    try {
+      await affiliateApi.deleteAffiliate(aff.id);
+      setNotice(`Account agente "${aff.name}" (${aff.email}) eliminato.`);
+      await loadOverview();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Eliminazione agente non riuscita.');
+    } finally {
+      setBusy(false);
+    }
+  };
+
   return (
     <div className="min-h-screen pb-16">
       <WorkspaceBar
@@ -620,6 +706,15 @@ function AdminAffiliatesDashboard({
             >
               <RefreshCw className={`h-3.5 w-3.5 ${loading ? 'animate-spin' : ''}`} aria-hidden="true" />
               <span>Aggiorna</span>
+            </button>
+            <button
+              type="button"
+              disabled={busy}
+              onClick={() => void handleTestResendEmail()}
+              className="inline-flex items-center gap-1.5 rounded-lg border border-[#292524] bg-[#1C1917] px-3.5 py-2 text-xs font-medium text-[#FAFAF9] hover:border-[#2DD4BF] transition-colors cursor-pointer min-h-[40px] disabled:opacity-50"
+            >
+              <Mail className="h-3.5 w-3.5 text-[#2DD4BF]" aria-hidden="true" />
+              <span>Test Email Resend</span>
             </button>
             <button
               type="button"
@@ -657,6 +752,29 @@ function AdminAffiliatesDashboard({
             </button>
           </div>
         </div>
+
+        {/* Resend Email Warning if RESEND_API_KEY is missing */}
+        {data?.email_config && !data.email_config.configured && (
+          <div
+            role="alert"
+            className="rounded-xl border border-[#FBBF24]/50 bg-[#1C1917] p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs"
+          >
+            <div className="flex items-start gap-2.5">
+              <AlertCircle className="h-4 w-4 text-[#FBBF24] shrink-0 mt-0.5" aria-hidden="true" />
+              <div className="space-y-1">
+                <p className="font-semibold text-[#FAFAF9]">
+                  Servizio Email Resend non configurato (RESEND_API_KEY mancante)
+                </p>
+                <p className="text-[#A8A29E]">
+                  {data.email_config.hint} Destinatari notifiche aziendali configurati:{' '}
+                  <span className="font-mono text-[#FAFAF9]">
+                    {data.email_config.admin_recipients.join(', ')}
+                  </span>
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Supabase 42501 Permission Denied Quick Repair Box */}
         {data?.db_permission_error && (
@@ -881,13 +999,45 @@ function AdminAffiliatesDashboard({
                           </span>
                         </td>
                         <td className="py-3.5 px-4 text-right">
-                          <button
-                            type="button"
-                            onClick={() => openEditAffiliateModal(aff)}
-                            className="rounded-md border border-[#292524] bg-[#0C0A09] px-3 py-1.5 text-xs font-medium text-[#FAFAF9] hover:border-[#2DD4BF] transition-colors cursor-pointer"
-                          >
-                            Modifica
-                          </button>
+                          <div className="inline-flex flex-wrap items-center justify-end gap-1.5">
+                            {aff.status === 'pending_approval' && (
+                              <button
+                                type="button"
+                                disabled={busy}
+                                onClick={() => void handleQuickApproveAffiliate(aff)}
+                                className="inline-flex items-center gap-1 rounded-md bg-[#2DD4BF] px-2.5 py-1.5 text-xs font-semibold text-[#0C0A09] hover:opacity-90 transition-opacity cursor-pointer disabled:opacity-50"
+                              >
+                                <UserCheck className="h-3.5 w-3.5" aria-hidden="true" />
+                                <span>Approva</span>
+                              </button>
+                            )}
+                            <button
+                              type="button"
+                              disabled={busy}
+                              onClick={() => void handleResendAffiliateEmail(aff)}
+                              title="Invia/Reinvia email personale all'agente e notifica aziendale a Kreativalab"
+                              className="inline-flex items-center gap-1 rounded-md border border-[#292524] bg-[#0C0A09] px-2.5 py-1.5 text-xs font-medium text-[#A8A29E] hover:border-[#2DD4BF] hover:text-[#2DD4BF] transition-colors cursor-pointer disabled:opacity-50"
+                            >
+                              <Mail className="h-3.5 w-3.5" aria-hidden="true" />
+                              <span>Reinvia Email</span>
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => openEditAffiliateModal(aff)}
+                              className="rounded-md border border-[#292524] bg-[#0C0A09] px-2.5 py-1.5 text-xs font-medium text-[#FAFAF9] hover:border-[#2DD4BF] transition-colors cursor-pointer"
+                            >
+                              Modifica
+                            </button>
+                            <button
+                              type="button"
+                              disabled={busy}
+                              onClick={() => void handleDeleteAffiliate(aff)}
+                              title="Elimina account agente"
+                              className="inline-flex items-center gap-1 rounded-md border border-[#292524] bg-[#0C0A09] px-2 py-1.5 text-xs text-[#A8A29E] hover:border-[#FB923C] hover:text-[#FB923C] transition-colors cursor-pointer disabled:opacity-50"
+                            >
+                              <Trash2 className="h-3.5 w-3.5" aria-hidden="true" />
+                            </button>
+                          </div>
                         </td>
                       </tr>
                     ))}

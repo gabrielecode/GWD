@@ -66,6 +66,7 @@ export function AffiliatePortalView({ onNavigate }: AffiliatePortalViewProps) {
     accept_terms: false,
   });
   const [regSuccessEmail, setRegSuccessEmail] = useState<string | null>(null);
+  const [regEmailNotice, setRegEmailNotice] = useState<string | null>(null);
 
   // Public application form
   const [appForm, setAppForm] = useState({
@@ -211,6 +212,17 @@ export function AffiliatePortalView({ onNavigate }: AffiliatePortalViewProps) {
         accept_terms: regForm.accept_terms,
       });
       setRegSuccessEmail(res.affiliate.email);
+      if (res.email_notification?.personal_sent) {
+        setRegEmailNotice(
+          `Abbiamo inviato un'email di conferma registrazione a ${res.affiliate.email} (codice agente ${res.affiliate.code}).`
+        );
+      } else if (res.email_notification?.error) {
+        setRegEmailNotice(
+          `Nota: l'account è stato registrato nel database, ma l'invio dell'email di conferma ha restituito: ${res.email_notification.error}`
+        );
+      } else {
+        setRegEmailNotice(null);
+      }
       setLoginEmail(res.affiliate.email);
       setRegForm({
         name: '',
@@ -487,12 +499,18 @@ export function AffiliatePortalView({ onNavigate }: AffiliatePortalViewProps) {
                       <span>Account agente creato ({regSuccessEmail})</span>
                     </div>
                     <p className="text-xs text-[#A8A29E] leading-relaxed">
-                      Il tuo profilo è stato creato con stato <strong className="text-[#FAFAF9]">In approvazione</strong>. Non appena un amministratore lo attiverà dalla Console Admin, potrai accedere subito con email e password.
+                      Il tuo profilo è stato creato con stato <strong className="text-[#FAFAF9]">In approvazione</strong>. Non appena un amministratore lo attiverà dalla Console Admin, riceverai l&rsquo;email di attivazione e potrai accedere con email e password.
                     </p>
+                    {regEmailNotice && (
+                      <p className="text-xs text-[#2DD4BF] leading-relaxed">
+                        {regEmailNotice}
+                      </p>
+                    )}
                     <button
                       type="button"
                       onClick={() => {
                         setRegSuccessEmail(null);
+                        setRegEmailNotice(null);
                         setAuthTab('login');
                       }}
                       className="rounded-lg border border-[#292524] bg-[#1C1917] px-4 py-2 text-xs text-[#FAFAF9] cursor-pointer"

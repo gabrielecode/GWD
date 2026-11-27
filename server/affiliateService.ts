@@ -49,7 +49,14 @@ import {
   requestAuthStorage,
 } from './db.js';
 import { hashPassword, signSessionToken, timingSafeEqualsText, verifyPassword } from './auth.js';
-import { sendAdminEmailNotification } from './emailService.js';
+import {
+  EmailSendResult,
+  escapeHtml,
+  getAdminNotificationRecipients,
+  getEmailConfigDiagnostic,
+  sendAdminEmailNotification,
+  sendTransactionalEmail,
+} from './emailService.js';
 
 export class ServiceError extends Error {
   statusCode: number;
@@ -790,6 +797,54 @@ export function loginAdminLocal(passcode: string, emailInput?: string): { token:
   throw new ServiceError(401, 'Credenziali Admin non valide.');
 }
 
+async function getExtraAdminEmails(): Promise<string[]> {
+  try {
+    const admins = await listAdminAccounts();
+    return admins.map((a) => a.email).filter(Boolean);
+  } catch {
+    return [];
+  }
+}
+
+export async function sendAffiliateActivatedEmail(affiliate: Affiliate): Promise<EmailSendResult> {
+  const ratePct = Math.round((affiliate.commission_rate || DEFAULT_COMMISSION_RATE) * 100);
+  const html = `<div style="font-family:sans-serif;line-height:1.6;padding:20px;color:#141210;max-width:600px;">
+    <h2 style="margin:0 0 12px;">Account Agente Attivato · Kreativalab</h2>
+    <p>Ciao <b>${escapeHtml(affiliate.name)}</b>,</p>
+    <p>Il tuo account Agente Commerciale (CO Art. 418a segg.) su <b>Kreativalab</b> è stato <b>approvato e attivato</b>.</p>
+    <div style="background:#f5f5f4;border-left:4px solid #2DD4BF;padding:12px 16px;margin:16px 0;">
+      <p style="margin:4px 0;"><b>Codice Agente:</b> ${escapeHtml(affiliate.code)}</p>
+      <p style="margin:4px 0;"><b>Email di accesso:</b> ${escapeHtml(affiliate.email)}</p>
+      <p style="margin:4px 0;"><b>Provvigione base:</b> ${ratePct}% sul netto incassato (CO 418g)</p>
+      <p style="margin:4px 0;"><b>Esclusiva Lead:</b> 90 giorni (priorità First-Touch)</p>
+    </div>
+    <p>Ora puoi accedere al Portale Agenti per registrare i tuoi lead in esclusiva per 90 giorni, monitorare le provvigioni maturate e inserire il tuo IBAN per i pagamenti:</p>
+    <p style="margin:20px 0;">
+      <a href="https://www.kreativalab.ch/affiliate" style="background:#2DD4BF;color:#0C0A09;padding:11px 22px;text-decoration:none;border-radius:6px;font-weight:bold;display:inline-block;">Accedi al Portale Agenti</a>
+    </p>
+    <p style="font-size:13px;color:#57534e;">Cordiali saluti,<br/><b>Team Kreativalab</b> · Lugano, Ticino (CH)</p>
+  </div>`;
+
+  const text = [
+    `Ciao ${affiliate.name},`,
+    '',
+    'Il tuo account Agente Commerciale (CO Art. 418a segg.) su Kreativalab è stato approvato e attivato.',
+    `Codice Agente: ${affiliate.code}`,
+    `Email di accesso: ${affiliate.email}`,
+    `Provvigione base: ${ratePct}% sul netto incassato`,
+    '',
+    'Accedi al Portale Agenti: https://www.kreativalab.ch/affiliate',
+  ].join('\n');
+
+  return sendTransactionalEmail({
+    to: affiliate.email,
+    subject: `Account Agente Attivato · Portale Partner Kreativalab (${affiliate.code})`,
+    html,
+    text,
+    replyTo: 'contatto@kreativalab.ch',
+  });
+}
+
 export async function registerAffiliateAccount(input: {
   name: string;
   email: string;
@@ -798,7 +853,15 @@ export async function registerAffiliateAccount(input: {
   company_name?: string;
   canton?: string;
   accept_terms: boolean;
-}): Promise<{ affiliate: Affiliate; pending_approval: boolean }> {
+}): Promise<{
+  affiliate: Affiliate;
+  pending_approval: boolean;
+  email_notification?: {
+    personal_sent: boolean;
+    admin_sent: boolean;
+    error: string | null;
+  };
+}> {
   const password = (input.password || '').trim();
   if (password.length < 8) {
     throw new ServiceError(400, 'La password deve contenere almeno 8 caratteri.');
@@ -828,18 +891,106 @@ export async function registerAffiliateAccount(input: {
     }
   }
 
-  const affiliate = await createAffiliate({
-    name: input.name,
-    email,
-    phone: input.phone || null,
-    company_name: input.company_name || null,
-    canton,
-    status: 'pending_approval',
-    password,
-    notes: 'Registrazione self-service dal portale /affiliate.',
-  });
+  const affiliate = await createAffiliate(
+    {
+      name: input.name,
+      email,
+      phone: input.phone || null,
+      company_name: input.company_name || null,
+      canton,
+      status: 'pending_approval',
+      password,
+      notes: 'Registrazione self-service dal portale /affiliate.',
+    },
+    { skipWelcomeEmail: true }
+  );
 
-  return { affiliate, pending_approval: true };
+  const extraAdmins = await getExtraAdminEmails();
+
+  const personalHtml = `<div style="font-family:sans-serif;line-height:1.6;padding:20px;color:#141210;max-width:600px;">
+    <h2 style="margin:0 0 12px;">Registrazione Ricevuta · Portale Agenti Kreativalab</h2>
+    <p>Ciao <b>${escapeHtml(affiliate.name)}</b>,</p>
+    <p>Grazie per esserti registrato al <b>Programma Agenti &amp; Partner Commerciali Kreativalab</b> (CO Art. 418a segg.).</p>
+    <div style="background:#f5f5f4;border-left:4px solid #2DD4BF;padding:12px 16px;margin:16px 0;">
+      <p style="margin:4px 0;"><b>Nome:</b> ${escapeHtml(affiliate.name)}</p>
+      <p style="margin:4px 0;"><b>Email:</b> ${escapeHtml(affiliate.email)}</p>
+      <p style="margin:4px 0;"><b>Codice Agente riservato:</b> ${escapeHtml(affiliate.code)}</p>
+      <p style="margin:4px 0;"><b>Cantone / Area:</b> ${escapeHtml(affiliate.canton || canton)}</p>
+      <p style="margin:4px 0;"><b>Stato attuale:</b> In attesa di approvazione da Kreativalab</p>
+    </div>
+    <p>Il nostro team verificherà la tua registrazione e attiverà il tuo profilo. Riceverai un'email di conferma non appena il tuo account sarà attivo per accedere alla console <a href="https://www.kreativalab.ch/affiliate" style="color:#0d9488;">www.kreativalab.ch/affiliate</a>.</p>
+    <p style="font-size:13px;color:#57534e;">Cordiali saluti,<br/><b>Team Kreativalab</b> · Lugano, Ticino (CH)</p>
+  </div>`;
+
+  const personalText = [
+    `Ciao ${affiliate.name},`,
+    '',
+    'Grazie per esserti registrato al Programma Agenti & Partner Commerciali Kreativalab (CO Art. 418a segg.).',
+    `Codice Agente riservato: ${affiliate.code}`,
+    `Email: ${affiliate.email}`,
+    'Stato attuale: In attesa di approvazione da Kreativalab.',
+    '',
+    'Riceverai una seconda email di conferma non appena il tuo account sarà attivato.',
+    'Portale Agenti: https://www.kreativalab.ch/affiliate',
+  ].join('\n');
+
+  const adminHtml = `<div style="font-family:sans-serif;line-height:1.6;padding:20px;color:#141210;max-width:600px;">
+    <h2 style="margin:0 0 12px;">Nuovo Utente Agente Registrato (In attesa di approvazione)</h2>
+    <p>Un nuovo utente ha creato un account agente self-service dal portale <b>/affiliate</b>:</p>
+    <div style="background:#f5f5f4;border-left:4px solid #FBBF24;padding:12px 16px;margin:16px 0;">
+      <p style="margin:4px 0;"><b>Nome:</b> ${escapeHtml(affiliate.name)}</p>
+      <p style="margin:4px 0;"><b>Email:</b> ${escapeHtml(affiliate.email)}</p>
+      <p style="margin:4px 0;"><b>Telefono:</b> ${escapeHtml(affiliate.phone || 'N/D')}</p>
+      <p style="margin:4px 0;"><b>Azienda:</b> ${escapeHtml(affiliate.company_name || 'N/D')}</p>
+      <p style="margin:4px 0;"><b>Cantone / Paese:</b> ${escapeHtml(affiliate.canton || canton)}</p>
+      <p style="margin:4px 0;"><b>Codice Agente assegnato:</b> ${escapeHtml(affiliate.code)}</p>
+      <p style="margin:4px 0;"><b>Stato:</b> In approvazione (pending_approval)</p>
+    </div>
+    <p style="margin:20px 0;">
+      <a href="https://www.kreativalab.ch/admin/affiliates" style="background:#2DD4BF;color:#0C0A09;padding:11px 22px;text-decoration:none;border-radius:6px;font-weight:bold;display:inline-block;">Approva Account nella Console Admin</a>
+    </p>
+  </div>`;
+
+  const adminText = [
+    'Nuovo Utente Agente Registrato su Kreativalab (/affiliate)',
+    `Nome: ${affiliate.name}`,
+    `Email: ${affiliate.email}`,
+    `Telefono: ${affiliate.phone || 'N/D'}`,
+    `Azienda: ${affiliate.company_name || 'N/D'}`,
+    `Cantone: ${affiliate.canton || canton}`,
+    `Codice Agente: ${affiliate.code}`,
+    'Stato: In attesa di approvazione (pending_approval)',
+    'Console Admin: https://www.kreativalab.ch/admin/affiliates',
+  ].join('\n');
+
+  const [personalRes, adminRes] = await Promise.all([
+    sendTransactionalEmail({
+      to: affiliate.email,
+      subject: `Registrazione ricevuta · Portale Agenti Kreativalab (${affiliate.code})`,
+      html: personalHtml,
+      text: personalText,
+      replyTo: 'contatto@kreativalab.ch',
+    }),
+    sendAdminEmailNotification(
+      `Nuovo Utente Agente Registrato: ${affiliate.name} (${affiliate.canton || canton})`,
+      adminHtml,
+      {
+        replyTo: affiliate.email,
+        textContent: adminText,
+        extraRecipients: extraAdmins,
+      }
+    ),
+  ]);
+
+  return {
+    affiliate,
+    pending_approval: true,
+    email_notification: {
+      personal_sent: personalRes.ok,
+      admin_sent: adminRes.ok,
+      error: personalRes.error || adminRes.error || null,
+    },
+  };
 }
 
 export async function loginAffiliateLocal(
@@ -1082,6 +1233,7 @@ export async function submitApplication(input: {
     updated_at: now,
   };
 
+  let savedRecord: AffiliateApplication = record;
   const supabase = getSupabaseAdmin();
   if (supabase) {
     const { data, error } = await supabase
@@ -1090,43 +1242,77 @@ export async function submitApplication(input: {
       .select()
       .single();
     if (error) throw new ServiceError(500, error.message);
-    return data as AffiliateApplication;
+    savedRecord = data as AffiliateApplication;
+  } else {
+    const db = getSqliteDb();
+    db.prepare(
+      `INSERT INTO affiliate_applications
+       (id, name, email, phone, company_name, canton_or_country, website_or_linkedin, experience_and_network, status, terms_accepted_at, created_at, updated_at)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+    ).run(
+      record.id,
+      record.name,
+      record.email,
+      record.phone,
+      record.company_name,
+      record.canton_or_country,
+      record.website_or_linkedin,
+      record.experience_and_network,
+      record.status,
+      record.terms_accepted_at,
+      record.created_at,
+      record.updated_at
+    );
   }
 
-  const db = getSqliteDb();
-  db.prepare(
-    `INSERT INTO affiliate_applications
-     (id, name, email, phone, company_name, canton_or_country, website_or_linkedin, experience_and_network, status, terms_accepted_at, created_at, updated_at)
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
-  ).run(
-    record.id,
-    record.name,
-    record.email,
-    record.phone,
-    record.company_name,
-    record.canton_or_country,
-    record.website_or_linkedin,
-    record.experience_and_network,
-    record.status,
-    record.terms_accepted_at,
-    record.created_at,
-    record.updated_at
-  );
+  const extraAdmins = await getExtraAdminEmails();
 
-  void sendAdminEmailNotification(
-    `Nuova Candidatura Agente: ${record.name} (${record.canton_or_country})`,
-    `<div style="font-family:sans-serif;padding:20px;color:#141210;">
-       <h2>Nuova Candidatura Agente Commerciale (CO 418a)</h2>
-       <p><b>Nome:</b> ${record.name}</p>
-       <p><b>Email:</b> ${record.email}</p>
-       <p><b>Cantone / Paese:</b> ${record.canton_or_country}</p>
-       <p><b>Azienda:</b> ${record.company_name || 'N/D'}</p>
-       <p><b>Esperienza & Network:</b> ${record.experience_and_network}</p>
-       <p><a href="https://www.kreativalab.ch/admin/affiliates" style="background:#2DD4BF;color:#0C0A09;padding:10px 20px;text-decoration:none;border-radius:6px;font-weight:bold;">Accedi alla Console Admin</a></p>
-     </div>`
-  ).catch(() => {});
+  const applicantHtml = `<div style="font-family:sans-serif;line-height:1.6;padding:20px;color:#141210;max-width:600px;">
+    <h2 style="margin:0 0 12px;">Candidatura Ricevuta · Programma Agenti Kreativalab</h2>
+    <p>Ciao <b>${escapeHtml(savedRecord.name)}</b>,</p>
+    <p>Abbiamo ricevuto la tua candidatura per il <b>Programma Agenti Commerciali Kreativalab</b> (CO Art. 418a segg.).</p>
+    <div style="background:#f5f5f4;border-left:4px solid #2DD4BF;padding:12px 16px;margin:16px 0;">
+      <p style="margin:4px 0;"><b>Nome:</b> ${escapeHtml(savedRecord.name)}</p>
+      <p style="margin:4px 0;"><b>Email:</b> ${escapeHtml(savedRecord.email)}</p>
+      <p style="margin:4px 0;"><b>Cantone / Paese:</b> ${escapeHtml(savedRecord.canton_or_country)}</p>
+      <p style="margin:4px 0;"><b>Azienda:</b> ${escapeHtml(savedRecord.company_name || 'N/D')}</p>
+    </div>
+    <p>Il nostro team valuterà il tuo profilo e ti ricontatterà via email con le credenziali di attivazione del tuo account Agente.</p>
+    <p style="font-size:13px;color:#57534e;">Cordiali saluti,<br/><b>Team Kreativalab</b> · Lugano, Ticino (CH)</p>
+  </div>`;
 
-  return record;
+  const adminHtml = `<div style="font-family:sans-serif;line-height:1.6;padding:20px;color:#141210;max-width:600px;">
+    <h2 style="margin:0 0 12px;">Nuova Candidatura Agente Commerciale (CO 418a)</h2>
+    <p><b>Nome:</b> ${escapeHtml(savedRecord.name)}</p>
+    <p><b>Email:</b> ${escapeHtml(savedRecord.email)}</p>
+    <p><b>Telefono:</b> ${escapeHtml(savedRecord.phone || 'N/D')}</p>
+    <p><b>Cantone / Paese:</b> ${escapeHtml(savedRecord.canton_or_country)}</p>
+    <p><b>Azienda:</b> ${escapeHtml(savedRecord.company_name || 'N/D')}</p>
+    <p><b>Sito / LinkedIn:</b> ${escapeHtml(savedRecord.website_or_linkedin || 'N/D')}</p>
+    <p><b>Esperienza &amp; Network:</b> ${escapeHtml(savedRecord.experience_and_network)}</p>
+    <p style="margin:20px 0;">
+      <a href="https://www.kreativalab.ch/admin/affiliates" style="background:#2DD4BF;color:#0C0A09;padding:11px 22px;text-decoration:none;border-radius:6px;font-weight:bold;display:inline-block;">Accedi alla Console Admin</a>
+    </p>
+  </div>`;
+
+  await Promise.all([
+    sendTransactionalEmail({
+      to: savedRecord.email,
+      subject: 'Candidatura ricevuta · Programma Agenti Kreativalab',
+      html: applicantHtml,
+      replyTo: 'contatto@kreativalab.ch',
+    }),
+    sendAdminEmailNotification(
+      `Nuova Candidatura Agente: ${savedRecord.name} (${savedRecord.canton_or_country})`,
+      adminHtml,
+      {
+        replyTo: savedRecord.email,
+        extraRecipients: extraAdmins,
+      }
+    ),
+  ]);
+
+  return savedRecord;
 }
 
 // ---------- ADMIN OVERVIEW ----------
@@ -1165,9 +1351,16 @@ export async function getAdminOverview(currentAdminEmail?: string): Promise<Admi
     }
   }
 
+  const baseEmailDiag = getEmailConfigDiagnostic();
+  const allAdminRecipients = getAdminNotificationRecipients(admins.map((a) => a.email));
+
   return {
     ...data,
     admins,
+    email_config: {
+      ...baseEmailDiag,
+      admin_recipients: allAdminRecipients,
+    },
     kpis: {
       active_affiliates: activeAffiliates,
       pending_applications: pendingApplications,
@@ -1247,25 +1440,28 @@ function validateAffiliateProfileFields(input: {
   };
 }
 
-export async function createAffiliate(input: {
-  name: string;
-  company_name?: string | null;
-  email: string;
-  phone?: string | null;
-  code?: string;
-  commission_rate?: number;
-  status?: AffiliateStatus;
-  iban?: string | null;
-  avs_idi_number?: string | null;
-  is_vat_registered?: boolean;
-  vat_number?: string | null;
-  address?: string | null;
-  city?: string | null;
-  postal_code?: string | null;
-  canton?: string | null;
-  notes?: string | null;
-  password?: string;
-}): Promise<Affiliate> {
+export async function createAffiliate(
+  input: {
+    name: string;
+    company_name?: string | null;
+    email: string;
+    phone?: string | null;
+    code?: string;
+    commission_rate?: number;
+    status?: AffiliateStatus;
+    iban?: string | null;
+    avs_idi_number?: string | null;
+    is_vat_registered?: boolean;
+    vat_number?: string | null;
+    address?: string | null;
+    city?: string | null;
+    postal_code?: string | null;
+    canton?: string | null;
+    notes?: string | null;
+    password?: string;
+  },
+  options?: { skipWelcomeEmail?: boolean }
+): Promise<Affiliate> {
   const name = (input.name || '').trim();
   const email = (input.email || '').trim().toLowerCase();
   if (name.length < 2) throw new ServiceError(400, 'Nome agente obbligatorio.');
@@ -1283,18 +1479,57 @@ export async function createAffiliate(input: {
     ? hashPassword(input.password.trim())
     : null;
 
+  let createdAffiliate: Affiliate;
   const supabase = getSupabaseAdmin();
   if (supabase) {
     let authUserId: string | null = null;
+    const baseClient = getSupabaseBaseAdminClient() || supabase;
     if (input.password && input.password.trim().length >= 8) {
-      const { data: createdUser, error: userErr } = await supabase.auth.admin.createUser({
+      const cleanPass = input.password.trim();
+      const { data: createdUser, error: userErr } = await baseClient.auth.admin.createUser({
         email,
-        password: input.password.trim(),
+        password: cleanPass,
         email_confirm: true,
         app_metadata: { role: 'affiliate' },
+        user_metadata: { role: 'affiliate', name },
       });
       if (!userErr && createdUser?.user) {
         authUserId = createdUser.user.id;
+      } else if (userErr) {
+        const msg = userErr.message || '';
+        if (/already|registered|exists/i.test(msg)) {
+          try {
+            const { data: listData } = await baseClient.auth.admin.listUsers({ page: 1, perPage: 200 });
+            const existingUser = (listData?.users ?? []).find(
+              (u) => (u.email || '').trim().toLowerCase() === email
+            );
+            if (existingUser) {
+              authUserId = existingUser.id;
+              await baseClient.auth.admin.updateUserById(existingUser.id, {
+                password: cleanPass,
+                email_confirm: true,
+              });
+            }
+          } catch {
+            // ignore if listUsers is restricted
+          }
+        } else if (/not allowed|not_admin|bearer|token|apikey|unauthorized|invalid/i.test(msg)) {
+          // Fallback to standard signUp when SUPABASE_SERVICE_ROLE_KEY is an anon key
+          try {
+            const { data: signUpData } = await baseClient.auth.signUp({
+              email,
+              password: cleanPass,
+              options: {
+                data: { role: 'affiliate', name },
+              },
+            });
+            if (signUpData?.user) {
+              authUserId = signUpData.user.id;
+            }
+          } catch {
+            // ignore signUp fallback error
+          }
+        }
       }
     }
 
@@ -1324,51 +1559,57 @@ export async function createAffiliate(input: {
       if (error.code === '23505') throw new ServiceError(409, 'Email o codice agente già esistente.');
       throw new ServiceError(500, error.message);
     }
-    return mapSupabaseNumbers(data) as Affiliate;
+    createdAffiliate = mapSupabaseNumbers(data) as Affiliate;
+  } else {
+    const db = getSqliteDb();
+    const dup = db
+      .prepare('SELECT id FROM affiliates WHERE lower(email) = ? OR upper(code) = ?')
+      .get(email, code) as { id?: string } | undefined;
+    if (dup) {
+      throw new ServiceError(409, 'Email o codice agente già esistente.');
+    }
+
+    const id = crypto.randomUUID();
+    db.prepare(
+      `INSERT INTO affiliates (
+        id, name, company_name, email, phone, code, commission_rate, status,
+        auth_user_id, password_hash, iban, avs_idi_number, is_vat_registered, vat_number,
+        address, city, postal_code, canton, terms_accepted_at, notes, created_at, updated_at
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+    ).run(
+      id,
+      name,
+      input.company_name?.trim() || null,
+      email,
+      input.phone?.trim() || null,
+      code,
+      rate,
+      input.status || 'active',
+      null,
+      passwordHash,
+      validated.iban,
+      validated.avs_idi_number,
+      input.is_vat_registered ? 1 : 0,
+      validated.vat_number,
+      input.address?.trim() || null,
+      input.city?.trim() || null,
+      input.postal_code?.trim() || null,
+      input.canton?.trim() || null,
+      now,
+      input.notes?.trim() || null,
+      now,
+      now
+    );
+
+    const created = db.prepare('SELECT * FROM affiliates WHERE id = ?').get(id) as Record<string, unknown>;
+    createdAffiliate = mapSqliteAffiliate(created);
   }
 
-  const db = getSqliteDb();
-  const dup = db
-    .prepare('SELECT id FROM affiliates WHERE lower(email) = ? OR upper(code) = ?')
-    .get(email, code) as { id?: string } | undefined;
-  if (dup) {
-    throw new ServiceError(409, 'Email o codice agente già esistente.');
+  if (!options?.skipWelcomeEmail && createdAffiliate.status === 'active') {
+    await sendAffiliateActivatedEmail(createdAffiliate).catch(() => null);
   }
 
-  const id = crypto.randomUUID();
-  db.prepare(
-    `INSERT INTO affiliates (
-      id, name, company_name, email, phone, code, commission_rate, status,
-      auth_user_id, password_hash, iban, avs_idi_number, is_vat_registered, vat_number,
-      address, city, postal_code, canton, terms_accepted_at, notes, created_at, updated_at
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
-  ).run(
-    id,
-    name,
-    input.company_name?.trim() || null,
-    email,
-    input.phone?.trim() || null,
-    code,
-    rate,
-    input.status || 'active',
-    null,
-    passwordHash,
-    validated.iban,
-    validated.avs_idi_number,
-    input.is_vat_registered ? 1 : 0,
-    validated.vat_number,
-    input.address?.trim() || null,
-    input.city?.trim() || null,
-    input.postal_code?.trim() || null,
-    input.canton?.trim() || null,
-    now,
-    input.notes?.trim() || null,
-    now,
-    now
-  );
-
-  const created = db.prepare('SELECT * FROM affiliates WHERE id = ?').get(id) as Record<string, unknown>;
-  return mapSqliteAffiliate(created);
+  return createdAffiliate;
 }
 
 export async function updateAffiliate(
@@ -1403,6 +1644,8 @@ export async function updateAffiliate(
       .eq('id', affiliateId)
       .single();
     if (fetchErr || !current) throw new ServiceError(404, 'Agente non trovato.');
+
+    const previousStatus = current.status as AffiliateStatus;
 
     const mergedVatReg =
       input.is_vat_registered !== undefined ? input.is_vat_registered : Boolean(current.is_vat_registered);
@@ -1441,6 +1684,31 @@ export async function updateAffiliate(
       if (input.commission_rate !== undefined) updates.commission_rate = Number(input.commission_rate);
       if (input.status) updates.status = input.status;
       if (input.notes !== undefined) updates.notes = input.notes?.trim() || null;
+
+      if (input.password && input.password.trim().length >= 8) {
+        const baseClient = getSupabaseBaseAdminClient() || supabase;
+        const targetEmail = String(updates.email || current.email).trim().toLowerCase();
+        try {
+          if (current.auth_user_id) {
+            await baseClient.auth.admin.updateUserById(String(current.auth_user_id), {
+              password: input.password.trim(),
+              email_confirm: true,
+            });
+          } else {
+            const { data: createdUser, error: cErr } = await baseClient.auth.admin.createUser({
+              email: targetEmail,
+              password: input.password.trim(),
+              email_confirm: true,
+              app_metadata: { role: 'affiliate' },
+            });
+            if (!cErr && createdUser?.user) {
+              updates.auth_user_id = createdUser.user.id;
+            }
+          }
+        } catch {
+          // ignore if service_role is restricted
+        }
+      }
     }
 
     const { data, error } = await supabase
@@ -1450,13 +1718,20 @@ export async function updateAffiliate(
       .select()
       .single();
     if (error) throw new ServiceError(400, error.message);
-    return mapSupabaseNumbers(data) as Affiliate;
+    const updatedAffiliate = mapSupabaseNumbers(data) as Affiliate;
+
+    if (previousStatus !== 'active' && updatedAffiliate.status === 'active') {
+      await sendAffiliateActivatedEmail(updatedAffiliate).catch(() => null);
+    }
+
+    return updatedAffiliate;
   }
 
   const db = getSqliteDb();
   const row = db.prepare('SELECT * FROM affiliates WHERE id = ?').get(affiliateId) as Record<string, unknown> | undefined;
   if (!row) throw new ServiceError(404, 'Agente non trovato.');
   const current = mapSqliteAffiliate(row);
+  const previousStatus = current.status;
 
   const mergedVatReg =
     input.is_vat_registered !== undefined ? input.is_vat_registered : current.is_vat_registered;
@@ -1510,7 +1785,56 @@ export async function updateAffiliate(
   );
 
   const updated = db.prepare('SELECT * FROM affiliates WHERE id = ?').get(affiliateId) as Record<string, unknown>;
-  return mapSqliteAffiliate(updated);
+  const updatedAffiliate = mapSqliteAffiliate(updated);
+
+  if (previousStatus !== 'active' && updatedAffiliate.status === 'active') {
+    await sendAffiliateActivatedEmail(updatedAffiliate).catch(() => null);
+  }
+
+  return updatedAffiliate;
+}
+
+export async function deleteAffiliate(affiliateId: string): Promise<{ deleted_id: string; email: string }> {
+  const supabase = getSupabaseAdmin();
+  if (supabase) {
+    const { data: current, error: fetchErr } = await supabase
+      .from('affiliates')
+      .select('*')
+      .eq('id', affiliateId)
+      .single();
+    if (fetchErr || !current) throw new ServiceError(404, 'Agente non trovato.');
+
+    const { error: delErr } = await supabase.from('affiliates').delete().eq('id', affiliateId);
+    if (delErr) {
+      throw new ServiceError(
+        400,
+        `Impossibile eliminare l'agente (${delErr.message}). Puoi disabilitarlo impostando lo stato su "Disabilitato".`
+      );
+    }
+
+    if (current.auth_user_id) {
+      const baseClient = getSupabaseBaseAdminClient();
+      if (baseClient) {
+        await baseClient.auth.admin.deleteUser(String(current.auth_user_id)).catch(() => null);
+      }
+    }
+    return { deleted_id: affiliateId, email: String(current.email) };
+  }
+
+  const db = getSqliteDb();
+  const row = db.prepare('SELECT * FROM affiliates WHERE id = ?').get(affiliateId) as Record<string, unknown> | undefined;
+  if (!row) throw new ServiceError(404, 'Agente non trovato.');
+  try {
+    db.prepare('DELETE FROM affiliates WHERE id = ?').run(affiliateId);
+  } catch (err) {
+    throw new ServiceError(
+      400,
+      err instanceof Error
+        ? `Impossibile eliminare l'agente perché ha vendite o payout collegati (${err.message}). Imposta lo stato su "Disabilitato".`
+        : 'Impossibile eliminare l’agente.'
+    );
+  }
+  return { deleted_id: affiliateId, email: String(row.email) };
 }
 
 // ---------- APPLICATIONS APPROVAL & CONVERSION ----------
@@ -1554,7 +1878,9 @@ export async function reviewApplication(
       .maybeSingle();
 
     const affiliate = existingAff
-      ? (mapSupabaseNumbers(existingAff) as Affiliate)
+      ? existingAff.status !== 'active'
+        ? await updateAffiliate(String(existingAff.id), { status: 'active' }, true)
+        : (mapSupabaseNumbers(existingAff) as Affiliate)
       : await createAffiliate({
           name: application.name,
           company_name: application.company_name,
@@ -1606,7 +1932,9 @@ export async function reviewApplication(
     .get(app.email.toLowerCase()) as Record<string, unknown> | undefined;
 
   const affiliate = existingRow
-    ? mapSqliteAffiliate(existingRow)
+    ? existingRow.status !== 'active'
+      ? await updateAffiliate(String(existingRow.id), { status: 'active', password: options.password }, true)
+      : mapSqliteAffiliate(existingRow)
     : await createAffiliate({
         name: app.name,
         company_name: app.company_name,
@@ -2341,14 +2669,16 @@ export async function generateMonthlyPayouts(periodMonth: string): Promise<{
 
   if (created.length > 0) {
     const totalPayableSum = created.reduce((acc, p) => acc + p.net_payable, 0);
-    void sendAdminEmailNotification(
+    const extraAdmins = await getExtraAdminEmails();
+    await sendAdminEmailNotification(
       `Nuovo Payout Mensile Generato (${periodMonth}): ${created.length} estratti per CHF ${totalPayableSum.toFixed(2)}`,
       `<div style="font-family:sans-serif;padding:20px;color:#141210;">
          <h2>Generazione Payout Mensili (${periodMonth})</h2>
          <p>Sono stati generati <b>${created.length}</b> estratti conto provvigionali per un totale di <b>CHF ${totalPayableSum.toFixed(2)}</b>.</p>
          <p><a href="https://www.kreativalab.ch/admin/payouts" style="background:#FBBF24;color:#0C0A09;padding:10px 20px;text-decoration:none;border-radius:6px;font-weight:bold;">Visualizza Payouts & Estratti Conto</a></p>
-       </div>`
-    ).catch(() => {});
+       </div>`,
+      { extraRecipients: extraAdmins }
+    ).catch(() => null);
   }
 
   return { created, skipped_rollover: skippedRollover };
@@ -2558,11 +2888,108 @@ export async function submitAffiliateInvoice(
   if (payout.status !== 'statement_sent' && payout.status !== 'invoice_received') {
     throw new ServiceError(400, 'La fattura può essere inviata solo per estratti in stato "Estratto inviato".');
   }
-  return updatePayoutStatus(payoutId, {
+  const updated = await updatePayoutStatus(payoutId, {
     status: 'invoice_received',
     agent_invoice_number: input.agent_invoice_number,
     agent_invoice_date: input.agent_invoice_date,
   });
+
+  const affiliate = data.affiliates.find((a) => a.id === affiliateId);
+  const extraAdmins = await getExtraAdminEmails();
+  await sendAdminEmailNotification(
+    `Fattura Provvigioni Ricevuta: ${input.agent_invoice_number} (${affiliate?.name || affiliateId})`,
+    `<div style="font-family:sans-serif;padding:20px;color:#141210;">
+       <h2>Nuova Fattura Agente Ricevuta</h2>
+       <p><b>Agente:</b> ${escapeHtml(affiliate?.name || affiliateId)} (${escapeHtml(affiliate?.code || '')})</p>
+       <p><b>Periodo Payout:</b> ${escapeHtml(updated.period_month)}</p>
+       <p><b>Numero Fattura:</b> ${escapeHtml(input.agent_invoice_number)}</p>
+       <p><b>Data Fattura:</b> ${escapeHtml(input.agent_invoice_date)}</p>
+       <p><b>Totale da liquidare:</b> CHF ${updated.gross_invoice_amount.toFixed(2)}</p>
+       <p><a href="https://www.kreativalab.ch/admin/payouts" style="background:#2DD4BF;color:#0C0A09;padding:10px 20px;text-decoration:none;border-radius:6px;font-weight:bold;">Apri Console Payouts</a></p>
+     </div>`,
+    {
+      replyTo: affiliate?.email,
+      extraRecipients: extraAdmins,
+    }
+  ).catch(() => null);
+
+  return updated;
+}
+
+export async function sendTestResendNotification(targetEmail?: string): Promise<EmailSendResult> {
+  const extraAdmins = await getExtraAdminEmails();
+  if (targetEmail && targetEmail.trim().includes('@')) {
+    extraAdmins.push(targetEmail.trim().toLowerCase());
+  }
+  const nowStr = new Date().toISOString();
+  return sendAdminEmailNotification(
+    `Test Servizio Email Resend · Kreativalab (${nowStr.slice(0, 16).replace('T', ' ')})`,
+    `<div style="font-family:sans-serif;line-height:1.6;padding:20px;color:#141210;max-width:600px;">
+       <h2 style="margin:0 0 12px;">Test Notifiche Resend Completato</h2>
+       <p>Il servizio <b>Resend</b> su <b>Kreativalab</b> è attivo e funziona correttamente sia per le notifiche di registrazione personali sia per le notifiche aziendali verso gli amministratori.</p>
+       <p style="font-size:12px;color:#57534e;">Timestamp test: ${escapeHtml(nowStr)}</p>
+     </div>`,
+    {
+      extraRecipients: extraAdmins,
+      textContent: `Test Notifiche Resend Completato (${nowStr}) - Il servizio Resend su Kreativalab è attivo e funzionante.`,
+    }
+  );
+}
+
+export async function resendAffiliateNotifications(affiliateId: string): Promise<{
+  personal: EmailSendResult;
+  admin: EmailSendResult;
+}> {
+  const all = await fetchAllCollections();
+  const affiliate = all.affiliates.find((a) => a.id === affiliateId);
+  if (!affiliate) throw new ServiceError(404, 'Agente non trovato.');
+
+  const extraAdmins = await getExtraAdminEmails();
+
+  const personalPromise =
+    affiliate.status === 'active'
+      ? sendAffiliateActivatedEmail(affiliate)
+      : sendTransactionalEmail({
+          to: affiliate.email,
+          subject: `Registrazione ricevuta · Portale Agenti Kreativalab (${affiliate.code})`,
+          html: `<div style="font-family:sans-serif;line-height:1.6;padding:20px;color:#141210;max-width:600px;">
+            <h2 style="margin:0 0 12px;">Registrazione Ricevuta · Portale Agenti Kreativalab</h2>
+            <p>Ciao <b>${escapeHtml(affiliate.name)}</b>,</p>
+            <p>Grazie per esserti registrato al <b>Programma Agenti &amp; Partner Commerciali Kreativalab</b> (CO Art. 418a segg.).</p>
+            <div style="background:#f5f5f4;border-left:4px solid #2DD4BF;padding:12px 16px;margin:16px 0;">
+              <p style="margin:4px 0;"><b>Nome:</b> ${escapeHtml(affiliate.name)}</p>
+              <p style="margin:4px 0;"><b>Email:</b> ${escapeHtml(affiliate.email)}</p>
+              <p style="margin:4px 0;"><b>Codice Agente riservato:</b> ${escapeHtml(affiliate.code)}</p>
+              <p style="margin:4px 0;"><b>Stato attuale:</b> In attesa di approvazione da Kreativalab</p>
+            </div>
+            <p>Riceverai un'email di conferma non appena il tuo account sarà attivato per accedere alla console <a href="https://www.kreativalab.ch/affiliate" style="color:#0d9488;">www.kreativalab.ch/affiliate</a>.</p>
+          </div>`,
+          replyTo: 'contatto@kreativalab.ch',
+        });
+
+  const adminPromise = sendAdminEmailNotification(
+    `Notifica Account Agente (${affiliate.status === 'active' ? 'Attivo' : 'Nuova Registrazione'}): ${affiliate.name} (${affiliate.code})`,
+    `<div style="font-family:sans-serif;line-height:1.6;padding:20px;color:#141210;max-width:600px;">
+      <h2 style="margin:0 0 12px;">Notifica Utente Agente · Kreativalab</h2>
+      <div style="background:#f5f5f4;border-left:4px solid #2DD4BF;padding:12px 16px;margin:16px 0;">
+        <p style="margin:4px 0;"><b>Nome:</b> ${escapeHtml(affiliate.name)}</p>
+        <p style="margin:4px 0;"><b>Email:</b> ${escapeHtml(affiliate.email)}</p>
+        <p style="margin:4px 0;"><b>Telefono:</b> ${escapeHtml(affiliate.phone || 'N/D')}</p>
+        <p style="margin:4px 0;"><b>Azienda:</b> ${escapeHtml(affiliate.company_name || 'N/D')}</p>
+        <p style="margin:4px 0;"><b>Cantone:</b> ${escapeHtml(affiliate.canton || 'N/D')}</p>
+        <p style="margin:4px 0;"><b>Codice Agente:</b> ${escapeHtml(affiliate.code)}</p>
+        <p style="margin:4px 0;"><b>Stato:</b> ${escapeHtml(affiliate.status)}</p>
+      </div>
+      <p><a href="https://www.kreativalab.ch/admin/affiliates" style="background:#2DD4BF;color:#0C0A09;padding:10px 20px;text-decoration:none;border-radius:6px;font-weight:bold;display:inline-block;">Apri Console Admin</a></p>
+    </div>`,
+    {
+      replyTo: affiliate.email,
+      extraRecipients: extraAdmins,
+    }
+  );
+
+  const [personal, admin] = await Promise.all([personalPromise, adminPromise]);
+  return { personal, admin };
 }
 
 export async function findAffiliateByAuthUser(authUserId: string, email?: string): Promise<Affiliate | null> {
