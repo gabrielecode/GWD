@@ -9,13 +9,6 @@ interface SitiTicinoAppsSectionProps {
   lang: Language;
 }
 
-const IFRAME_ALLOWED_APPS = new Set<SitiTicinoAppItem['id']>([
-  'pratiko',
-  'rankuplist',
-  'karepet',
-  'demapp',
-]);
-
 function AppMiniatureSiteFallback({ app }: { app: SitiTicinoAppItem }) {
   switch (app.id) {
     case 'pratiko':
@@ -249,8 +242,7 @@ function SitiTicinoAppCard({
           url={app.url}
           domainLabel={app.domainLabel}
           title={app.name}
-          allowIframe={IFRAME_ALLOWED_APPS.has(app.id)}
-          allowScreenshotApi={app.id === 'swissleadfinder'}
+          allowScreenshotApi={!app.previewImage}
           previewImage={app.previewImage}
           accent={frameAccent}
           fallbackContent={<AppMiniatureSiteFallback app={app} />}

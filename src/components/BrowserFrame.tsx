@@ -6,7 +6,6 @@ export interface BrowserFrameProps {
   url: string;
   domainLabel: string;
   title: string;
-  allowIframe?: boolean;
   allowScreenshotApi?: boolean;
   accent?: 'saas' | 'agency' | 'ai' | 'neutral';
   previewImage?: string;
@@ -15,14 +14,10 @@ export interface BrowserFrameProps {
   className?: string;
 }
 
-const DESKTOP_VIEWPORT_WIDTH = 1280;
-const MOBILE_VIEWPORT_WIDTH = 390;
-
 export function BrowserFrame({
   url,
   domainLabel,
   title,
-  allowIframe = false,
   allowScreenshotApi = true,
   accent = 'neutral',
   previewImage,
@@ -33,21 +28,13 @@ export function BrowserFrame({
   const stageRef = useRef<HTMLDivElement | null>(null);
   const [stageWidth, setStageWidth] = useState(320);
   const [viewportMode, setViewportMode] = useState<'desktop' | 'mobile'>('desktop');
-  const [iframeLoaded, setIframeLoaded] = useState(false);
   const [screenshotLoaded, setScreenshotLoaded] = useState(false);
   const [screenshotError, setScreenshotError] = useState(false);
   const [fallbackSettled, setFallbackSettled] = useState(false);
 
-  const shouldUseIframe = allowIframe;
-  const shouldUseScreenshot = !shouldUseIframe && allowScreenshotApi && !screenshotError;
-
-  const isPreviewReady = shouldUseIframe
-    ? iframeLoaded
-    : shouldUseScreenshot
-    ? screenshotLoaded
-    : true;
-
-  const showSkeleton = (shouldUseIframe || shouldUseScreenshot) && !isPreviewReady && !fallbackSettled;
+  const shouldUseScreenshot = !previewImage && allowScreenshotApi && !screenshotError;
+  const isPreviewReady = shouldUseScreenshot ? screenshotLoaded : true;
+  const showSkeleton = shouldUseScreenshot && !isPreviewReady && !fallbackSettled;
 
   useEffect(() => {
     const el = stageRef.current;
@@ -72,17 +59,16 @@ export function BrowserFrame({
   }, []);
 
   useEffect(() => {
-    setIframeLoaded(false);
     setScreenshotLoaded(false);
     setScreenshotError(false);
     setFallbackSettled(false);
   }, [url, viewportMode]);
 
   useEffect(() => {
-    if ((!shouldUseIframe && !shouldUseScreenshot) || isPreviewReady) return;
+    if (!shouldUseScreenshot || isPreviewReady) return;
     const timer = window.setTimeout(() => setFallbackSettled(true), 2200);
     return () => window.clearTimeout(timer);
-  }, [shouldUseIframe, shouldUseScreenshot, isPreviewReady, viewportMode]);
+  }, [shouldUseScreenshot, isPreviewReady, viewportMode]);
 
   const backdrop =
     accent === 'ai'
@@ -102,17 +88,7 @@ export function BrowserFrame({
       ? 'rgba(251, 191, 36, 0.16)'
       : 'rgba(250, 250, 249, 0.1)';
 
-  const desktopScale = Math.max(0.18, stageWidth / DESKTOP_VIEWPORT_WIDTH);
-  const desktopVirtualHeight = Math.round((stageWidth * 10) / 16 / desktopScale);
-
-  // Mobile phone stage proportions computed cleanly from container width
-  const stageHeight = (stageWidth * 10) / 16;
   const mobilePhoneBoxWidth = Math.min(stageWidth * 0.44, 154);
-  const mobilePhoneScale = Math.max(0.24, mobilePhoneBoxWidth / MOBILE_VIEWPORT_WIDTH);
-  const mobileVirtualHeight = Math.max(
-    480,
-    Math.round((stageHeight - 16) / mobilePhoneScale)
-  );
 
   const screenshotApiUrl = `https://api.microlink.io/?url=${encodeURIComponent(
     url
@@ -208,6 +184,7 @@ export function BrowserFrame({
                     src={previewImage}
                     alt={`Anteprima desktop della piattaforma ${title} (${domainLabel})`}
                     loading="lazy"
+                    decoding="async"
                     className="absolute inset-0 h-full w-full object-cover object-top"
                   />
                 ) : (
@@ -217,7 +194,7 @@ export function BrowserFrame({
                       {fallbackContent}
                     </div>
 
-                    {/* Obsidian/Surface Skeleton Overlay While Live Frame or Screenshot Loads */}
+                    {/* Obsidian/Surface Skeleton Overlay While Static Screenshot Loads */}
                     <div
                       className={`pointer-events-none absolute inset-0 z-10 transition-opacity duration-400 ${
                         showSkeleton ? 'opacity-100' : 'opacity-0'
@@ -226,28 +203,7 @@ export function BrowserFrame({
                       <ThumbnailSkeletonOverlay accent={accent} />
                     </div>
 
-                    {/* Sandboxed Real-Time Iframe Scaled Precisely via Container Width */}
-                    {shouldUseIframe && (
-                      <iframe
-                        src={url}
-                        title={`Anteprima desktop ${title}`}
-                        sandbox="allow-scripts allow-same-origin allow-forms allow-popups"
-                        referrerPolicy="no-referrer-when-downgrade"
-                        loading="lazy"
-                        tabIndex={-1}
-                        onLoad={() => setIframeLoaded(true)}
-                        style={{
-                          width: `${DESKTOP_VIEWPORT_WIDTH}px`,
-                          height: `${desktopVirtualHeight}px`,
-                          transform: `scale(${desktopScale})`,
-                        }}
-                        className={`pointer-events-none absolute top-0 left-0 z-20 origin-top-left border-0 bg-white transition-opacity duration-500 ${
-                          iframeLoaded ? 'opacity-100' : 'opacity-0'
-                        }`}
-                      />
-                    )}
-
-                    {/* Dynamic URL Screenshot API Thumbnail for CSP-Restricted Sites */}
+                    {/* Static URL Screenshot API Thumbnail */}
                     {shouldUseScreenshot && (
                       <img
                         src={screenshotApiUrl}
@@ -290,26 +246,6 @@ export function BrowserFrame({
                     >
                       <ThumbnailSkeletonOverlay accent={accent} />
                     </div>
-
-                    {shouldUseIframe && (
-                      <iframe
-                        src={url}
-                        title={`Anteprima mobile ${title}`}
-                        sandbox="allow-scripts allow-same-origin allow-forms allow-popups"
-                        referrerPolicy="no-referrer-when-downgrade"
-                        loading="lazy"
-                        tabIndex={-1}
-                        onLoad={() => setIframeLoaded(true)}
-                        style={{
-                          width: `${MOBILE_VIEWPORT_WIDTH}px`,
-                          height: `${mobileVirtualHeight}px`,
-                          transform: `scale(${mobilePhoneScale})`,
-                        }}
-                        className={`pointer-events-none absolute top-0 left-0 z-20 origin-top-left border-0 bg-white transition-opacity duration-500 ${
-                          iframeLoaded ? 'opacity-100' : 'opacity-0'
-                        }`}
-                      />
-                    )}
 
                     {shouldUseScreenshot && (
                       <img

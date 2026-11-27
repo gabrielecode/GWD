@@ -27,6 +27,7 @@ export const SITITICINO_APPS: SitiTicinoAppItem[] = [
     accentHex: '#2DD4BF',
     badgeText: 'SIX QR-Bill',
     activeUsersCount: 1180,
+    previewImage: '/assets/aistudio/Screenshot__1521__9a723279.png',
     techStack: ['React', 'TypeScript', 'SIX QR-Bill API', 'PWA'],
     technicalTags: {
       it: ['Fatture QR svizzere', 'Sync Cloud mobile', 'PDF Engine'],
@@ -61,6 +62,7 @@ export const SITITICINO_APPS: SitiTicinoAppItem[] = [
     accentHex: '#60A5FA',
     badgeText: 'AI SEO',
     activeUsersCount: 2150,
+    previewImage: '/assets/aistudio/Screenshot__1524__3e66cc2a.png',
     techStack: ['Next.js', 'Gemini AI', 'Node.js', 'PostgreSQL'],
     technicalTags: {
       it: ['SEO Marketplace AI', 'Analisi Keyword', 'Ottimizzazione Conversioni'],
@@ -130,6 +132,7 @@ export const SITITICINO_APPS: SitiTicinoAppItem[] = [
     accentHex: '#22C55E',
     badgeText: 'PWA Ready',
     activeUsersCount: 1340,
+    previewImage: '/assets/aistudio/Screenshot__1525__148619a3.png',
     techStack: ['React PWA', 'IndexedDB', 'Supabase', 'Push API'],
     technicalTags: {
       it: ['Cartella Veterinaria', 'Calcolatore BARF', 'Offline PWA'],
@@ -164,6 +167,7 @@ export const SITITICINO_APPS: SitiTicinoAppItem[] = [
     accentHex: '#FBBF24',
     badgeText: 'No Store PWA',
     activeUsersCount: 460,
+    previewImage: '/assets/aistudio/Screenshot__1522__3bc67c4f.png',
     techStack: ['React', 'Vite PWA', 'Service Worker', 'Tailwind CSS'],
     technicalTags: {
       it: ['Installazione 1-Tap', 'Booking Saloni & Food', 'Notifiche Push'],

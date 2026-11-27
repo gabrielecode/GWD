@@ -440,27 +440,6 @@ function renderSiteBodyPreview(project: ProjectItem, lang: Language) {
   }
 }
 
-const IFRAME_ALLOWED_PROJECT_SLUGS = new Set([
-  'rankuplist',
-  'sititicino-geoboost',
-  'karepet',
-  'aurora-adv',
-  'reverse-editing-shop',
-  'aurora-phone',
-  'pixasolar',
-  'visual-studio-facile',
-  'il-vicolo-lugano',
-  'dj-magix',
-  'aurora-ai',
-  'auto-social-publisher',
-  'ata-school-scraper',
-]);
-
-const SCREENSHOT_API_PROJECT_SLUGS = new Set([
-  'swiss-lead-finder',
-  'speedyjob',
-]);
-
 export function ProjectThumbnail({
   project,
   lang,
@@ -470,8 +449,6 @@ export function ProjectThumbnail({
 }) {
   const isAi = project.status === 'ai-division';
   const isSaas = project.engine === 'saas';
-  const canRenderIframe = IFRAME_ALLOWED_PROJECT_SLUGS.has(project.slug);
-  const canUseScreenshotApi = SCREENSHOT_API_PROJECT_SLUGS.has(project.slug);
 
   const frameAccent: 'saas' | 'agency' | 'ai' = isAi
     ? 'ai'
@@ -499,8 +476,7 @@ export function ProjectThumbnail({
       url={project.externalUrl}
       domainLabel={project.previewTheme.domainUrl}
       title={project.name}
-      allowIframe={canRenderIframe}
-      allowScreenshotApi={canUseScreenshotApi}
+      allowScreenshotApi={!project.previewImage}
       previewImage={project.previewImage}
       accent={frameAccent}
       fallbackContent={fallbackUi}

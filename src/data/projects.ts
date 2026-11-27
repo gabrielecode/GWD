@@ -177,6 +177,7 @@ export const PROJECTS: ProjectItem[] = [
     status: 'live-saas',
     featured: true,
     activeUsersCount: 2150,
+    previewImage: '/assets/aistudio/Screenshot__1524__3e66cc2a.png',
     category: {
       it: 'Prodotto SaaS',
       de: 'SaaS-Produkt',
@@ -342,6 +343,7 @@ export const PROJECTS: ProjectItem[] = [
     status: 'live-saas',
     featured: true,
     activeUsersCount: 380,
+    previewImage: '/assets/aistudio/Screenshot__1526__223046cd.png',
     category: {
       it: 'Prodotto SaaS',
       de: 'SaaS-Produkt',
@@ -507,6 +509,7 @@ export const PROJECTS: ProjectItem[] = [
     status: 'ai-division',
     featured: false,
     activeUsersCount: 640,
+    previewImage: '/assets/aistudio/Screenshot__1527__672a07a6.png',
     category: {
       it: 'Prodotto SaaS · AI',
       de: 'SaaS-Produkt · KI',
@@ -672,6 +675,7 @@ export const PROJECTS: ProjectItem[] = [
     status: 'live-saas',
     featured: false,
     activeUsersCount: 1890,
+    previewImage: '/assets/aistudio/Screenshot__1525__148619a3.png',
     category: {
       it: 'Prodotto SaaS',
       de: 'SaaS-Produkt',
@@ -1005,6 +1009,7 @@ export const PROJECTS: ProjectItem[] = [
     engine: 'agency',
     status: 'client-work',
     featured: true,
+    previewImage: '/assets/aistudio/Screenshot__1529__3c894253.png',
     category: {
       it: 'Caso Studio Agenzia',
       de: 'Agentur-Fallstudie',
@@ -1169,6 +1174,7 @@ export const PROJECTS: ProjectItem[] = [
     engine: 'agency',
     status: 'client-work',
     featured: false,
+    previewImage: '/assets/aistudio/Screenshot__1528__38aba46b.png',
     category: {
       it: 'Caso Studio Agenzia',
       de: 'Agentur-Fallstudie',
