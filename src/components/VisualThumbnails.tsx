@@ -493,6 +493,10 @@ export function ServicePreviewThumbnail({
   kind: ServiceCardKind;
   title: string;
 }) {
+  const [saasImageFailed, setSaasImageFailed] = useState(false);
+  const [sitiWebImageFailed, setSitiWebImageFailed] = useState(false);
+  const [seoLocaleImageFailed, setSeoLocaleImageFailed] = useState(false);
+  const [agentiAiImageFailed, setAgentiAiImageFailed] = useState(false);
   const isTeal = kind === 'saas' || kind === 'seo-locale';
   const isBlue = kind === 'agenti-ai';
   const accentHex = isBlue ? '#60A5FA' : isTeal ? '#2DD4BF' : '#FBBF24';
@@ -544,7 +548,19 @@ export function ServicePreviewThumbnail({
         </div>
 
         <div className="relative w-full aspect-[16/10] overflow-hidden">
-          {kind === 'saas' && (
+          {kind === 'saas' && !saasImageFailed && (
+            <img
+              src="/assets/aistudio/SaaS_Venture_Engine_ecosystem_il__907e0ffe_2K_2f473bd2.jpg"
+              alt={title}
+              loading="lazy"
+              decoding="async"
+              referrerPolicy="no-referrer"
+              onError={() => setSaasImageFailed(true)}
+              className="h-full w-full object-cover object-center"
+            />
+          )}
+
+          {kind === 'saas' && saasImageFailed && (
             <div className="h-full w-full bg-gradient-to-br from-[#0F172A] to-[#0C0A09] p-2.5 flex flex-col justify-between">
               <div className="flex items-center justify-between text-[9px] border-b border-white/10 pb-1">
                 <span className="font-bold text-[#FAFAF9] truncate">{title}</span>
@@ -567,7 +583,19 @@ export function ServicePreviewThumbnail({
             </div>
           )}
 
-          {kind === 'siti-web' && (
+          {kind === 'siti-web' && !sitiWebImageFailed && (
+            <img
+              src="/assets/aistudio/Processor_radiating_data_streams_5718adc5_2K_e700c33a.jpg"
+              alt={title}
+              loading="lazy"
+              decoding="async"
+              referrerPolicy="no-referrer"
+              onError={() => setSitiWebImageFailed(true)}
+              className="h-full w-full object-cover object-center"
+            />
+          )}
+
+          {kind === 'siti-web' && sitiWebImageFailed && (
             <div className="h-full w-full bg-[#FAFAF9] text-[#0C0A09] p-2.5 flex flex-col justify-between">
               <div className="flex items-center justify-between border-b border-stone-200 pb-1 text-[8px]">
                 <span className="font-bold">SitiTicino.ch</span>
@@ -590,7 +618,19 @@ export function ServicePreviewThumbnail({
             </div>
           )}
 
-          {kind === 'seo-locale' && (
+          {kind === 'seo-locale' && !seoLocaleImageFailed && (
+            <img
+              src="/assets/aistudio/Local_SEO_map_UI_illustration_5b28f848_08b03cbf.jpg"
+              alt={title}
+              loading="lazy"
+              decoding="async"
+              referrerPolicy="no-referrer"
+              onError={() => setSeoLocaleImageFailed(true)}
+              className="h-full w-full object-cover object-center"
+            />
+          )}
+
+          {kind === 'seo-locale' && seoLocaleImageFailed && (
             <div className="h-full w-full bg-[#F8FAFC] text-[#0F172A] p-2.5 flex flex-col justify-between">
               <div className="flex items-center justify-between border-b border-slate-200 pb-1 text-[8px]">
                 <span className="font-bold text-[#0F172A]">Google Map Pack</span>
@@ -609,7 +649,19 @@ export function ServicePreviewThumbnail({
             </div>
           )}
 
-          {kind === 'agenti-ai' && (
+          {kind === 'agenti-ai' && !agentiAiImageFailed && (
+            <img
+              src="/assets/aistudio/AI_voice_agents_UI_illustration_e3800a2f_e8189bb5.jpg"
+              alt={title}
+              loading="lazy"
+              decoding="async"
+              referrerPolicy="no-referrer"
+              onError={() => setAgentiAiImageFailed(true)}
+              className="h-full w-full object-cover object-center"
+            />
+          )}
+
+          {kind === 'agenti-ai' && agentiAiImageFailed && (
             <div className="h-full w-full bg-gradient-to-br from-[#0F172A] via-[#1E293B] to-[#0C0A09] p-2.5 flex flex-col justify-between">
               <div className="flex items-center justify-between text-[8px] border-b border-white/10 pb-1">
                 <span className="font-bold text-[#FAFAF9]">Voice Receptionist 24/7</span>

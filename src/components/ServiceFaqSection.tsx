@@ -1,5 +1,5 @@
-import { useMemo, useState } from 'react';
-import { ArrowRight, ChevronDown } from 'lucide-react';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { ArrowRight, Check, ChevronDown } from 'lucide-react';
 import { Language, ServiceItem } from '../types/showcase';
 import { SERVICES } from '../data/services';
 import { TRANSLATIONS } from '../data/translations';
@@ -26,6 +26,31 @@ export function ServiceFaqSection({ lang, onNavigate }: ServiceFaqSectionProps) 
     const firstSlug = SERVICES[0]?.slug;
     return firstSlug ? { [`${firstSlug}:0`]: true } : {};
   });
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    if (!isDropdownOpen) return;
+    const handlePointerDown = (event: MouseEvent) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
+        setIsDropdownOpen(false);
+      }
+    };
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setIsDropdownOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handlePointerDown);
+    document.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.removeEventListener('mousedown', handlePointerDown);
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [isDropdownOpen]);
 
   const visibleServices = useMemo(() => {
     if (selectedSlug === 'all') return SERVICES;
@@ -124,72 +149,150 @@ export function ServiceFaqSection({ lang, onNavigate }: ServiceFaqSectionProps) 
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-          {/* Service Category Selector */}
-          <div
-            className="lg:col-span-4 space-y-2"
-            role="tablist"
-            aria-label={t.homeFaq.eyebrow}
-          >
-            <div className="flex lg:flex-col gap-2 overflow-x-auto pb-2 lg:pb-0">
-              {SERVICES.map((srv, idx) => {
-                const isSelected = selectedSlug === srv.slug;
-                const accent = getAccentHex(srv.accentType);
-                const indexLabel = String(idx + 1).padStart(2, '0');
+          {/* Service Category Selector Dropdown */}
+          <div className="lg:col-span-4 space-y-2">
+            <div ref={dropdownRef} className="relative">
+              {(() => {
+                const activeIndex = SERVICES.findIndex(
+                  (s) => s.slug === selectedSlug
+                );
+                const activeAccent = activeSingleService
+                  ? getAccentHex(activeSingleService.accentType)
+                  : '#2DD4BF';
+                const activeLabel = activeSingleService
+                  ? activeSingleService.shortTitle[lang]
+                  : t.homeFaq.allCategories;
+                const activeCount = activeSingleService
+                  ? activeSingleService.faqs.length
+                  : totalFaqCount;
 
                 return (
-                  <button
-                    key={srv.slug}
-                    type="button"
-                    role="tab"
-                    aria-selected={isSelected}
-                    onClick={() => handleSelectCategory(srv.slug)}
-                    className={`flex items-center justify-between gap-3 rounded-xl border px-4 py-3 text-left transition-colors cursor-pointer min-h-[44px] whitespace-nowrap lg:whitespace-normal shrink-0 lg:w-full ${
-                      isSelected
-                        ? 'bg-[#1C1917] text-[#FAFAF9]'
-                        : 'border-[#292524] bg-[#0C0A09] text-[#A8A29E] hover:text-[#FAFAF9] hover:border-[#292524]/80'
-                    }`}
-                    style={
-                      isSelected
-                        ? { borderColor: `${accent}88` }
-                        : undefined
-                    }
-                  >
-                    <span className="flex items-center gap-3 min-w-0">
-                      <span
-                        className="font-mono text-xs tabular-nums shrink-0"
-                        style={{ color: isSelected ? accent : '#A8A29E' }}
-                      >
-                        {indexLabel}.
+                  <>
+                    <button
+                      type="button"
+                      aria-haspopup="listbox"
+                      aria-expanded={isDropdownOpen}
+                      aria-label={t.homeFaq.eyebrow}
+                      onClick={() => setIsDropdownOpen((prev) => !prev)}
+                      className="flex w-full items-center justify-between gap-3 rounded-xl border bg-[#1C1917] px-4 py-3 text-left text-[#FAFAF9] transition-colors cursor-pointer min-h-[46px]"
+                      style={{ borderColor: `${activeAccent}88` }}
+                    >
+                      <span className="flex items-center gap-3 min-w-0">
+                        {activeIndex >= 0 && (
+                          <span
+                            className="font-mono text-xs tabular-nums shrink-0"
+                            style={{ color: activeAccent }}
+                          >
+                            {String(activeIndex + 1).padStart(2, '0')}.
+                          </span>
+                        )}
+                        <span className="text-sm font-medium truncate">
+                          {activeLabel}
+                        </span>
                       </span>
-                      <span className="text-sm font-medium truncate">
-                        {srv.shortTitle[lang]}
+                      <span className="flex items-center gap-2.5 shrink-0">
+                        <span className="font-mono text-xs tabular-nums text-[#A8A29E]">
+                          {activeCount}
+                        </span>
+                        <ChevronDown
+                          className={`h-4 w-4 text-[#A8A29E] transition-transform duration-200 ${
+                            isDropdownOpen ? 'rotate-180 text-[#FAFAF9]' : ''
+                          }`}
+                          aria-hidden="true"
+                        />
                       </span>
-                    </span>
-                    <span className="font-mono text-xs tabular-nums text-[#A8A29E] shrink-0">
-                      {srv.faqs.length}
-                    </span>
-                  </button>
-                );
-              })}
+                    </button>
 
-              <button
-                type="button"
-                role="tab"
-                aria-selected={selectedSlug === 'all'}
-                onClick={() => handleSelectCategory('all')}
-                className={`flex items-center justify-between gap-3 rounded-xl border px-4 py-3 text-left transition-colors cursor-pointer min-h-[44px] whitespace-nowrap lg:whitespace-normal shrink-0 lg:w-full ${
-                  selectedSlug === 'all'
-                    ? 'border-[#2DD4BF]/60 bg-[#1C1917] text-[#FAFAF9]'
-                    : 'border-[#292524] bg-[#0C0A09] text-[#A8A29E] hover:text-[#FAFAF9]'
-                }`}
-              >
-                <span className="text-sm font-medium">
-                  {t.homeFaq.allCategories}
-                </span>
-                <span className="font-mono text-xs tabular-nums text-[#A8A29E] shrink-0">
-                  {totalFaqCount}
-                </span>
-              </button>
+                    {isDropdownOpen && (
+                      <div
+                        role="listbox"
+                        aria-label={t.homeFaq.eyebrow}
+                        className="absolute left-0 right-0 top-full z-30 mt-2 rounded-xl border border-[#292524] bg-[#0C0A09] p-1.5 shadow-2xl space-y-1"
+                      >
+                        {SERVICES.map((srv, idx) => {
+                          const isSelected = selectedSlug === srv.slug;
+                          const accent = getAccentHex(srv.accentType);
+                          const indexLabel = String(idx + 1).padStart(2, '0');
+
+                          return (
+                            <button
+                              key={srv.slug}
+                              type="button"
+                              role="option"
+                              aria-selected={isSelected}
+                              onClick={() => {
+                                handleSelectCategory(srv.slug);
+                                setIsDropdownOpen(false);
+                              }}
+                              className={`flex w-full items-center justify-between gap-3 rounded-lg px-3 py-2.5 text-left transition-colors cursor-pointer min-h-[42px] ${
+                                isSelected
+                                  ? 'bg-[#1C1917] text-[#FAFAF9]'
+                                  : 'text-[#A8A29E] hover:bg-[#1C1917]/60 hover:text-[#FAFAF9]'
+                              }`}
+                            >
+                              <span className="flex items-center gap-3 min-w-0">
+                                <span
+                                  className="font-mono text-xs tabular-nums shrink-0"
+                                  style={{
+                                    color: isSelected ? accent : '#A8A29E',
+                                  }}
+                                >
+                                  {indexLabel}.
+                                </span>
+                                <span className="text-sm font-medium truncate">
+                                  {srv.shortTitle[lang]}
+                                </span>
+                              </span>
+                              <span className="flex items-center gap-2 shrink-0">
+                                <span className="font-mono text-xs tabular-nums text-[#A8A29E]">
+                                  {srv.faqs.length}
+                                </span>
+                                {isSelected && (
+                                  <Check
+                                    className="h-3.5 w-3.5"
+                                    style={{ color: accent }}
+                                    aria-hidden="true"
+                                  />
+                                )}
+                              </span>
+                            </button>
+                          );
+                        })}
+
+                        <button
+                          type="button"
+                          role="option"
+                          aria-selected={selectedSlug === 'all'}
+                          onClick={() => {
+                            handleSelectCategory('all');
+                            setIsDropdownOpen(false);
+                          }}
+                          className={`flex w-full items-center justify-between gap-3 rounded-lg border-t border-[#292524] pt-2.5 px-3 py-2.5 text-left transition-colors cursor-pointer min-h-[42px] ${
+                            selectedSlug === 'all'
+                              ? 'bg-[#1C1917] text-[#FAFAF9]'
+                              : 'text-[#A8A29E] hover:bg-[#1C1917]/60 hover:text-[#FAFAF9]'
+                          }`}
+                        >
+                          <span className="text-sm font-medium">
+                            {t.homeFaq.allCategories}
+                          </span>
+                          <span className="flex items-center gap-2 shrink-0">
+                            <span className="font-mono text-xs tabular-nums text-[#A8A29E]">
+                              {totalFaqCount}
+                            </span>
+                            {selectedSlug === 'all' && (
+                              <Check
+                                className="h-3.5 w-3.5 text-[#2DD4BF]"
+                                aria-hidden="true"
+                              />
+                            )}
+                          </span>
+                        </button>
+                      </div>
+                    )}
+                  </>
+                );
+              })()}
             </div>
 
             {activeSingleService && (
