@@ -7,6 +7,8 @@ export interface UiStrings {
     services: string;
     about: string;
     contact: string;
+    affiliatePortal: string;
+    adminConsole: string;
     ctaHeader: string;
     menuOpen: string;
     menuClose: string;
@@ -265,6 +267,8 @@ export const TRANSLATIONS: Record<Language, UiStrings> = {
       services: 'Servizi',
       about: 'Chi siamo',
       contact: 'Contatti',
+      affiliatePortal: 'Area Agenti',
+      adminConsole: 'Admin Agenti',
       ctaHeader: 'Prenota una call gratuita di 20 minuti',
       menuOpen: 'Apri menu',
       menuClose: 'Chiudi menu',
@@ -563,6 +567,8 @@ export const TRANSLATIONS: Record<Language, UiStrings> = {
       services: 'Leistungen',
       about: 'Über uns',
       contact: 'Kontakt',
+      affiliatePortal: 'Agenten-Portal',
+      adminConsole: 'Admin',
       ctaHeader: 'Kostenloses 20-Min.-Gespräch buchen',
       menuOpen: 'Menü öffnen',
       menuClose: 'Menü schließen',
@@ -861,6 +867,8 @@ export const TRANSLATIONS: Record<Language, UiStrings> = {
       services: 'Services',
       about: 'À propos',
       contact: 'Contact',
+      affiliatePortal: 'Portail Agents',
+      adminConsole: 'Admin',
       ctaHeader: 'Réserver un appel gratuit de 20 min',
       menuOpen: 'Ouvrir le menu',
       menuClose: 'Fermer le menu',
@@ -1159,6 +1167,8 @@ export const TRANSLATIONS: Record<Language, UiStrings> = {
       services: 'Services',
       about: 'About',
       contact: 'Contact',
+      affiliatePortal: 'Agent Portal',
+      adminConsole: 'Admin',
       ctaHeader: 'Book a free 20-min call',
       menuOpen: 'Open menu',
       menuClose: 'Close menu',

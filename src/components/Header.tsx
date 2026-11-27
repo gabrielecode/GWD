@@ -33,6 +33,8 @@ export function Header({
     { label: t.nav.services, path: '/servizi' },
     { label: t.nav.about, path: '/chi-siamo' },
     { label: t.nav.contact, path: '/contatti' },
+    { label: t.nav.affiliatePortal, path: '/affiliate' },
+    { label: t.nav.adminConsole, path: '/admin/affiliates' },
   ];
 
   const getHref = (path: string) =>
